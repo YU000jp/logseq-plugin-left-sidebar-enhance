@@ -2,7 +2,7 @@ import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { settingsTemplate } from './settings';
 //import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 //import ja from "./translations/ja.json";
-import { loadHideByMouseOver } from './loadHideByMouseOver';
+import { loadShowByMouseOver } from './ShowByMouseOver';
 
 /* main */
 const main = () => {
@@ -16,7 +16,7 @@ const main = () => {
   //   }
   // })();
 
-  loadHideByMouseOver();
+  loadShowByMouseOver();
 
 };/* end_main */
 

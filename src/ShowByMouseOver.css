@@ -14,7 +14,7 @@
     div.cp__sidebar-left-layout.is-open:not(:hover) div.left-sidebar-inner {
         width: 0;
         opacity: 0;
-        padding-right: 40px;
+        padding-right: 33px;
         /* activation field */
         transition: var(--sb-fade);
     }
