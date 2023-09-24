@@ -15,6 +15,12 @@
 
 ## Features
 
+- mouse over to show left sidebar
+
+#### TODO
+
+- Easy access to Journal-dates
+
 ---
 
 ## Getting Started
@@ -23,7 +29,7 @@
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
 - Select marketplace
-- Type `WORD` in the search field, select it from the search results and install
+- Type `Left` in the search field, select it from the search results and install
 
 ### Usage
 
