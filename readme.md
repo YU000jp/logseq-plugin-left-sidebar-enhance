@@ -15,7 +15,7 @@
 
 ## Features
 
-- mouse over to show left sidebar
+- mouse over to show left sidebar (By [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338))
 
 #### TODO
 
