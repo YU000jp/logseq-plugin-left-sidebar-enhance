@@ -11,8 +11,8 @@ export const settingsTemplate: SettingSchemaDesc[] = [
         description: "",
         default: "",
     },
-    {//Switch loadHideByMouseOver
-        key: "loadHideByMouseOver",
+    {//Switch loadShowByMouseOver
+        key: "loadShowByMouseOver",
         type: "boolean",
         //左サイドバーをマウスオーバーで表示する
         title: "Enable mouse over to show left sidebar",
