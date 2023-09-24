@@ -1,8 +1,8 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
-import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user';
+import { settingsTemplate } from './settings';
 //import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 //import ja from "./translations/ja.json";
-
+import { loadHideByMouseOver } from './loadHideByMouseOver';
 
 /* main */
 const main = () => {
@@ -16,16 +16,9 @@ const main = () => {
   //   }
   // })();
 
+  loadHideByMouseOver();
 
 };/* end_main */
-
-
-
-/* user setting */
-// https://logseq.github.io/plugins/types/SettingSchemaDesc.html
-const settingsTemplate: SettingSchemaDesc[] = [
-
-];
 
 
 logseq.ready(main).catch(console.error);
