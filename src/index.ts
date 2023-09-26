@@ -4,6 +4,7 @@ import { settingsTemplate } from './settings';
 //import ja from "./translations/ja.json";
 import { loadShowByMouseOver } from './mouseover';
 import { loadDateSelector } from './dateSelector';
+import { loadNewChildPageButton } from "./newChildPageButton";
 
 /* main */
 const main = async () => {
@@ -12,8 +13,15 @@ const main = async () => {
   logseq.useSettingsSchema(settingsTemplate);
   if (!logseq.settings) setTimeout(() => logseq.showSettingsUI(), 300);
 
+  //マウスオーバー
   loadShowByMouseOver();
+
+  //日付セレクター
   loadDateSelector();
+
+  //子ページ作成補助 (現在のページ名と/を入力済みにする)
+  loadNewChildPageButton();
+
 };/* end_main */
 
 
