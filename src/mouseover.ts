@@ -1,8 +1,8 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin";
-import CSSShowByMouseOverTypeA from "./showByMouseOverTypeA.css?inline";
-import CSSShowByMouseOverTypeB from "./showByMouseOverTypeB.css?inline";
+import CSSTypeA from "./mouseoverA.css?inline";
+import CSSTypeB from "./mouseoverB.css?inline";
 import { removeProvideStyle } from "./lib";
-const keyHideByMouseOver = "showByMouseOver";
+const keyShowByMouseOver = "showByMouseOver";
 
 
 export const loadShowByMouseOver = () => {
@@ -19,7 +19,7 @@ export const loadShowByMouseOver = () => {
     logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
         if (oldSet.showByMouseOverType !== newSet.showByMouseOverType) {
             if (newSet.loadShowByMouseOver === true) {
-                removeProvideStyle(keyHideByMouseOver);
+                removeProvideStyle(keyShowByMouseOver);
                 selectShowByMouseOverType(newSet.showByMouseOverType);
                 logseq.UI.showMsg("select mouse over type: " + newSet.showByMouseOverType, "info", { timeout: 2000 });
             }
@@ -31,13 +31,13 @@ export const loadShowByMouseOver = () => {
             selectShowByMouseOverType(newSet.showByMouseOverType);
         } else if (oldSet.loadShowByMouseOver === true && newSet.loadShowByMouseOver === false) {
             logseq.UI.showMsg("Left sidebar is now disabled.", "info", { timeout: 2000 });
-            removeProvideStyle(keyHideByMouseOver);
+            removeProvideStyle(keyShowByMouseOver);
         }
     });
 
     //プラグイン無効化時
     logseq.beforeunload(async () => {
-        removeProvideStyle(keyHideByMouseOver);
+        removeProvideStyle(keyShowByMouseOver);
         logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" });
     });
 
@@ -46,10 +46,10 @@ export const loadShowByMouseOver = () => {
 const selectShowByMouseOverType = (setting: string) => {
     switch (setting) {
         case "type A":
-            logseq.provideStyle({ key: keyHideByMouseOver, style: CSSShowByMouseOverTypeA });
+            logseq.provideStyle({ key: keyShowByMouseOver, style: CSSTypeA });
             break;
         default: //type B
-            logseq.provideStyle({ key: keyHideByMouseOver, style: CSSShowByMouseOverTypeB });
+            logseq.provideStyle({ key: keyShowByMouseOver, style: CSSTypeB });
             break;
     }
 };
@@ -68,7 +68,7 @@ const buttonEvent = () => setTimeout(() => {
             //ノーマル表示にする
             logseq.App.setLeftSidebarVisible(true);
             setTimeout(() => {
-                removeProvideStyle(keyHideByMouseOver);
+                removeProvideStyle(keyShowByMouseOver);
                 logseq.updateSettings({ toggleShowByMouseOver: "normal" });
                 logseq.UI.showMsg("Left sidebar is now normal display.", "info", { timeout: 2000 });
             }, 10);
@@ -76,7 +76,7 @@ const buttonEvent = () => setTimeout(() => {
             //表示しない
             logseq.App.setLeftSidebarVisible(false);
             setTimeout(() => {
-                removeProvideStyle(keyHideByMouseOver);
+                removeProvideStyle(keyShowByMouseOver);
                 logseq.updateSettings({ toggleShowByMouseOver: "off" });
                 logseq.UI.showMsg("Left sidebar is now hidden.", "info", { timeout: 2000 });
             }, 10);
