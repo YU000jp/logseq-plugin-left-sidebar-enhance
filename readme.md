@@ -33,6 +33,7 @@
 #### Month selector
 
 - Access a hierarchical page (`yyyy/MM`)
+- For monthly Journal
 
 ---
 
