@@ -16,7 +16,8 @@ export const loadDateSelector = () => {
 };
 
 const main = () => {
-    if (parent.document.getElementById("th-dateSelector-container")) return;//すでに存在する場合はキャンセル
+    if (parent.document.getElementById("th-dateSelector-container")) removeContainer();//すでに存在する場合は削除する
+
     setTimeout(async () => {
         //左サイドバーのnav-contents-containerにスペースを追加する
         const navElement: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null;
