@@ -1,14 +1,6 @@
 # [1.1.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.0.0...v1.1.0) (2023-09-26)
 
 
-### Bug Fixes
-
-* **bug:** bug & cleanup ([8aba315](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/8aba3153b3fbc22ea754ba5bbee168e63b6887a4))
-* **bug:** file name ([50a388f](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/50a388f03b320dde306bc332297ae0f09be01592))
-* **bug:** not work link ([4531e63](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/4531e63440d9ffc2888a7382bf145c370f755fab))
-* **bug:** rename ([f08df5f](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/f08df5f9dbf601bb986a7b2c4e6b596878f9b327))
-
-
 ### Features
 
 * **Add:** Date selector in left sidebar ([f8d1a48](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/f8d1a48442086d9d85d0902eacc7a3334bff3cdb))
