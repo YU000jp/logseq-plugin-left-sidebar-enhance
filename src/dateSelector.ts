@@ -28,6 +28,9 @@ export const loadDateSelector = () => {
             color: var(--ls-secondary-background-color);
             margin-right: .4em;
         }
+        &>button:hover {
+            text-decoration: underline;
+        }
         }
     }
     `);
