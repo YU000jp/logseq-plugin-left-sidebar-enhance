@@ -2,6 +2,7 @@ import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin";
 import CSSTypeA from "./mouseoverA.css?inline";
 import CSSTypeB from "./mouseoverB.css?inline";
 import { removeProvideStyle } from "./lib";
+import { t } from "logseq-l10n";
 const keyShowByMouseOver = "showByMouseOver";
 
 
@@ -21,16 +22,14 @@ export const loadShowByMouseOver = () => {
             if (newSet.loadShowByMouseOver === true) {
                 removeProvideStyle(keyShowByMouseOver);
                 selectShowByMouseOverType(newSet.showByMouseOverType);
-                logseq.UI.showMsg("select mouse over type: " + newSet.showByMouseOverType, "info", { timeout: 2000 });
+                logseq.UI.showMsg(t("select mouse over type: ") + newSet.showByMouseOverType, "info", { timeout: 2200 });
             }
         }
         //
         if (oldSet.loadShowByMouseOver === false && newSet.loadShowByMouseOver === true) {
-            logseq.UI.showMsg("Left sidebar is now enabled.", "info", { timeout: 2000 });
             newSet.toggleShowByMouseOver = "mouseOver";
             selectShowByMouseOverType(newSet.showByMouseOverType);
         } else if (oldSet.loadShowByMouseOver === true && newSet.loadShowByMouseOver === false) {
-            logseq.UI.showMsg("Left sidebar is now disabled.", "info", { timeout: 2000 });
             removeProvideStyle(keyShowByMouseOver);
         }
     });
@@ -70,7 +69,7 @@ const buttonEvent = () => setTimeout(() => {
             setTimeout(() => {
                 removeProvideStyle(keyShowByMouseOver);
                 logseq.updateSettings({ toggleShowByMouseOver: "normal" });
-                logseq.UI.showMsg("Left sidebar is now normal display.", "info", { timeout: 2000 });
+                logseq.UI.showMsg(t("Left sidebar is now normal display."), "info", { timeout: 2200 });
             }, 10);
         } else if (logseq.settings!.toggleShowByMouseOver === "normal") { //前回のメモリーはノーマル表示
             //表示しない
@@ -78,7 +77,7 @@ const buttonEvent = () => setTimeout(() => {
             setTimeout(() => {
                 removeProvideStyle(keyShowByMouseOver);
                 logseq.updateSettings({ toggleShowByMouseOver: "off" });
-                logseq.UI.showMsg("Left sidebar is now hidden.", "info", { timeout: 2000 });
+                logseq.UI.showMsg(t("Left sidebar is now hidden."), "info", { timeout: 2200 });
             }, 10);
         } else { //前回のメモリーは表示しない
             //マウスオーバーで表示する
@@ -86,7 +85,7 @@ const buttonEvent = () => setTimeout(() => {
             setTimeout(() => {
                 selectShowByMouseOverType(logseq.settings!.showByMouseOverType);
                 logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" });
-                logseq.UI.showMsg("Left sidebar is now mouse over display.", "info", { timeout: 2000 });
+                logseq.UI.showMsg(t("Left sidebar is now mouse over display."), "info", { timeout: 2200 });
             }, 10);
         }
     });

@@ -1,5 +1,6 @@
 import { AppUserConfigs, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import format from "date-fns/format";
+import { t } from "logseq-l10n";
 
 export const loadDateSelector = () => {
 
@@ -72,7 +73,7 @@ const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HT
     const pElement: HTMLParagraphElement = document.createElement("p");
     const p2Element: HTMLParagraphElement = document.createElement("p");
     //type: date
-    pElement.title = "Date";
+    pElement.title = t("Date (Single journal)");
     const selectorInput: HTMLInputElement = document.createElement("input");
     selectorInput.type = "date";
     selectorInput.id = "th-dateSelector-date";
@@ -88,7 +89,7 @@ const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HT
         await pageOpen(format(new Date(date.value), preferredDateFormat), shiftKey);
     });
     //type: month
-    p2Element.title = "Month";
+    p2Element.title = t("Month (yyyy/MM))");
     const selectorInputMonth: HTMLInputElement = document.createElement("input");
     selectorInputMonth.type = "month";
     selectorInputMonth.id = "th-dateSelector-month";

@@ -1,16 +1,16 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { settingsTemplate } from './settings';
-//import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
-//import ja from "./translations/ja.json";
+import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import ja from "./translations/ja.json";
 import { loadShowByMouseOver } from './mouseover';
 import { loadDateSelector } from './dateSelector';
 import { loadNewChildPageButton } from "./newChildPageButton";
 
 /* main */
 const main = async () => {
-  //     await l10nSetup({ builtinTranslations: { ja } });
+  await l10nSetup({ builtinTranslations: { ja } });
   /* user settings */
-  logseq.useSettingsSchema(settingsTemplate);
+  logseq.useSettingsSchema(settingsTemplate());
   if (!logseq.settings) setTimeout(() => logseq.showSettingsUI(), 300);
 
   //マウスオーバー

@@ -1,4 +1,5 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user";
+import { t } from "logseq-l10n";
 
 export const loadNewChildPageButton = () => setTimeout(() => {
 
@@ -15,7 +16,7 @@ export const loadNewChildPageButton = () => setTimeout(() => {
   }
 
   //ページメニューに追加
-  logseq.App.registerPageMenuItem("New child page", async ({ page }) => openSearchBoxInputHierarchy(true, page));
+  if (logseq.settings!.loadNewChildPageButton === true) logseq.App.registerPageMenuItem(t("New child page"), async ({ page }) => openSearchBoxInputHierarchy(true, page));
 
 }, 600);
 
@@ -40,7 +41,7 @@ const createButtonEvent = (createButtonElement: HTMLButtonElement) => {
         <span class="flex-1">
         <div class="flex items-center">
         <div class="type-icon highlight">
-        <span class="ui__icon tie tie-new-page"></span></div><div class="title-wrap" style="margin-right: 8px; margin-left: 4px;">New child page</span></div></div></a>
+        <span class="ui__icon tie tie-new-page"></span></div><div class="title-wrap" style="margin-right: 8px; margin-left: 4px;">${t("New child page")}</span></div></div></a>
         `
           );
           setTimeout(() => {
@@ -72,8 +73,7 @@ const WhenWhiteboardOff = () => {
       if (logseq.settings!.loadNewChildPageButton === false) return;//設定がオフの場合は何もしない
 
       const page = (await logseq.Editor.getCurrentPage()) as PageEntity | null; //ページ名が取得できる場合のみ
-      if (page && confirm("Insert current page title?\nFor create new the child page"))
-        openSearchBoxInputHierarchy(false, page.originalName);
+      if (page) openSearchBoxInputHierarchy(false, page.originalName);
     });
   }
 };
@@ -94,5 +94,5 @@ const openSearchBoxInputHierarchy = (openSearchUI: Boolean, pageName?: string) =
           inputElement.value = page.originalName + "/";
       }
     }
-  }, 50);
+  }, 10);
 };
