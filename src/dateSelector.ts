@@ -1,61 +1,66 @@
-import { AppUserConfigs, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
+import { AppUserConfigs, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import format from "date-fns/format";
-
 
 export const loadDateSelector = () => {
 
-    if (logseq.settings!.booleanDateSelector === true) {
-        //match[0]はcurrentPageName
-        //match[1]は年
-        //match[2]は月
-
-        if (parent.document.getElementById("th-dateSelector-container")) return;//すでに存在する場合はキャンセル
-        setTimeout(async () => {
-            //左サイドバーのnav-contents-containerにスペースを追加する
-            const navElement: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null;
-            if (navElement === null) return; //nullの場合はキャンセル
-            navElement.innerHTML += (`
-        <div class="nav-content-item mt-3 is-expand flex-shrink-0" style="min-height: 56px;">
-        <div class="nav-content-item-inner">
-        <div class="header items-center" id="th-dateSelector-container"></div>
-        </div>
-        </div>
-        <style>
-        div#left-sidebar div#th-dateSelector-container>label {
-            & p{
-                white-space: nowrap;
-                overflow: visible;
-            &>input {
-                width:100%;
-                border-radius: 4px;
-                border: 1px solid var(--ls-secondary-text-color);
-                /* background: var(--ls-secondary-background-color);
-                color: var(--ls-primary-text-color); */
-                color: var(--ls-secondary-background-color);
-                margin-right: .4em;
-            }
-            }
+    //プラグイン設定変更時
+    logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
+        if (oldSet.booleanDateSelector !== newSet.booleanDateSelector) {
+            if (newSet.booleanDateSelector === true) main();//表示する
+            else removeContainer();//消す
         }
-        </style>
-    `);
 
-            const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
+    });
 
-            //スペースに日付セレクターを追加する
-            setTimeout(() => {
-                const dateSelectorHereElement: HTMLDivElement | null = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null;
-                if (dateSelectorHereElement === null) return; //nullの場合はキャンセル
-
-                //すでに存在する場合はキャンセル
-                if (dateSelectorHereElement.dataset.flag !== "true") createSelector(preferredDateFormat, dateSelectorHereElement);//label>input#th-dateSelector
-
-                dateSelectorHereElement.dataset.flag = "true"; //フラグを立てる
-            }, 1);
-
-        }, 500);
-    }
+    if (logseq.settings!.booleanDateSelector === true) main();
 };
 
+const main = () => {
+    if (parent.document.getElementById("th-dateSelector-container")) return;//すでに存在する場合はキャンセル
+    setTimeout(async () => {
+        //左サイドバーのnav-contents-containerにスペースを追加する
+        const navElement: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null;
+        if (navElement === null) return; //nullの場合はキャンセル
+        navElement.innerHTML += (`
+    <div class="nav-content-item mt-3 is-expand flex-shrink-0" style="min-height: 56px;">
+    <div class="nav-content-item-inner">
+    <div class="header items-center" id="th-dateSelector-container"></div>
+    </div>
+    </div>
+    <style>
+    div#left-sidebar div#th-dateSelector-container>label {
+        & p{
+            white-space: nowrap;
+            overflow: visible;
+        &>input {
+            width:100%;
+            border-radius: 4px;
+            border: 1px solid var(--ls-secondary-text-color);
+            /* background: var(--ls-secondary-background-color);
+            color: var(--ls-primary-text-color); */
+            color: var(--ls-secondary-background-color);
+            margin-right: .4em;
+        }
+        }
+    }
+    </style>
+`);
+
+        const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
+
+        //スペースに日付セレクターを追加する
+        setTimeout(() => {
+            const dateSelectorHereElement: HTMLDivElement | null = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null;
+            if (dateSelectorHereElement === null) return; //nullの場合はキャンセル
+
+            //すでに存在する場合はキャンセル
+            if (dateSelectorHereElement.dataset.flag !== "true") createSelector(preferredDateFormat, dateSelectorHereElement);//label>input#th-dateSelector
+
+            dateSelectorHereElement.dataset.flag = "true"; //フラグを立てる
+        }, 1);
+
+    }, 500);
+};
 
 const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HTMLDivElement) => {
     const selectorLabel: HTMLLabelElement = document.createElement("label");
@@ -104,6 +109,13 @@ const pageOpen = async (pageName: string, shiftKey: boolean) => {
     if (page) {
         if (shiftKey) logseq.Editor.openInRightSidebar(page.uuid);
         else logseq.Editor.scrollToBlockInPage(pageName, page.uuid, { replaceState: true });
+    }
+};
+
+const removeContainer = () => {
+    const dateSelectorHereElement: HTMLDivElement | null = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null;
+    if (dateSelectorHereElement) {
+        dateSelectorHereElement.remove();
     }
 };
 
