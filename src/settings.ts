@@ -19,5 +19,12 @@ export const settingsTemplate: SettingSchemaDesc[] = [
         //マウスオーバーで表示する場合と、通常表示と、表示しない場合の3パターン
         description: "Toggle 3 pattern: mouse over, normal, and hide.",
         default: true,
-    }
+    },
+    {//date selector
+        key: "booleanDateSelector",
+        title: "Enable date selector in left sidebar",
+        type: "boolean",
+        default: true,
+        description: "default: true",
+    },
 ];

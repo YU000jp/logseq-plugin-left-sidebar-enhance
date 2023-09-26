@@ -15,11 +15,13 @@
 
 ## Features
 
-- mouse over to show left sidebar (By [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338))
+### mouse over to show left sidebar (By [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338))
 
-#### TODO
+> Enable toggling of the button in the top-left corner. If using the width adjustment feature in "favorite tree" plugin
 
-- Easy access to Journal-dates
+### Easy access to Journal-dates
+
+- Date selector and Month selector
 
 ---
 

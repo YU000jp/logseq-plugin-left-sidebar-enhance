@@ -3,21 +3,17 @@ import { settingsTemplate } from './settings';
 //import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 //import ja from "./translations/ja.json";
 import { loadShowByMouseOver } from './ShowByMouseOver';
+import { loadDateSelector } from './dateSelector';
 
 /* main */
-const main = () => {
-  // (async () => {
-  //   try {
+const main = async () => {
   //     await l10nSetup({ builtinTranslations: { ja } });
-  //   } finally {
   /* user settings */
   logseq.useSettingsSchema(settingsTemplate);
   if (!logseq.settings) setTimeout(() => logseq.showSettingsUI(), 300);
-  //   }
-  // })();
 
   loadShowByMouseOver();
-
+  loadDateSelector();
 };/* end_main */
 
 
