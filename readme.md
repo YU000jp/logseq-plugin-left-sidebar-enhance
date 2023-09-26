@@ -13,7 +13,7 @@
 
 ---
 
-## Features
+## Options
 
 ### mouse over to show left sidebar
 
@@ -26,7 +26,13 @@
 
 ### Easy access to Journal-dates
 
-- Date selector and Month selector
+#### Date selector
+
+- Access single journal page
+
+#### Month selector
+
+- Access a hierarchical page (`yyyy/MM`)
 
 ---
 
