@@ -1,6 +1,6 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin";
-import CSSShowByMouseOverTypeA from "./ShowByMouseOverTypeA.css?inline";
-import CSSShowByMouseOverTypeB from "./ShowByMouseOverTypeB.css?inline";
+import CSSShowByMouseOverTypeA from "./showByMouseOverTypeA.css?inline";
+import CSSShowByMouseOverTypeB from "./showByMouseOverTypeB.css?inline";
 import { removeProvideStyle } from "./lib";
 const keyHideByMouseOver = "showByMouseOver";
 
