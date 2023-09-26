@@ -118,6 +118,7 @@ const pageOpen = async (pageName: string, shiftKey: boolean) => {
     if (page) {
         if (shiftKey) logseq.Editor.openInRightSidebar(page.uuid);
         else logseq.Editor.scrollToBlockInPage(pageName, page.uuid, { replaceState: true });
+        logseq.UI.showMsg(t("Page opened\n") + pageName);
     }
 };
 
