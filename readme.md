@@ -58,6 +58,10 @@
 
 ## Prior art & Credit
 
+###  CSS code (mouse over to show left sidebar)
+- [sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+- [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
+
 ### Icon
 
 - [icooon-mono.com](https://icooon-mono.com/)
