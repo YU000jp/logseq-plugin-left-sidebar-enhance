@@ -50,8 +50,8 @@ const createButtonEvent = (createButtonElement: HTMLButtonElement) => {
             ) as HTMLAnchorElement | null;
             if (buttonElement) {
               buttonElement.addEventListener("click", async () => {
-                buttonElement.remove();
                 openSearchBoxInputHierarchy(true, page.originalName);
+                buttonElement.remove();
               });
             }
           }, 50);
@@ -94,5 +94,5 @@ const openSearchBoxInputHierarchy = (openSearchUI: Boolean, pageName?: string) =
           inputElement.value = page.originalName + "/";
       }
     }
-  }, 10);
+  }, 60);
 };
