@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.1.0...v1.2.0) (2023-09-26)
+
+
+### Features
+
+* **Add:** Child page creation assistance ([6170c75](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/6170c75b5111151c5fe416dfbedc15c89270e085))
+* **translation:** ja ([e0dfca3](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/e0dfca3dd27c114b2f1b1c4e5941c8c16adb99e0))
+
 # [1.1.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.0.0...v1.1.0) (2023-09-26)
 
 
