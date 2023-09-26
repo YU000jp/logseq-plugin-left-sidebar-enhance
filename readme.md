@@ -22,8 +22,6 @@
 - Type B (default): credit by [sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
 - Type A: credit by [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
 
-
-
 ### Easy access to Journal-dates
 
 #### Date selector
@@ -34,6 +32,10 @@
 
 - Access a hierarchical page (`yyyy/MM`)
 - For monthly Journal
+
+###  Child page creation assistance
+
+- \"Create\" button and page menu
 
 ---
 
