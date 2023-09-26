@@ -13,22 +13,7 @@ export const loadDateSelector = () => {
     });
 
     if (logseq.settings!.booleanDateSelector === true) main();
-};
-
-const main = () => {
-    if (parent.document.getElementById("th-dateSelector-container")) removeContainer();//すでに存在する場合は削除する
-
-    setTimeout(async () => {
-        //左サイドバーのnav-contents-containerにスペースを追加する
-        const navElement: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null;
-        if (navElement === null) return; //nullの場合はキャンセル
-        navElement.innerHTML += (`
-    <div class="nav-content-item mt-3 is-expand flex-shrink-0" style="min-height: 56px;">
-    <div class="nav-content-item-inner">
-    <div class="header items-center" id="th-dateSelector-container"></div>
-    </div>
-    </div>
-    <style>
+    logseq.provideStyle(`
     div#left-sidebar div#th-dateSelector-container>label {
         & p{
             white-space: nowrap;
@@ -44,8 +29,27 @@ const main = () => {
         }
         }
     }
-    </style>
-`);
+    `);
+};
+
+const main = () => {
+    if (parent.document.getElementById("th-dateSelector-container")) removeContainer();//すでに存在する場合は削除する
+
+    setTimeout(async () => {
+        //左サイドバーのnav-contents-containerにスペースを追加する
+        const navElement: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null;
+        if (navElement === null) return; //nullの場合はキャンセル
+
+        const div1: HTMLDivElement = document.createElement("div");
+        div1.className = "nav-content-item mt-3 is-expand flex-shrink-0";
+        const div2: HTMLDivElement = document.createElement("div");
+        div2.className = "nav-content-item-inner";
+        const div3: HTMLDivElement = document.createElement("div");
+        div3.className = "header items-center";
+        div3.id = "th-dateSelector-container";
+        div2.appendChild(div3);
+        div1.appendChild(div2);
+        navElement.appendChild(div1);
 
         const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs;
 
@@ -115,8 +119,6 @@ const pageOpen = async (pageName: string, shiftKey: boolean) => {
 
 const removeContainer = () => {
     const dateSelectorHereElement: HTMLDivElement | null = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null;
-    if (dateSelectorHereElement) {
-        dateSelectorHereElement.remove();
-    }
+    if (dateSelectorHereElement) dateSelectorHereElement.remove();
 };
 
