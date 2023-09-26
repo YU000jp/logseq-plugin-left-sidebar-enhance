@@ -89,7 +89,7 @@ const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HT
         await pageOpen(format(new Date(date.value), preferredDateFormat), shiftKey);
     });
     //type: month
-    p2Element.title = t("Month (yyyy/MM))");
+    p2Element.title = t("Month (yyyy/MM)");
     const selectorInputMonth: HTMLInputElement = document.createElement("input");
     selectorInputMonth.type = "month";
     selectorInputMonth.id = "th-dateSelector-month";
