@@ -26,6 +26,8 @@
 
 ### Easy access to Journal-dates
 
+![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
+
 #### Date selector
 
 - Access single journal page
