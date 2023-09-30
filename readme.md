@@ -20,7 +20,7 @@
 ### mouse over to show left sidebar
 
 > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
- button in the top-left corner. If using the width adjustment feature in "favorite tree" plugin
+ button in the top-left corner. (Use it if using the width adjustment feature in "favorite tree" plugin)
 
 - Type B (default): credit by [sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
 - Type A: credit by [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
@@ -53,6 +53,14 @@
 - Type `Left` in the search field, select it from the search results and install
 
 ### Usage
+
+- Click ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
+ button in the top-left corner. The state of left sidebar will switch.
+- Some features are turned on. If not need it, turn it off in the plugin settings.
+
+### Recommend
+
+[sethyuan / Favorite tree plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
 
 ---
 
