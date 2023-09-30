@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.2.0...v1.3.0) (2023-09-30)
+
+
+### Bug Fixes
+
+* **bug:** child page assist, when using whiteboad feature ([81b51d2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/81b51d214967e56ceb123a86d2bae379cbcb9318))
+
+
+### Features
+
+* **doc:** get page title message ([c5ed73c](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/c5ed73c36994bb5e067b8ef459c33fa05b89b4df))
+
 # [1.2.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.1.0...v1.2.0) (2023-09-26)
 
 
