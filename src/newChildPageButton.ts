@@ -68,12 +68,14 @@ const WhenWhiteboardOff = () => {
     "div#left-sidebar footer a.new-page-link"
   ) as HTMLAnchorElement | null;
   if (newPageLinkElement) {
+    (newPageLinkElement.querySelector("span.flex-1") as HTMLSpanElement)!.innerText = t("New child page");
     newPageLinkElement.addEventListener("click", async () => {
 
       if (logseq.settings!.loadNewChildPageButton === false) return;//設定がオフの場合は何もしない
 
-      const page = (await logseq.Editor.getCurrentPage()) as PageEntity | null; //ページ名が取得できる場合のみ
+      const page = await logseq.Editor.getCurrentPage() as PageEntity | null; //ページ名が取得できる場合のみ
       if (page) openSearchBoxInputHierarchy(false, page.originalName);
+      else failedGetPageName();
     });
   }
 };
@@ -86,13 +88,24 @@ const openSearchBoxInputHierarchy = (openSearchUI: Boolean, pageName?: string) =
       'div[label="ls-modal-search"] div.input-wrap input[type="text"]'
     ) as HTMLInputElement | null;
     if (inputElement) {
-      if (pageName) inputElement.value = pageName + "/";
-      else {
-        const page =
-          (await logseq.Editor.getCurrentPage()) as PageEntity | null;
-        if (page && page.originalName)
+      if (pageName !== "") {
+        inputElement.value = pageName + "/";
+        successGetPageName();
+      } else {
+        const page = await logseq.Editor.getCurrentPage() as PageEntity | null;
+        if (page && page.originalName) {
           inputElement.value = page.originalName + "/";
+          successGetPageName();
+        } else failedGetPageName();
       }
-    }
+    } else failedGetPageName();
   }, 60);
 };
+
+const successGetPageName = () => setTimeout(() => {
+  logseq.UI.showMsg(t("Success to get page name"));
+}, 100);
+const failedGetPageName = () => setTimeout(() => {
+  //ジャーナルでは所得できない
+  logseq.UI.showMsg(t("Failed to get page name\nNot available in journals"));
+}, 100);
