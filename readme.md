@@ -19,7 +19,8 @@
 
 ### mouse over to show left sidebar
 
-> Enable toggling of the button in the top-left corner. If using the width adjustment feature in "favorite tree" plugin
+> Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
+ button in the top-left corner. If using the width adjustment feature in "favorite tree" plugin
 
 - Type B (default): credit by [sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
 - Type A: credit by [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
