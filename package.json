@@ -1,6 +1,6 @@
 {
     "name": "logseq-plugin-left-sidebar-enhance",
-    "description": "Left sidebar",
+    "description": "Includes some features such as mouse over to show left sidebar.",
     "repository": "https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance.git",
     "author": "YU000jp",
     "license": "MIT",
