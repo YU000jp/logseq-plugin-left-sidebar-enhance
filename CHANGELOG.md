@@ -4,6 +4,14 @@
 ### Bug Fixes
 
 * plugin description ([ec60e80](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/ec60e8042153f3eeb91205ac7839d83d11221842))
+* set plugin icon ([aae09fc](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/aae09fc28c890eb1f2ec8e971bbfa1bc4015ad03))
+
+## [1.3.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.3.0...v1.3.1) (2023-10-01)
+
+
+### Bug Fixes
+
+* plugin description ([ec60e80](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/ec60e8042153f3eeb91205ac7839d83d11221842))
 
 # [1.3.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.2.0...v1.3.0) (2023-09-30)
 
