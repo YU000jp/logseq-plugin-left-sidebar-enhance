@@ -2,7 +2,7 @@
 
 - Includes some features such as mouse over to show left sidebar.
 
-- Development stage (not published yet) 👷🚧
+- not published yet 👷🚧
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-left-sidebar-enhance)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-left-sidebar-enhance?color=blue)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/LICENSE)
