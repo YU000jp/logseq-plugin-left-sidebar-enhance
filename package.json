@@ -7,7 +7,7 @@
     "logseq": {
         "id": "left-sidebar-enhance",
         "title": "Left-Sidebar Enhance",
-        "icon": "./icon.svg",
+        "icon": "./icon.png",
         "main": "./dist/index.html"
     },
     "effect": true,
