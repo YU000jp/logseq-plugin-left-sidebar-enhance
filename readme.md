@@ -2,12 +2,10 @@
 
 - Includes some features such as mouse over to show left sidebar.
 
-- not published yet 👷🚧
-
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-left-sidebar-enhance)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-left-sidebar-enhance?color=blue)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-left-sidebar-enhance/total.svg)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
-<!-- Published 2023 -->
+ Published 2023/10/02
 
 ---
 
@@ -42,7 +40,7 @@
 
 ## Getting Started
 
-### Install from Logseq Marketplace (Coming👷🚧)
+### Install from Logseq Marketplace
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
 - Select marketplace
