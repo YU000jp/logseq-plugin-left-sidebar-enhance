@@ -1,20 +1,21 @@
 @media (min-width: 640px) {
-    div#left-sidebar {
-        transform-origin: center left;
-        scale: 0.05 1;
-        opacity: 0;
-        transition-property: opacity, scale;
-        transition-duration: 80ms;
-        transition-timing-function: ease-in-out;
+    body>div#root>div>main {
+        & div#left-sidebar {
+            transform-origin: center left;
+            scale: 0.05 1;
+            opacity: 0;
+            transition-property: opacity, scale;
+            transition-duration: 80ms;
+            transition-timing-function: ease-in-out;
 
-        &:hover {
-            scale: 1;
-            opacity: 1;
+            &:hover {
+                scale: 1;
+                opacity: 1;
+            }
+        }
+
+        & div#main-container.is-left-sidebar-open {
+            padding-left: 0;
         }
     }
-
-    div#main-container.is-left-sidebar-open {
-        padding-left: 0;
-    }
-
 }

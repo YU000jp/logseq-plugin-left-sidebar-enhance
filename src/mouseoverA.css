@@ -1,27 +1,28 @@
 @media (min-width: 640px) {
+    body>div#root>div>main {
+        & div#main-container.is-left-sidebar-open {
+            padding-left: 3em;
+        }
 
-    div#main-container.is-left-sidebar-open {
-        padding-left: 3em;
-    }
+        & div.cp__sidebar-left-layout,
+        div.cp__sidebar-left-layout.is-open {
+            --sb-fade: all .3s ease-in-out;
+            transition: var(--sb-fade);
+        }
 
-    div.cp__sidebar-left-layout,
-    div.cp__sidebar-left-layout.is-open {
-        --sb-fade: all .3s ease-in-out;
-        transition: var(--sb-fade);
-    }
+        & div.cp__sidebar-left-layout.is-open:not(:hover),
+        div.cp__sidebar-left-layout.is-open:not(:hover) div.left-sidebar-inner {
+            width: 0;
+            opacity: 0;
+            padding-right: 33px;
+            /* activation field */
+            transition: var(--sb-fade);
+        }
 
-    div.cp__sidebar-left-layout.is-open:not(:hover),
-    div.cp__sidebar-left-layout.is-open:not(:hover) div.left-sidebar-inner {
-        width: 0;
-        opacity: 0;
-        padding-right: 33px;
-        /* activation field */
-        transition: var(--sb-fade);
-    }
-
-    div.cp__sidebar-left-layout.is-open:not(:hover) div.left-sidebar-inner div.flex div:not(.nav-contents-container) {
-        display: none;
-        opacity: 0;
-        transition: var(--sb-fade);
+        & div.cp__sidebar-left-layout.is-open:not(:hover) div.left-sidebar-inner div.flex div:not(.nav-contents-container) {
+            display: none;
+            opacity: 0;
+            transition: var(--sb-fade);
+        }
     }
 }
