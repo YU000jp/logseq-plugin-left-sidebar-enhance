@@ -106,6 +106,6 @@ const successGetPageName = () => setTimeout(() => {
   logseq.UI.showMsg(t("Success to get page name"));
 }, 100);
 const failedGetPageName = () => setTimeout(() => {
-  //ジャーナルでは所得できない
+  //日誌では所得できない
   logseq.UI.showMsg(t("Failed to get page name\nNot available in journals"));
 }, 100);

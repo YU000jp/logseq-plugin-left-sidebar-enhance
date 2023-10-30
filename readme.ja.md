@@ -14,7 +14,7 @@
 1. マウスオーバーで左サイドバーを表示
    > トップ左隅の ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを有効にします。("お気に入りツリー"プラグインの幅調整機能を使用する場合に使用してください)
 
-2. ジャーナル日付への簡単アクセス
+2. 日誌日付への簡単アクセス
 
 ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
