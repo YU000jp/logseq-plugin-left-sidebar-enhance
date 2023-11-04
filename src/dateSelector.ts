@@ -23,7 +23,7 @@ export const loadDateSelector = () => {
             width:100%;
             border-radius: 4px;
             border: 1px solid var(--ls-secondary-text-color);
-            /* background: var(--ls-secondary-background-color);
+            /* background-color: var(--ls-secondary-background-color);
             color: var(--ls-primary-text-color); */
             color: var(--ls-secondary-background-color);
             margin-right: .4em;
