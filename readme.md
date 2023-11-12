@@ -16,7 +16,7 @@ Includes some features such as mouse over to show left sidebar.
 
 1. Easy access to Journal-dates
 
-![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
+   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
 1. Date selector
    - Access single journal page
