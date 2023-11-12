@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.3.1...v1.3.2) (2023-11-12)
+
+
+### Bug Fixes
+
+* **translation:** ja 子ページ→サブページ ([fd00082](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/fd00082f840346965204ca42182fc5e5ea46f45e))
+
 ## [1.3.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.3.0...v1.3.1) (2023-10-01)
 
 
