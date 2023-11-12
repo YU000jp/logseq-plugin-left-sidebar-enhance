@@ -19,7 +19,7 @@ const main = async () => {
   //日付セレクター
   loadDateSelector();
 
-  //子ページ作成補助 (現在のページ名と/を入力済みにする)
+  //サブページ作成補助 (現在のページ名と/を入力済みにする)
   loadNewChildPageButton();
 
 };/* end_main */
