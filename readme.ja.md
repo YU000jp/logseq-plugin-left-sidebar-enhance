@@ -57,9 +57,10 @@ Logseq マーケットプレースからインストール
 ## 先行技術とクレジット
 
 CSSコード（マウスオーバーで左サイドバーを表示） >
+
    1. タイプB（デフォルト）: [sethyuanによるクレジット](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
    2. タイプA: [mænによるクレジット](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
 
-製作者: [YU000jp (GitHub)](https://github.com/YU000jp)
+製作者: [@YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌buy me a coffee 製作者にコーヒーを奢ってください!" style="height: 42px;width: 152px" ></a>

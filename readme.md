@@ -55,12 +55,15 @@ Install from Logseq Marketplace
 
 > Go to the [discussion](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) tab to ask and find this kind of things.
 
+1. This plugin relies on Logseq's DOM structure. If the DOM structure changes due to a Logseq version update, styles may not be applied. We will adjust the CSS to deal with it. If you notice something, please raise an issue.
+
 ## Prior art & Credit
 
 CSS code (mouse over to show left sidebar) >
-    1. Type B (default): credit by [sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
-    1. Type A: credit by [mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
 
-Author > [YU000jp (GitHub)](https://github.com/YU000jp)
+   1. Type B (default): credit by [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+   1. Type A: credit by [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
+
+Author > [@YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌Buy Me A Coffee" style="height: 42px;width: 152px" ></a>
