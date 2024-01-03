@@ -19,25 +19,25 @@ export const loadDateSelector = () => {
         & p{
             white-space: nowrap;
             overflow: visible;
-        &>input {
-            width:100%;
-            border-radius: 4px;
-            border: 1px solid var(--ls-secondary-text-color);
-            /* background-color: var(--ls-secondary-background-color);
-            color: var(--ls-primary-text-color); */
-            color: var(--ls-secondary-background-color);
-            margin-right: .4em;
-        }
-        &>button:hover {
-            text-decoration: underline;
-        }
+            &>input {
+                width:100%;
+                border-radius: 4px;
+                border: 1px solid var(--ls-secondary-text-color);
+                /* background-color: var(--ls-secondary-background-color);
+                color: var(--ls-primary-text-color); */
+                color: var(--ls-secondary-background-color);
+                margin-right: .4em;
+            }
+            &>button:hover {
+                text-decoration: underline;
+            }
         }
     }
     `)
-    
-    logseq.beforeunload(async() => {
+
+    logseq.beforeunload(async () => {
         const ele = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null
-        if(ele) ele.remove()
+        if (ele) ele.remove()
     })
 }
 
