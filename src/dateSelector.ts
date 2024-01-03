@@ -34,6 +34,11 @@ export const loadDateSelector = () => {
         }
     }
     `)
+    
+    logseq.beforeunload(async() => {
+        const ele = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null
+        if(ele) ele.remove()
+    })
 }
 
 const main = () => {
