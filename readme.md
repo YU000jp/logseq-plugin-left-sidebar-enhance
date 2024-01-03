@@ -18,12 +18,12 @@ Includes some features such as mouse over to show left sidebar.
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
-1. Date selector
-   - Access single journal page
+   1. Date selector
+      - Access single journal page
 
-1. Month selector
-   - Access a hierarchical page (`yyyy/MM`)
-   - For monthly Journal
+   1. Month selector
+      - Access a hierarchical page (`yyyy/MM`)
+      - For monthly Journal
 
 ---
 
