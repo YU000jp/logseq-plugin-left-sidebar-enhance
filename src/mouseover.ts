@@ -12,7 +12,7 @@ export const loadShowByMouseOver = () => {
     if (!logseq.settings!.toggleShowByMouseOver) logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" });
 
     //前回のメモリー
-    if (logseq.settings!.toggleShowByMouseOver === "mouseOver") selectShowByMouseOverType(logseq.settings!.showByMouseOverType);
+    if (logseq.settings!.toggleShowByMouseOver === "mouseOver") selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string);
 
 
     buttonEvent();
@@ -21,14 +21,14 @@ export const loadShowByMouseOver = () => {
         if (oldSet.showByMouseOverType !== newSet.showByMouseOverType) {
             if (newSet.loadShowByMouseOver === true) {
                 removeProvideStyle(keyShowByMouseOver);
-                selectShowByMouseOverType(newSet.showByMouseOverType);
+                selectShowByMouseOverType(newSet.showByMouseOverType as string);
                 logseq.UI.showMsg(t("select mouse over type: ") + newSet.showByMouseOverType, "info", { timeout: 2200 });
             }
         }
         //
         if (oldSet.loadShowByMouseOver === false && newSet.loadShowByMouseOver === true) {
             newSet.toggleShowByMouseOver = "mouseOver";
-            selectShowByMouseOverType(newSet.showByMouseOverType);
+            selectShowByMouseOverType(newSet.showByMouseOverType as string);
         } else if (oldSet.loadShowByMouseOver === true && newSet.loadShowByMouseOver === false) {
             removeProvideStyle(keyShowByMouseOver);
         }
@@ -83,7 +83,7 @@ const buttonEvent = () => setTimeout(() => {
             //マウスオーバーで表示する
             logseq.App.setLeftSidebarVisible(true);
             setTimeout(() => {
-                selectShowByMouseOverType(logseq.settings!.showByMouseOverType);
+                selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string);
                 logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" });
                 logseq.UI.showMsg(t("Left sidebar is now mouse over display."), "info", { timeout: 2200 });
             }, 10);

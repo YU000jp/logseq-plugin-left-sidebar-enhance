@@ -1,5 +1,5 @@
 import { AppUserConfigs, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
-import format from "date-fns/format";
+import { format } from "date-fns/format";
 import { t } from "logseq-l10n";
 
 export const loadDateSelector = () => {
