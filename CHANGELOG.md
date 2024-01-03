@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.3.2...v1.4.0) (2024-1-3)
+
+
+### Bug Fixes
+
+* **bug:** Delete parts after turning off the plugin ([4113922](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/41139220f868b99e4c554d1c280db2f5ff908660))
+
+
+### Features
+
+* **Delete:** `sub page creation assistance` feature ([828964f](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/828964f4ebcc1b9d779b8f1d12350910311792a9))
+
 ## [1.3.2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.3.1...v1.3.2) (2023-11-12)
 
 
