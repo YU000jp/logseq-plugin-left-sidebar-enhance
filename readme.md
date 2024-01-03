@@ -25,10 +25,6 @@ Includes some features such as mouse over to show left sidebar.
    - Access a hierarchical page (`yyyy/MM`)
    - For monthly Journal
 
-###  The child page creation assistance
-
-   > "Create" button change to "New child page". Add "New child page" item to the page menu.
-
 ---
 
 ## Getting Started
