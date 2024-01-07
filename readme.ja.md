@@ -1,8 +1,8 @@
-# Logseq プラグイン: Left Sidebar Enhance 左サイドバー拡張
+# Logseq プラグイン: Left Sidebar Enhance 
 
 [English](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance) | [日本語](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/blob/main/readme.ja.md)
 
-マウスオーバーで左サイドバーを表示するなどの機能を含みます。
+左サイドバー拡張: マウスオーバーで左サイドバーを表示するなどのいくつかの機能を含むプラグインです。
 
 [![最新リリースバージョン](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-left-sidebar-enhance)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
 [![ライセンス](https://img.shields.io/github/license/YU000jp/logseq-plugin-left-sidebar-enhance?color=blue)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/LICENSE)
@@ -11,10 +11,11 @@
 
 ## オプション
 
-1. マウスオーバーで左サイドバーを表示
+1. マウスオーバーで左サイドバーを表示 (デフォルト: **有効**)
+
    > トップ左隅の ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを有効にします。("お気に入りツリー"プラグインの幅調整機能を使用する場合に使用してください)
 
-1. 日誌日付への簡単アクセス
+1. 日誌日付への簡単アクセス (デフォルト: **無効**)
 
    ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 

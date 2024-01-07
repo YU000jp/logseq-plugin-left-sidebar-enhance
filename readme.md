@@ -2,7 +2,8 @@
 
 [English](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance) | [日本語](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/blob/main/readme.ja.md)
 
-Includes some features such as mouse over to show left sidebar.
+A plugin for mouse over to show left sidebar.
+  > Includes some features such as mouse over to show left sidebar.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-left-sidebar-enhance)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-left-sidebar-enhance?color=blue)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/LICENSE)
@@ -11,10 +12,10 @@ Includes some features such as mouse over to show left sidebar.
 
 ## Options
 
-  1. mouse over to show left sidebar
-    > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner. (Use it if using the width adjustment feature in "favorite tree" plugin)
+1. mouse over to show left sidebar (default: *Enable*)
+   > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner. (Use it if using the width adjustment feature in "favorite tree" plugin)
 
-1. Easy access to Journal-dates
+1. Easy access to Journal-dates (default: *Disable*)
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
@@ -54,7 +55,6 @@ Install from Logseq Marketplace
 ## Prior art & Credit
 
 CSS code (mouse over to show left sidebar) >
-
    1. Type B (default): credit by [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
    1. Type A: credit by [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
 
