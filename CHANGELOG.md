@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.4.0...v1.5.0) (2024-1-7)
+
+
+### Features
+
+* `Easy access to Journal-dates` default: true >>> false ([bf531f0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/bf531f00d7ef50d25dd0d3c3064cd64b2c2ea133))
+
 # [1.4.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.3.2...v1.4.0) (2024-1-3)
 
 
