@@ -25,8 +25,8 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         key: "booleanDateSelector",
         title: t("Enable: Date selector in left sidebar"),
         type: "boolean",
-        default: true,
-        description: "default: true",
+        default: false,
+        description: "",
     },
     // {
     //     //loadNewChildPageButton
