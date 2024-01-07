@@ -15,8 +15,7 @@ export const loadDateSelector = () => {
 
     if (logseq.settings!.booleanDateSelector === true) main()
     logseq.provideStyle(`
-    div#left-sidebar div#th-dateSelector-container>label {
-        & p{
+    div#left-sidebar div#th-dateSelector-container>label p{
             white-space: nowrap;
             overflow: visible;
             &>input {
@@ -32,7 +31,6 @@ export const loadDateSelector = () => {
             &>button:hover {
                 text-decoration: underline;
             }
-        }
     }
     `)
 
