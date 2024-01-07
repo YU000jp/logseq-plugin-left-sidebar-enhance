@@ -39,9 +39,7 @@ Install from Logseq Marketplace
  button in the top-left corner. The state of left sidebar will switch.
 - Some features are turned on. If not need it, turn it off in the plugin settings.
 
-### Recommend
 
-[sethyuan / Favorite tree plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
 
 ---
 
@@ -50,6 +48,8 @@ Install from Logseq Marketplace
 > Go to the [discussion](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) tab to ask and find this kind of things.
 
 1. This plugin relies on Logseq's DOM (Document Object Model) structure. If the DOM structure changes due to a Logseq version update, styles may not be applied. We will adjust the CSS to deal with it. If you notice something, please raise an issue.
+1. Recommended
+  1. [sethyuan / Favorite tree plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
 
 ## Prior art & Credit
 
