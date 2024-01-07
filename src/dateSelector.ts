@@ -20,13 +20,14 @@ export const loadDateSelector = () => {
             white-space: nowrap;
             overflow: visible;
             &>input {
-                width:100%;
+                width:95%;
                 border-radius: 4px;
                 border: 1px solid var(--ls-secondary-text-color);
                 /* background-color: var(--ls-secondary-background-color);
                 color: var(--ls-primary-text-color); */
                 color: var(--ls-secondary-background-color);
                 margin-right: .4em;
+                font-size: .95em;
             }
             &>button:hover {
                 text-decoration: underline;
