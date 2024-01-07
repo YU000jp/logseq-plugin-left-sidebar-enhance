@@ -12,7 +12,7 @@
     "Left sidebar is now hidden.": "左サイドバーは非表示になりました。",
     "Left sidebar is now mouse over display.": "左サイドバーはマウスオーバー表示になりました。",
     "New child page": "サブページ作成",
-    "Page opened\n": "ページを開きました\n",
+    "The page is opened.\n": "ページを開きました\n",
     "Failed to get page name\nNot available in journals": "ページ名の取得に失敗しました\n(日誌では取得されません)",
     "Success to get page name": "ページ名の取得に成功しました"
 }
