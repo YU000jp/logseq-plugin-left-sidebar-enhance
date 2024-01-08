@@ -49,13 +49,13 @@ Install from Logseq Marketplace
 
 1. This plugin relies on Logseq's DOM (Document Object Model) structure. If the DOM structure changes due to a Logseq version update, styles may not be applied. We will adjust the CSS to deal with it. If you notice something, please raise an issue.
 1. Recommended
-  1. [sethyuan / Favorite tree plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
+   1. [sethyuan / Favorite tree plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
 
 ## Prior art & Credit
 
 CSS code (mouse over to show left sidebar) >
-   1. Type B (default): credit by [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
-   1. Type A: credit by [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
+   1. Type A: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
+   1. Type B (default): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
 
 Author > [@YU000jp](https://github.com/YU000jp)
 
