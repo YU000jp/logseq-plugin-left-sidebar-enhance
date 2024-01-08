@@ -43,14 +43,20 @@ Logseq マーケットプレースからインストール
 
 > この種のことを尋ねたり見つけたりするために、[ディスカッション](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) タブに移動してください。
 
+- マウスオーバーの種類
+    1. タイプ A: マウスが左隅付近のスペースに近づくと開きます。
+       > ⚠️ウィンドウが小さい場合、問題が発生する可能性があります。
+    1. タイプ B (推奨): 左端の行にマウスを置くと開きます。
+
 - おすすめ
    1. [sethyuan / お気に入りツリープラグイン](https://github.com/sethyuan/logseq-plugin-favorite-tree)
 
 ## 先行技術とクレジット
 
-CSSコード（マウスオーバーで左サイドバーを表示） > [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
-   > ([@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338))
+- CSSコード（マウスオーバーで左サイドバーを表示） >
+   1. Aタイプ: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
+   1. Bタイプ (デフォルト): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
 
-製作者: [@YU000jp](https://github.com/YU000jp)
+- 製作者: [@YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌buy me a coffee 製作者にコーヒーを奢ってください!" style="height: 42px;width: 152px" ></a>
