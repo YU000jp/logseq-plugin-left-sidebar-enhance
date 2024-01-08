@@ -39,8 +39,6 @@ Install from Logseq Marketplace
  button in the top-left corner. The state of left sidebar will switch.
 - Some features are turned on. If not need it, turn it off in the plugin settings.
 
-
-
 ---
 
 ## Showcase / Questions / Ideas / Help
@@ -53,9 +51,8 @@ Install from Logseq Marketplace
 
 ## Prior art & Credit
 
-CSS code (mouse over to show left sidebar) >
-   1. Type A: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
-   1. Type B (default): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+CSS code (mouse over to show left sidebar) > [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+   > [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338) 
 
 Author > [@YU000jp](https://github.com/YU000jp)
 

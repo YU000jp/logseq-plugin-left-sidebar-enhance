@@ -48,7 +48,8 @@ Logseq マーケットプレースからインストール
 
 ## 先行技術とクレジット
 
-CSSコード（マウスオーバーで左サイドバーを表示） > [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211) / ([@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338))
+CSSコード（マウスオーバーで左サイドバーを表示） > [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+   > ([@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338))
 
 製作者: [@YU000jp](https://github.com/YU000jp)
 
