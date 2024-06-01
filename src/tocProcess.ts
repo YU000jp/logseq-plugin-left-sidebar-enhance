@@ -209,9 +209,9 @@ const expandParentBlock = async (block: { uuid: BlockEntity["uuid"], parent: Blo
 export const displayToc = async (pageName: string) => {
   const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
   if (element) {
+    element.innerHTML = "" //elementが存在する場合は中身を削除する
     //ページの全ブロックからheaderがあるかどうかを確認する
     let headers = getTocBlocks(await logseq.Editor.getPageBlocksTree(pageName) as Child[])
-    element.innerHTML = "" //elementが存在する場合は中身を削除する
     if (headers.length > 0) {
       //headersのcontentに、#や##などのヘッダー記法が含まれているデータのみ処理をする
       headers = headers.filter(header =>

@@ -3,6 +3,7 @@ import { t } from "logseq-l10n"
 import { removeContainer } from "./lib"
 import { onPageChangedCallback } from "."
 import tocCSS from "./toc.css?inline"
+import { whenOpenJournals } from "./tocJournals"
 
 export const loadTOC = () => {
 
@@ -26,20 +27,19 @@ export const loadTOC = () => {
         if (ele) ele.remove()
     })
 
+    //プラグイン起動時
+    setTimeout(() => {
+        routeCheck()
+    }, 200)
+
     //ページ読み込み時に実行コールバック
-    logseq.App.onRouteChanged(async ({ template }) => {
-        switch (template) {
-            case '/page/:name':
-                onPageChangedCallback()
-                break
-            default:
-                //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
-                const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-                if (element)
-                    element.innerHTML = t("No headers found")
-                break
-        }
+    logseq.App.onRouteChanged(async () => {
+        await routeCheck()
     })
+    logseq.App.onPageHeadActionsSlotted(async () => {
+        await routeCheck()
+    })
+    //動作保証のため、2つとも必要
 }
 
 const main = () => {
@@ -83,4 +83,26 @@ const main = () => {
             containerEle.dataset.flag = "true" //フラグを立てる
         }, 1)
     }, 500)
+}
+
+let processingRoot = false
+const routeCheck = async () => {
+    if (processingRoot) return
+    processingRoot = true
+    setTimeout(() =>
+        processingRoot = false, 100)
+    const currentPage = await logseq.Editor.getCurrentPage() //現在のページ名を取得
+    if (currentPage)
+        onPageChangedCallback()
+    else {
+        const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+        if (journalsEle)
+            whenOpenJournals(journalsEle)
+        else {
+            //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+            const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+            if (element)
+                element.innerHTML = t("No headers found")
+        }
+    }
 }

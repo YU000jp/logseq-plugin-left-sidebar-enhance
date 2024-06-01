@@ -70,10 +70,10 @@ export const onPageChangedCallback = async () => {
 
   if (processingOnPageChanged === true)
     return
-  processingOnPageChanged = true
-  // return 禁止
-  //処理中断対策
-  setTimeout(() => processingOnPageChanged = false, 1000)
+  processingOnPageChanged = true // return 禁止
+  
+  setTimeout(() =>
+    processingOnPageChanged = false, 300) //処理中断対策
 
   setTimeout(async () => {
     if (logseq.settings!.booleanLeftTOC === true) {
@@ -83,7 +83,6 @@ export const onPageChangedCallback = async () => {
         displayToc(currentPageName)
       }
     }
-    processingOnPageChanged = false
   }, 50)
 
 }

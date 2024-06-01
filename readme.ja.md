@@ -13,6 +13,7 @@
 
 1. 左メニューに、ページ内容の目次を表示
    > マークダウンヘッダー(#,##,###,####,#####,######)が使用されている場合
+   1. ジャーナルの目次 (スクロール後)
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
 

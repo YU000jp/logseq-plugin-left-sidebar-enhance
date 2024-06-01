@@ -13,6 +13,7 @@ Includes some features such as mouse over to show left sidebar.
 
 1. Table Of Contents in left sidebar
    > Use markdown headers #,##,###,####,#####,######
+   1. Journals TOC (passive)
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
 
