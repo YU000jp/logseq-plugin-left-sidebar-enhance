@@ -1,0 +1,23 @@
+{
+  "Date (Single journal)": "Перейти на страницу",
+  "Month (yyyy/MM)": "Перейти на страницу yyyy/MM",
+  "The page is opened.\n": "Страница открыта.\n",
+  "Left sidebar is now normal display.": "Левая боковая панель теперь находится в обычном режиме.",
+  "Left sidebar is now hidden.": "Левая боковая панель теперь скрыта.",
+  "Left sidebar is now mouse over display.": "Левая боковая панель теперь доступна при наведении курсора мыши.",
+  "Enable: Table Of Contents in left sidebar": "Включено: Оглавление на левой боковой панели",
+  "Remove words from table of contents": "Удаление слов из оглавления",
+  "Separate with line breaks": "Разделение с помощью переносов строк",
+  "Enable: Mouse over to show left sidebar": "Включено: Показывать левую боковую панель при наведении курсора мыши",
+  "Toggle 3 pattern: mouse over, normal, and hide.": "Переключение между 3 шаблонами: при наведении курсора мыши, обычный и скрытый",
+  "Select mouse over type": "Выберите тип наведения курсора мыши",
+  "type A: credit by mæn, type B: credit by sethyuan": "Тип A: создан mæn, тип B: создан sethyuan",
+  "Enable: Date selector in left sidebar": "Включено: Выбор даты на левой боковой панели",
+  "No headers found": "Заголовки не найдены",
+  "Table of Contents": "Содержание",
+  "plugin": "Плагины",
+  "Update Table of Contents": "Обновленное содержание",
+  "Scroll to top": "Перейти в начало страницы",
+  "Scroll to bottom": "Перейти в конец страницы",
+  "Date Selector": "Выбор даты"
+}

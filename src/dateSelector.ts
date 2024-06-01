@@ -60,12 +60,12 @@ const main = () => {
         divAsItemEle.id = "lse-dataSelector-container"
         const detailsEle: HTMLDetailsElement = document.createElement("details")
         detailsEle.className = "nav-content-item-inner"
-        detailsEle.open = true
         const summaryEle: HTMLElement = document.createElement("summary")
         summaryEle.className = "header items-center"
+        summaryEle.style.cursor = "row-resize"
         summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
-        summaryEle.innerText = "Date Selector"// タイトルを入れる
-        summaryEle.title = "Left Sidebar Enhance plugin"//プラグイン名を入れる
+        summaryEle.innerText = t("Date Selector")// タイトルを入れる
+        summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
         const containerEle: HTMLDivElement = document.createElement("div")
         containerEle.className = "bg"
         containerEle.id = "lse-dataSelector-inner"

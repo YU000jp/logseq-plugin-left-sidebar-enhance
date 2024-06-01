@@ -1,0 +1,23 @@
+{
+  "Date (Single journal)": "轉到日期頁面",
+  "Month (yyyy/MM)": "轉到 yyyy/MM 頁面",
+  "The page is opened.\n": "頁面已打開。\n",
+  "Left sidebar is now normal display.": "左側邊欄現在處於正常視圖中。",
+  "Left sidebar is now hidden.": "左側邊欄現在處於隱藏狀態。",
+  "Left sidebar is now mouse over display.": "左側邊欄現在是滑鼠懸停檢視。",
+  "Enable: Table Of Contents in left sidebar": "已啟用：左側邊欄中的目錄",
+  "Remove words from table of contents": "從目錄中刪除字詞",
+  "Separate with line breaks": "用換行符分隔",
+  "Enable: Mouse over to show left sidebar": "已啟用：滑鼠懸停時顯示左側邊欄",
+  "Toggle 3 pattern: mouse over, normal, and hide.": "在 3 種模式之間切換：滑鼠懸停、正常和隱藏",
+  "Select mouse over type": "選擇滑鼠懸停類型",
+  "type A: credit by mæn, type B: credit by sethyuan": "A型：mæn創建，B型：sethyuan創建",
+  "Enable: Date selector in left sidebar": "已啟用：左側邊欄中的日期選擇器",
+  "No headers found": "未找到標題",
+  "Table of Contents": "目錄",
+  "plugin": "外掛程式",
+  "Update Table of Contents": "更新的目錄",
+  "Scroll to top": "轉到此頁面頂部",
+  "Scroll to bottom": "轉到頁面末尾",
+  "Date Selector": "日期選擇器"
+}

@@ -1,0 +1,23 @@
+{
+  "Date (Single journal)": "Перейти на сторінку дати",
+  "Month (yyyy/MM)": "Перейти на сторінку рррр/ММ",
+  "The page is opened.\n": "Сторінку відкрито.\n",
+  "Left sidebar is now normal display.": "Ліва бічна панель тепер у звичайному режимі.",
+  "Left sidebar is now hidden.": "Ліва бічна панель тепер прихована.",
+  "Left sidebar is now mouse over display.": "Ліва бічна панель тепер є переглядом курсору миші.",
+  "Enable: Table Of Contents in left sidebar": "Увімкнено: зміст на лівій бічній панелі",
+  "Remove words from table of contents": "Видалення слів зі змісту",
+  "Separate with line breaks": "Відокремлення з розривами рядків",
+  "Enable: Mouse over to show left sidebar": "Увімкнено: показувати ліву бічну панель при наведенні курсору миші",
+  "Toggle 3 pattern: mouse over, normal, and hide.": "Перемикання між 3 шаблонами: наведенням курсору миші, звичайним і прихованим",
+  "Select mouse over type": "Виберіть Тип наведення курсору миші",
+  "type A: credit by mæn, type B: credit by sethyuan": "Тип A: створено mæn, тип B: створено sethyuan",
+  "Enable: Date selector in left sidebar": "Увімкнено: засіб вибору дати на лівій бічній панелі",
+  "No headers found": "Не знайдено заголовків",
+  "Table of Contents": "Зміст",
+  "plugin": "Плагіни",
+  "Update Table of Contents": "Оновлений зміст",
+  "Scroll to top": "Перейти на початок цієї сторінки",
+  "Scroll to bottom": "Перейти в кінець сторінки",
+  "Date Selector": "Вибір дати"
+}

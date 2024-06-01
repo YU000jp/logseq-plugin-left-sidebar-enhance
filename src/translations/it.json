@@ -1,0 +1,23 @@
+{
+  "Date (Single journal)": "Vai alla pagina delle date",
+  "Month (yyyy/MM)": "Vai alla pagina aaaa/MM",
+  "The page is opened.\n": "La pagina è stata aperta.\n",
+  "Left sidebar is now normal display.": "La barra laterale sinistra è ora in visualizzazione normale.",
+  "Left sidebar is now hidden.": "La barra laterale sinistra è ora nascosta.",
+  "Left sidebar is now mouse over display.": "La barra laterale sinistra è ora in visualizzazione al passaggio del mouse.",
+  "Enable: Table Of Contents in left sidebar": "Abilitato: Sommario nella barra laterale sinistra",
+  "Remove words from table of contents": "Rimuovi le parole dal sommario",
+  "Separate with line breaks": "Separare con interruzioni di riga",
+  "Enable: Mouse over to show left sidebar": "Abilitato: mostra la barra laterale sinistra al passaggio del mouse",
+  "Toggle 3 pattern: mouse over, normal, and hide.": "Passa da un modello all'altro: mouseover, normale e nascosto",
+  "Select mouse over type": "Seleziona il tipo di passaggio del mouse",
+  "type A: credit by mæn, type B: credit by sethyuan": "Tipo A: mæn creato, Tipo B Tipo: sethyuan creato",
+  "Enable: Date selector in left sidebar": "Abilitato: selettore di date nella barra laterale sinistra",
+  "No headers found": "Nessuna intestazione trovata",
+  "Table of Contents": "Sommario",
+  "plugin": "Plug-in",
+  "Update Table of Contents": "Sommario aggiornato",
+  "Scroll to top": "Vai all'inizio di questa pagina",
+  "Scroll to bottom": "Vai alla fine della pagina",
+  "Date Selector": "Selettore di date"
+}

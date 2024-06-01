@@ -14,7 +14,6 @@ export const loadTOC = () => {
             else
                 removeContainer("lse-toc-container")//消す
         }
-
     })
 
     if (logseq.settings!.booleanLeftTOC === true)
@@ -26,21 +25,21 @@ export const loadTOC = () => {
         const ele = parent.document.getElementById("lse-toc-container") as HTMLDivElement | null
         if (ele) ele.remove()
     })
-    
-      //ページ読み込み時に実行コールバック
-  logseq.App.onRouteChanged(async ({ template }) => {
-    switch (template) {
-      case '/page/:name':
-            onPageChangedCallback()
-        break
-      default:
-            //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
-            const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-            if (element)
-                element.innerHTML = t("No headers found")
-        break
-    }
-  })
+
+    //ページ読み込み時に実行コールバック
+    logseq.App.onRouteChanged(async ({ template }) => {
+        switch (template) {
+            case '/page/:name':
+                onPageChangedCallback()
+                break
+            default:
+                //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+                const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+                if (element)
+                    element.innerHTML = t("No headers found")
+                break
+        }
+    })
 }
 
 const main = () => {
@@ -60,9 +59,10 @@ const main = () => {
         detailsEle.open = true
         const summaryEle: HTMLElement = document.createElement("summary")
         summaryEle.className = "header items-center"
+        summaryEle.style.cursor = "row-resize"
         summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
-        summaryEle.innerText = "Table of Contents"// タイトルを入れる
-        summaryEle.title = "Left Sidebar Enhance plugin"//プラグイン名を入れる
+        summaryEle.innerText = t("Table of Contents")// タイトルを入れる
+        summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
         const containerEle: HTMLDivElement = document.createElement("div")
         containerEle.className = "bd"
         containerEle.id = "lse-toc-inner"
@@ -75,16 +75,12 @@ const main = () => {
         setTimeout(() => {
             const containerEle: HTMLDivElement | null = parent.document.getElementById("lse-toc-inner") as HTMLDivElement | null
             if (containerEle === null) return //nullの場合はキャンセル
-            if (containerEle.dataset.flag !== "true")//すでに存在する場合はキャンセル
-                content(containerEle)
+            if (containerEle.dataset.flag !== "true") {//すでに存在する場合はキャンセル
+                const divEle = document.createElement("div")
+                divEle.id = "lse-toc-content"
+                containerEle.appendChild(divEle)
+            }
             containerEle.dataset.flag = "true" //フラグを立てる
         }, 1)
-
     }, 500)
-}
-
-const content = (containerElement: HTMLDivElement) => {
-    const divEle = document.createElement("div")
-    divEle.id = "lse-toc-content"
-    containerElement.appendChild(divEle)
 }

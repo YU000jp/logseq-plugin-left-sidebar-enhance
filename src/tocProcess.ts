@@ -58,7 +58,7 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
   const elementUpdate = document.createElement("span")
   elementUpdate.classList.add("cursor")
   elementUpdate.innerHTML = "🔄"
-  elementButtons.title = "Update Table of Contents"
+  elementButtons.title = t("Update Table of Contents")
   elementUpdate.style.padding = "1em"
   elementButtons.append(elementUpdate)
   elementUpdate.addEventListener('click', () => {
@@ -70,8 +70,8 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
   // Scroll to top
   const elementTop = document.createElement("span")
   elementTop.classList.add("cursor")
-  elementTop.innerHTML = "⬆️"
-  elementButtons.title = "Scroll to top"
+  elementTop.innerHTML = "↑"
+  elementButtons.title = t("Scroll to top")
   elementTop.style.padding = "1em"
   elementButtons.append(elementTop)
   elementTop.addEventListener('click', () =>
@@ -80,8 +80,8 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
   // Scroll to bottom
   const elementBottom = document.createElement("span")
   elementBottom.classList.add("cursor")
-  elementBottom.innerHTML = "⬇️"
-  elementButtons.title = "Scroll to bottom"
+  elementBottom.innerHTML = "↓"
+  elementButtons.title = t("Scroll to bottom")
   elementBottom.style.padding = "1em"
   elementButtons.append(elementBottom)
   elementBottom.addEventListener('click', () =>
@@ -90,67 +90,66 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
   // Create list
   for (let i = 0; i < tocBlocks.length; i++) {
-    let blockContent: string = tocBlocks[i].content
-    if (blockContent.includes("((")
-      && blockContent.includes("))")) {
+    let contentLine: string = tocBlocks[i].content
+    if (contentLine.includes("((")
+      && contentLine.includes("))")) {
       // Get content if it's q block reference
-      const rxGetId = /\(([^(())]+)\)/
-      const blockId = rxGetId.exec(blockContent)
+      const blockId = /\(([^(())]+)\)/.exec(contentLine)
       if (!blockId) continue
       const block = await logseq.Editor.getBlock(blockId[1], {
         includeChildren: true,
       })
       if (!block) continue
-      blockContent = blockContent.replace(
+      contentLine = contentLine.replace(
         `((${blockId[1]}))`,
         block.content.substring(0, block.content.indexOf("id::"))
       )
     }
 
     //プロパティを取り除く
-    blockContent = await removeProperties(tocBlocks, i, blockContent)
+    contentLine = await removeProperties(tocBlocks, i, contentLine)
 
-    if (blockContent.includes("id:: "))
-      blockContent = blockContent.substring(0, blockContent.indexOf("id:: "))
+    if (contentLine.includes("id:: "))
+      contentLine = contentLine.substring(0, contentLine.indexOf("id:: "))
 
     //文字列のどこかで「[[」と「]]」で囲まれているもいのがある場合は、[[と]]を削除する
-    blockContent = removeMarkdownLink(blockContent)
+    contentLine = removeMarkdownLink(contentLine)
     //文字列のどこかで[]()形式のリンクがある場合は、[と]を削除する
-    blockContent = removeMarkdownAliasLink(blockContent)
+    contentLine = removeMarkdownAliasLink(contentLine)
     //文字数が200文字を超える場合は、200文字以降を「...」に置き換える
-    blockContent = replaceOverCharacters(blockContent)
+    contentLine = replaceOverCharacters(contentLine)
     //マークダウンの画像記法を全体削除する
-    blockContent = removeMarkdownImage(blockContent)
+    contentLine = removeMarkdownImage(contentLine)
     //リストにマッチする文字列を正規表現で取り除く
-    blockContent = removeListWords(blockContent, logseq.settings!.tocRemoveWordList as string)
+    contentLine = removeListWords(contentLine, logseq.settings!.tocRemoveWordList as string)
 
     // Header
-    if (blockContent.startsWith("# ")
-      || blockContent.startsWith("## ")
-      || blockContent.startsWith("### ")
-      || blockContent.startsWith("#### ")
-      || blockContent.startsWith("##### ")
-      || blockContent.startsWith("###### ")
-      || blockContent.startsWith("####### ")) {
+    if (contentLine.startsWith("# ")
+      || contentLine.startsWith("## ")
+      || contentLine.startsWith("### ")
+      || contentLine.startsWith("#### ")
+      || contentLine.startsWith("##### ")
+      || contentLine.startsWith("###### ")
+      || contentLine.startsWith("####### ")) {
       const element: HTMLDivElement =
-        (blockContent.startsWith("# ")) ?
+        (contentLine.startsWith("# ")) ?
           document.createElement("h1") :
-          (blockContent.startsWith("## ")) ?
+          (contentLine.startsWith("## ")) ?
             document.createElement("h2") :
-            (blockContent.startsWith("### ")) ?
+            (contentLine.startsWith("### ")) ?
               document.createElement("h3") :
-              (blockContent.startsWith("#### ")) ?
+              (contentLine.startsWith("#### ")) ?
                 document.createElement("h4") :
-                (blockContent.startsWith("##### ")) ?
+                (contentLine.startsWith("##### ")) ?
                   document.createElement("h5") :
                   document.createElement("h6")
       element.classList.add("cursor")
       //elementのタグ名を取得する
       element.title = element.tagName.toLowerCase()
       element.innerHTML = removeMd(
-        `${(blockContent.includes("collapsed:: true")
-          && blockContent.substring(2, blockContent.length - 16))
-        || blockContent.substring(2)}`
+        `${(contentLine.includes("collapsed:: true")
+          && contentLine.substring(2, contentLine.length - 16))
+        || contentLine.substring(2)}`
       )
       setTimeout(() => {
         element.addEventListener('click', ({ shiftKey }) =>

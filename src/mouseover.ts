@@ -29,7 +29,7 @@ export const loadShowByMouseOver = () => {
             if (newSet.loadShowByMouseOver === true) {
                 removeProvideStyle(keyShowByMouseOver)
                 selectShowByMouseOverType(newSet.showByMouseOverType as string)
-                logseq.UI.showMsg(t("select mouse over type: ") + newSet.showByMouseOverType, "info", { timeout: 2200 })
+                logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
             }
         }
         //

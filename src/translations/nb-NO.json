@@ -1,0 +1,23 @@
+{
+  "Date (Single journal)": "Gå til datosiden",
+  "Month (yyyy/MM)": "Gå til åååå/MM-siden",
+  "The page is opened.\n": "Siden er åpnet.\n",
+  "Left sidebar is now normal display.": "Det venstre sidefeltet er nå i normalvisning.",
+  "Left sidebar is now hidden.": "Det venstre sidefeltet er nå skjult.",
+  "Left sidebar is now mouse over display.": "Den venstre sidebar er nå mus-over visning.",
+  "Enable: Table Of Contents in left sidebar": "Aktivert: Innholdsfortegnelse i venstre sidefelt",
+  "Remove words from table of contents": "Fjerne ord fra innholdsfortegnelsen",
+  "Separate with line breaks": "Skill med linjeskift",
+  "Enable: Mouse over to show left sidebar": "Aktivert: Vis venstre sidefelt på mouseover",
+  "Toggle 3 pattern: mouse over, normal, and hide.": "Bytt mellom 3 mønstre: mouseover, normal og hidden",
+  "Select mouse over type": "Velg Mouseover Type",
+  "type A: credit by mæn, type B: credit by sethyuan": "Type A: mæn opprettet, Type B type: sethyuan opprettet",
+  "Enable: Date selector in left sidebar": "Aktivert: Datovelger i sidepanelet til venstre",
+  "No headers found": "Fant ingen overskrifter",
+  "Table of Contents": "Innholdsfortegnelse",
+  "plugin": "Plugin-moduler",
+  "Update Table of Contents": "Oppdatert innholdsfortegnelse",
+  "Scroll to top": "Gå til toppen av denne siden",
+  "Scroll to bottom": "Gå til slutten av siden",
+  "Date Selector": "Datovelger"
+}
