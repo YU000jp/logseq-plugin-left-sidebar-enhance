@@ -11,6 +11,14 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         default: true,
         description: "",
     },
+    {//Table of Contents、削除する単語リスト 改行区切り
+        key: "tocRemoveWordList",
+        title: t("Remove words from table of contents"),
+        type: "string",
+        inputAs: "textarea",
+        default: "",
+        description: t("Separate with line breaks"),
+    },
     {//Switch loadShowByMouseOver
         key: "loadShowByMouseOver",
         type: "boolean",

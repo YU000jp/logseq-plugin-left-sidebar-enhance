@@ -1,7 +1,8 @@
-import { AppUserConfigs, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { format } from "date-fns/format"
+import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import { removeContainer } from "./lib"
+import { onPageChangedCallback } from "."
+import tocCSS from "./toc.css?inline"
 
 export const loadTOC = () => {
 
@@ -19,20 +20,27 @@ export const loadTOC = () => {
     if (logseq.settings!.booleanLeftTOC === true)
         main()
 
-    logseq.provideStyle(`
-    div#left-sidebar div#lse-toc-inner {
-        font-size: .92em;
-        margin-left: 0.6em;
-        &>div+p {
-            display: none; /* for test message */
-        }
-    }
-    `)
+    logseq.provideStyle(tocCSS)
 
     logseq.beforeunload(async () => {
         const ele = parent.document.getElementById("lse-toc-container") as HTMLDivElement | null
         if (ele) ele.remove()
     })
+    
+      //ページ読み込み時に実行コールバック
+  logseq.App.onRouteChanged(async ({ template }) => {
+    switch (template) {
+      case '/page/:name':
+            onPageChangedCallback()
+        break
+      default:
+            //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+            const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+            if (element)
+                element.innerHTML = t("No headers found")
+        break
+    }
+  })
 }
 
 const main = () => {
@@ -75,13 +83,8 @@ const main = () => {
     }, 500)
 }
 
-
-
 const content = (containerElement: HTMLDivElement) => {
     const divEle = document.createElement("div")
     divEle.id = "lse-toc-content"
-    
-    const pElement: HTMLParagraphElement = document.createElement("p")
-    pElement.textContent = t("This is a test message.")// テストメッセージを入れる (ページを開いているときは、テストメッセージを非表示にする)
-    containerElement.appendChild(pElement)
+    containerElement.appendChild(divEle)
 }

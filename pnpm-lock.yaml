@@ -14,6 +14,9 @@ dependencies:
   logseq-l10n:
     specifier: ^0.2.0
     version: 0.2.0(@logseq/libs@0.0.17)
+  remove-markdown:
+    specifier: ^0.5.0
+    version: 0.5.0
 
 devDependencies:
   '@semantic-release/changelog':
@@ -4156,6 +4159,10 @@ packages:
     dependencies:
       '@pnpm/npm-conf': 2.2.2
     dev: true
+
+  /remove-markdown@0.5.0:
+    resolution: {integrity: sha512-x917M80K97K5IN1L8lUvFehsfhR8cYjGQ/yAMRI9E7JIKivtl5Emo5iD13DhMr+VojzMCiYk8V2byNPwT/oapg==}
+    dev: false
 
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
