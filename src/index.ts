@@ -15,14 +15,12 @@ const main = async () => {
     setTimeout(() =>
       logseq.showSettingsUI(), 300)
 
-  //マウスオーバー
-  loadShowByMouseOver()
-
-  //日付セレクター
-  loadDateSelector()
-
   //TOC
   loadTOC()
+  //日付セレクター
+  loadDateSelector()
+  //マウスオーバー
+  loadShowByMouseOver()
 
 }/* end_main */
 
