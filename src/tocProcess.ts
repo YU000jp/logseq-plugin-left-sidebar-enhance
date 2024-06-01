@@ -210,8 +210,10 @@ export const displayToc = async (pageName: string) => {
   const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
   if (element) {
     element.innerHTML = "" //elementが存在する場合は中身を削除する
+
     //ページの全ブロックからheaderがあるかどうかを確認する
     let headers = getTocBlocks(await logseq.Editor.getPageBlocksTree(pageName) as Child[])
+
     if (headers.length > 0) {
       //headersのcontentに、#や##などのヘッダー記法が含まれているデータのみ処理をする
       headers = headers.filter(header =>
@@ -222,15 +224,15 @@ export const displayToc = async (pageName: string) => {
         || header.content.startsWith("##### ")
         || header.content.startsWith("###### "))
     }
+
     //フィルター後
     if (headers.length > 0) {
       await headersList(element, headers as TocBlock[], pageName)
       //toc更新用のイベントを登録する
       if (onBlockChangedOnce === false)
         onBlockChanged()
-    } else {
+    } else 
       element.innerHTML = t("No headers found")
-    }
   }
 }
 

@@ -22,11 +22,6 @@ export const loadTOC = () => {
 
     logseq.provideStyle(tocCSS)
 
-    logseq.beforeunload(async () => {
-        const ele = parent.document.getElementById("lse-toc-container") as HTMLDivElement | null
-        if (ele) ele.remove()
-    })
-
     //プラグイン起動時
     setTimeout(() => {
         routeCheck()

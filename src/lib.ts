@@ -19,6 +19,6 @@ export const pageOpen = async (pageName: string, shiftKey: boolean) => {
     }
 }
 export const removeContainer = (elementById:string) => {
-    const dateSelectorHereElement: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
-    if (dateSelectorHereElement) dateSelectorHereElement.remove()
+    const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
+    if (ele) ele.remove()
 }

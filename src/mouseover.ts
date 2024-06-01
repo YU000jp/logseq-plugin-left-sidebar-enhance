@@ -39,18 +39,9 @@ export const loadShowByMouseOver = () => {
             selectShowByMouseOverType(newSet.showByMouseOverType as string)
         } else
             if (oldSet.loadShowByMouseOver === true
-                && newSet.loadShowByMouseOver === false) {
+                && newSet.loadShowByMouseOver === false)
                 removeProvideStyle(keyShowByMouseOver)
-            }
     })
-
-    //プラグイン無効化時
-    logseq.beforeunload(async () => {
-        removeProvideStyle(keyShowByMouseOver)
-        logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
-        processingMouseOverButton = false
-    })
-
 }
 
 const selectShowByMouseOverType = (setting: string) => {

@@ -7,6 +7,7 @@ import ja from "./translations/ja.json"
 import { loadTOC } from './toc'
 import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { displayToc } from './tocProcess'
+import { removeContainer } from './lib'
 let currentPageName: string = ""
 
 /* main */
@@ -24,6 +25,11 @@ const main = async () => {
   loadDateSelector()
   //マウスオーバー
   loadShowByMouseOver()
+
+  logseq.beforeunload(async () => {
+    removeContainer("lse-toc-container")
+    removeContainer("lse-dataSelector-container")
+  })
 
 }/* end_main */
 
@@ -71,7 +77,7 @@ export const onPageChangedCallback = async () => {
   if (processingOnPageChanged === true)
     return
   processingOnPageChanged = true // return 禁止
-  
+
   setTimeout(() =>
     processingOnPageChanged = false, 300) //処理中断対策
 

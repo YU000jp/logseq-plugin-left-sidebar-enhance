@@ -39,11 +39,6 @@ export const loadDateSelector = () => {
             }
     }
     `)
-
-    logseq.beforeunload(async () => {
-        const ele = parent.document.getElementById("lse-dataSelector-container") as HTMLDivElement | null
-        if (ele) ele.remove()
-    })
 }
 
 const main = () => {
