@@ -11,7 +11,10 @@
 
 ## オプション
 
-1. ヘッダー(#をつかう)の目次を表示
+1. 左メニューに、ページ内容の目次を表示
+   > マークダウンヘッダー(#,##,###,####,#####,######)が使用されている場合
+
+   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
 
 1. マウスオーバーで左サイドバーを表示 (デフォルト: **無効**)
    > トップ左隅の ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを有効にします。("お気に入りツリー"プラグインの幅調整機能を使用する場合に使用してください)
