@@ -11,10 +11,12 @@
 
 ## オプション
 
+1. ヘッダー(#をつかう)の目次を表示
+
 1. マウスオーバーで左サイドバーを表示 (デフォルト: **無効**)
    > トップ左隅の ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを有効にします。("お気に入りツリー"プラグインの幅調整機能を使用する場合に使用してください)
 
-1. 日誌日付への簡単アクセス (デフォルト: **無効**)
+1. ジャーナルの日付へのアクセス (デフォルト: **無効**)
 
    ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
@@ -56,7 +58,9 @@ Logseq マーケットプレースからインストール
 - CSSコード（マウスオーバーで左サイドバーを表示） >
    1. Aタイプ: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
    1. Bタイプ (デフォルト): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
-
+1. Logseq プラグイン >
+   1. [hkgnp/ logseq-toc-plugin](https://github.com/hkgnp/logseq-toc-plugin/) (目次表示)
+   1. [freder/ logseq-plugin-jump-to-block](https://github.com/freder/logseq-plugin-jump-to-block/) (目次表示)
 - 製作者: [@YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>

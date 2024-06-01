@@ -11,6 +11,9 @@ Includes some features such as mouse over to show left sidebar.
 
 ## Options
 
+1. Table Of Contents in left sidebar
+   > Use markdown headers #,##,###,####,#####,######
+
 1. mouse over to show left sidebar (default: *Disable*)
    > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner. (Use it if using the width adjustment feature in "favorite tree" plugin)
 
@@ -58,6 +61,9 @@ Install from Logseq Marketplace
 - CSS code (mouse over to show left sidebar) >
    1. Type A: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338) 
    1. Type B (default): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+1. "Table of contents" feature:
+   1. [@hkgnp/ logseq-toc plugin](https://github.com/hkgnp/logseq-toc-plugin/)
+   1. [@freder/ logseq-plugin-jump-to-block plugin](https://github.com/freder/logseq-plugin-jump-to-block/)
 - Author > [@YU000jp](https://github.com/YU000jp)
 
 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
