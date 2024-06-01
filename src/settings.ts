@@ -4,6 +4,13 @@ import { t } from 'logseq-l10n'
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 export const settingsTemplate = (): SettingSchemaDesc[] => [
+    {//Left TOC
+        key: "booleanLeftTOC",
+        title: t("Enable: Table Of Contents in left sidebar"),
+        type: "boolean",
+        default: true,
+        description: "",
+    },
     {//Switch loadShowByMouseOver
         key: "loadShowByMouseOver",
         type: "boolean",

@@ -4,6 +4,7 @@ import { loadDateSelector } from './dateSelector'
 import { loadShowByMouseOver } from './mouseover'
 import { settingsTemplate } from './settings'
 import ja from "./translations/ja.json"
+import { loadTOC } from './toc'
 
 /* main */
 const main = async () => {
@@ -19,6 +20,9 @@ const main = async () => {
 
   //日付セレクター
   loadDateSelector()
+
+  //TOC
+  loadTOC()
 
 }/* end_main */
 
