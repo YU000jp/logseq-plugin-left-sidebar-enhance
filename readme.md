@@ -50,6 +50,7 @@ Install from Logseq Marketplace
 
 > Go to the [discussion](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) tab to ask and find this kind of things.
 
+1. Journals are not headline searchable, please click on the title to open a single page.
 1. This plugin relies on Logseq's DOM (Document Object Model) structure. If the DOM structure changes due to a Logseq version update, styles may not be applied. We will adjust the CSS to deal with it. If you notice something, please raise an issue.
 1. Type of mouse over
    1. Type A: It opens when the mouse approaches the space near the left corner.
