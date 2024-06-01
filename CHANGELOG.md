@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.5.0...v1.6.0) (2024-06-01)
+
+
+### Bug Fixes
+
+* **bug:** Not work the toggle for mouseover via plugin settings ([fa7b754](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/fa7b754f0161b6ab57f079e95506b1e097e7f4b5))
+
+
+### Features
+
+* **Add:** left-sidebar Table Of Content feature ([9d63442](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/9d63442c7b4cf29a63c60ee5328f4fbb8de8391e))
+
 # [1.5.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.4.0...v1.5.0) (2024-1-7)
 
 
