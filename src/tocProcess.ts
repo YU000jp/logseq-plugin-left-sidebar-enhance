@@ -58,34 +58,36 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
   const elementUpdate = document.createElement("span")
   elementUpdate.classList.add("cursor")
   elementUpdate.innerHTML = "🔄"
-  elementButtons.title = t("Update Table of Contents")
+  elementUpdate.title = t("Update Table of Contents")
   elementUpdate.style.padding = "1em"
-  elementButtons.append(elementUpdate)
   elementUpdate.addEventListener('click', () => {
     elementUpdate.style.visibility = "hidden"
     setTimeout(() =>
       elementUpdate.style.visibility = "visible", 2000)
     displayToc(thisPageName)
   })
+  elementButtons.append(elementUpdate)
+
   // Scroll to top
   const elementTop = document.createElement("span")
   elementTop.classList.add("cursor")
   elementTop.innerHTML = "↑"
-  elementButtons.title = t("Scroll to top")
+  elementTop.title = t("Scroll to top")
   elementTop.style.padding = "1em"
-  elementButtons.append(elementTop)
   elementTop.addEventListener('click', () =>
     parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container h1.page-title")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to top of the page when clicked on
+  elementButtons.append(elementTop)
 
   // Scroll to bottom
   const elementBottom = document.createElement("span")
   elementBottom.classList.add("cursor")
   elementBottom.innerHTML = "↓"
-  elementButtons.title = t("Scroll to bottom")
+  elementBottom.title = t("Scroll to bottom")
   elementBottom.style.padding = "1em"
-  elementButtons.append(elementBottom)
   elementBottom.addEventListener('click', () =>
     parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container div.relative+div")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to bottom of the page when clicked on
+  elementButtons.append(elementBottom)
+
   targetElement.append(elementButtons)
 
   // Create list
@@ -232,7 +234,7 @@ export const displayToc = async (pageName: string) => {
       //toc更新用のイベントを登録する
       if (onBlockChangedOnce === false)
         onBlockChanged()
-    } else 
+    } else
       element.innerHTML = t("No headers found")
   }
 }
