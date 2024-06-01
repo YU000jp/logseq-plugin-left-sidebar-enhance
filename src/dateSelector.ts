@@ -7,13 +7,17 @@ export const loadDateSelector = () => {
     //プラグイン設定変更時
     logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
         if (oldSet.booleanDateSelector !== newSet.booleanDateSelector) {
-            if (newSet.booleanDateSelector === true) main()//表示する
-            else removeContainer()//消す
+            if (newSet.booleanDateSelector === true)
+                main()//表示する
+            else
+                removeContainer()//消す
         }
 
     })
 
-    if (logseq.settings!.booleanDateSelector === true) main()
+    if (logseq.settings!.booleanDateSelector === true)
+        main()
+
     logseq.provideStyle(`
     div#left-sidebar div#th-dateSelector-container>label p{
             white-space: nowrap;
@@ -41,7 +45,8 @@ export const loadDateSelector = () => {
 }
 
 const main = () => {
-    if (parent.document.getElementById("th-dateSelector-container")) removeContainer()//すでに存在する場合は削除する
+    if (parent.document.getElementById("th-dateSelector-container"))
+        removeContainer()//すでに存在する場合は削除する
 
     setTimeout(async () => {
         //左サイドバーのnav-contents-containerにスペースを追加する
@@ -64,10 +69,11 @@ const main = () => {
         //スペースに日付セレクターを追加する
         setTimeout(() => {
             const dateSelectorHereElement: HTMLDivElement | null = parent.document.getElementById("th-dateSelector-container") as HTMLDivElement | null
+
             if (dateSelectorHereElement === null) return //nullの場合はキャンセル
 
-            //すでに存在する場合はキャンセル
-            if (dateSelectorHereElement.dataset.flag !== "true") createSelector(preferredDateFormat, dateSelectorHereElement)//label>input#th-dateSelector
+            if (dateSelectorHereElement.dataset.flag !== "true")//すでに存在する場合はキャンセル
+                createSelector(preferredDateFormat, dateSelectorHereElement)//label>input#th-dateSelector
 
             dateSelectorHereElement.dataset.flag = "true" //フラグを立てる
         }, 1)
@@ -120,8 +126,10 @@ const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HT
 const pageOpen = async (pageName: string, shiftKey: boolean) => {
     const page = await logseq.Editor.getPage(pageName) as PageEntity | null
     if (page) {
-        if (shiftKey) logseq.Editor.openInRightSidebar(page.uuid)
-        else logseq.Editor.scrollToBlockInPage(pageName, page.uuid, { replaceState: true })
+        if (shiftKey)
+            logseq.Editor.openInRightSidebar(page.uuid)
+        else
+            logseq.Editor.scrollToBlockInPage(pageName, page.uuid, { replaceState: true })
         logseq.UI.showMsg(t("The page is opened.\n") + pageName)
     }
 }

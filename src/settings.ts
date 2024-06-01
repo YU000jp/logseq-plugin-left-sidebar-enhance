@@ -28,12 +28,4 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         default: false,
         description: "",
     },
-    // {
-    //     //loadNewChildPageButton
-    //     key: "loadNewChildPageButton",
-    //     title: t("Enable: Child page creation assistance (\"Create\" button and page menu)"),
-    //     type: "boolean",
-    //     default: true,
-    //     description: "default: true",
-    // },
 ]

@@ -9,10 +9,12 @@ const keyShowByMouseOver = "showByMouseOver"
 export const loadShowByMouseOver = () => {
 
     //初期設定
-    if (!logseq.settings!.toggleShowByMouseOver) logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
+    if (!logseq.settings!.toggleShowByMouseOver)
+        logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
 
     //前回のメモリー
-    if (logseq.settings!.toggleShowByMouseOver === "mouseOver") selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
+    if (logseq.settings!.toggleShowByMouseOver === "mouseOver")
+        selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
 
 
     buttonEvent()
@@ -26,10 +28,13 @@ export const loadShowByMouseOver = () => {
             }
         }
         //
-        if (oldSet.loadShowByMouseOver === false && newSet.loadShowByMouseOver === true) {
+        if (oldSet.loadShowByMouseOver === false
+            && newSet.loadShowByMouseOver === true) {
             newSet.toggleShowByMouseOver = "mouseOver"
             selectShowByMouseOverType(newSet.showByMouseOverType as string)
-        } else if (oldSet.loadShowByMouseOver === true && newSet.loadShowByMouseOver === false) {
+        } else
+            if (oldSet.loadShowByMouseOver === true
+            && newSet.loadShowByMouseOver === false) {
             removeProvideStyle(keyShowByMouseOver)
         }
     })
@@ -63,6 +68,7 @@ const buttonEvent = () => setTimeout(() => {
     }
     button.addEventListener("click", () => {
         if (logseq.settings!.loadShowByMouseOver === false) return //プラグイン設定で無効化されている場合は何もしない
+
         if (logseq.settings!.toggleShowByMouseOver === "mouseOver") { //前回のメモリーはマウスオーバー
             //ノーマル表示にする
             logseq.App.setLeftSidebarVisible(true)
@@ -71,7 +77,8 @@ const buttonEvent = () => setTimeout(() => {
                 logseq.updateSettings({ toggleShowByMouseOver: "normal" })
                 logseq.UI.showMsg(t("Left sidebar is now normal display."), "info", { timeout: 2200 })
             }, 10)
-        } else if (logseq.settings!.toggleShowByMouseOver === "normal") { //前回のメモリーはノーマル表示
+        } else
+            if (logseq.settings!.toggleShowByMouseOver === "normal") { //前回のメモリーはノーマル表示
             //表示しない
             logseq.App.setLeftSidebarVisible(false)
             setTimeout(() => {
