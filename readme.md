@@ -40,7 +40,7 @@ Install from Logseq Marketplace
 
 ### Usage
 
-- Click ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
+- Mouseover: Click ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
  button in the top-left corner. The state of left sidebar will switch.
 - Some features are turned on. If not need it, turn it off in the plugin settings.
 
