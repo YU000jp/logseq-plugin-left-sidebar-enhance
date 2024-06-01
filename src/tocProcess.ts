@@ -167,9 +167,10 @@ const selectBlock = async (shiftKey: boolean, pageName: string, blockUuid: strin
     //https://github.com/freder/logseq-plugin-jump-to-block/blob/master/src/components/App.tsx#L39
     const elem = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
     if (elem) {
+      logseq.Editor.exitEditingMode()
       elem.scrollIntoView({ behavior: 'smooth' })
       setTimeout(() =>
-        logseq.Editor.selectBlock(blockUuid), 50)
+        logseq.Editor.selectBlock(blockUuid), 150)
     } else
       //親ブロックがcollapsedの場合
       await parentBlockToggleCollapsed(blockUuid)
