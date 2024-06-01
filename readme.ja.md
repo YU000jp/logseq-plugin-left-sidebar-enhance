@@ -39,7 +39,7 @@ Logseq マーケットプレースからインストール
 
 ### 使用方法
 
-- 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンをクリックします。左サイドバーの状態が切り替わります。
+- マウスオーバー: 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンをクリックします。左サイドバーの状態が切り替わります。
 - デフォルトで、一部の機能が有効になっています。不要な場合はプラグインの設定で無効にできます。
 
 ---
