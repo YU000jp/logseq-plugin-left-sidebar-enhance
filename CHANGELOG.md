@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.6.0...v1.7.0) (2024-06-01)
+
+
+### Features
+
+* **Add:** Journals TOC (passive) ([fbeec23](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/fbeec2390d3c140a7338e0562a4819a3b3a88c02))
+
 # [1.6.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.5.0...v1.6.0) (2024-06-01)
 
 
