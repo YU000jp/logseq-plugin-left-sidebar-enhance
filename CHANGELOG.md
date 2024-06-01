@@ -1,3 +1,11 @@
+## [1.7.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.7.0...v1.7.1) (2024-06-01)
+
+
+### Bug Fixes
+
+* **bug:** Remains when plugin is turned off ([9cbfe52](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/9cbfe528db3f23ee8795a7f64aad49b28bbfa5b2))
+* **bug:** TOC-> Sometimes not selected ([d4cf4d0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/d4cf4d0332742fbc4a9eb5b2791274de0b6868c1))
+
 # [1.7.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.6.0...v1.7.0) (2024-06-01)
 
 
