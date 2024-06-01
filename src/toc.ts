@@ -19,11 +19,15 @@ export const loadTOC = () => {
     if (logseq.settings!.booleanLeftTOC === true)
         main()
 
-    // logseq.provideStyle(`
-    // div#left-sidebar div#lse-toc-container{
-
-    // }
-    // `)
+    logseq.provideStyle(`
+    div#left-sidebar div#lse-toc-inner {
+        font-size: .92em;
+        margin-left: 0.6em;
+        &>div+p {
+            display: none; /* for test message */
+        }
+    }
+    `)
 
     logseq.beforeunload(async () => {
         const ele = parent.document.getElementById("lse-toc-container") as HTMLDivElement | null
@@ -74,8 +78,10 @@ const main = () => {
 
 
 const content = (containerElement: HTMLDivElement) => {
-    // テストメッセージを入れる
+    const divEle = document.createElement("div")
+    divEle.id = "lse-toc-content"
+    
     const pElement: HTMLParagraphElement = document.createElement("p")
-    pElement.textContent = t("This is a test message.")
+    pElement.textContent = t("This is a test message.")// テストメッセージを入れる (ページを開いているときは、テストメッセージを非表示にする)
     containerElement.appendChild(pElement)
 }
