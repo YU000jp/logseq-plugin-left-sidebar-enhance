@@ -20,18 +20,19 @@ export const loadDateSelector = () => {
         main()
 
     logseq.provideStyle(`
-    div#left-sidebar div#lse-dataSelector-container>label p{
+    div#left-sidebar div#lse-dataSelector-inner>label p{
+            margin-left: 1em;
             white-space: nowrap;
             overflow: visible;
             &>input {
-                width:95%;
+                cursor: text;
                 border-radius: 4px;
                 border: 1px solid var(--ls-secondary-text-color);
                 /* background-color: var(--ls-secondary-background-color);
                 color: var(--ls-primary-text-color); */
                 color: var(--ls-secondary-background-color);
-                margin-right: .4em;
-                font-size: .95em;
+                margin-left: .4em;
+                font-size: .9em;
             }
             &>button:hover {
                 text-decoration: underline;
