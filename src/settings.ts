@@ -11,7 +11,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         title: t("Enable: Mouse over to show left sidebar"),
         //マウスオーバーで表示する場合と、通常表示と、表示しない場合の3パターン
         description: t("Toggle 3 pattern: mouse over, normal, and hide."),
-        default: true,
+        default: false,
     },
     {//Type AかType Bか
         key: "showByMouseOverType",
