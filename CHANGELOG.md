@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.7.1...v1.8.0) (2024-06-02)
+
+
+### Features
+
+* **Add:** header-insert commands ([1257461](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/12574618c141c90039c7fa6e3561af72304d7c8c))
+
 ## [1.7.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.7.0...v1.7.1) (2024-06-01)
 
 
