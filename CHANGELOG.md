@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.8.0...v1.9.0) (2024-06-02)
+
+
+### Features
+
+* translations ([7cfadb9](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/7cfadb95200f305ed16bd7b061d884aa3b876a3a))
+
 # [1.8.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.7.1...v1.8.0) (2024-06-02)
 
 
