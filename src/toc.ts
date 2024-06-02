@@ -4,6 +4,7 @@ import { removeContainer } from "./lib"
 import { onPageChangedCallback } from "."
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
+import { headerCommand } from "./headerCommand"
 
 export const loadTOC = () => {
 
@@ -31,11 +32,14 @@ export const loadTOC = () => {
     logseq.App.onRouteChanged(async () => {
         await routeCheck()
     })
-    logseq.App.onPageHeadActionsSlotted(async () => {
+    logseq.App.onPageHeadActionsSlotted(async () => {//動作保証のため、2つとも必要
         await routeCheck()
     })
-    //動作保証のため、2つとも必要
+    
+    //ヘッダー挿入コマンド
+    headerCommand()
 }
+
 
 const main = () => {
     if (parent.document.getElementById("lse-toc-container"))
