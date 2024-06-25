@@ -8,7 +8,7 @@
  Published 20231002 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
  </div>
 
-## Options
+## Feature Options
 
 1. Table Of Contents in left sidebar
    > The table of contents generated from the headers (#,##,###,####,#####,####) included in the markdown of the opened page is displayed in the left menu.
@@ -24,11 +24,10 @@
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
    1. Date selector
-      - Access single journal page
+      - Access daily journal page
 
    1. Month selector
-      - Access a hierarchical page (`yyyy/MM`)
-      - For monthly Journal
+      - Access a hierarchical page (`yyyy/MM`) for monthly Journal
 
 ---
 
