@@ -11,7 +11,7 @@
 ## Options
 
 1. Table Of Contents in left sidebar
-   > Use markdown headers #,##,###,####,#####,######
+   > The table of contents generated from the headers (#,##,###,####,#####,####) included in the markdown of the opened page is displayed in the left menu.
    - Shortcut command for inserting markdown header -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6`
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
