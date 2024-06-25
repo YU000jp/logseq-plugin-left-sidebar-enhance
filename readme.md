@@ -1,8 +1,5 @@
 # Logseq Plugin: Left-Sidebar Enhance
 
-
-Includes some features such as mouse over to show left sidebar.
-
 <div align="right">
  
 [English](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance)|[日本語](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/blob/main/readme.ja.md) [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-left-sidebar-enhance)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
