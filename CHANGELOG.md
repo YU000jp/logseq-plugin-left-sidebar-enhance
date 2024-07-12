@@ -1,3 +1,11 @@
+# [1.10.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.9.0...v1.10.0) (2024-07-12)
+
+
+### Features
+
+* **Add:** Hide duplicate favorites and history ([4a7b943](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/4a7b94312656c9b0b46683a2eb8b74c675949699))
+* **Update:** Table of Content feature > Ctrl-click to block-zoom. [#8](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/8) ([9a87c20](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/9a87c207f6fba7c56cfb65e2cdd1fd4ebe377320))
+
 # [1.9.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.8.0...v1.9.0) (2024-06-02)
 
 
