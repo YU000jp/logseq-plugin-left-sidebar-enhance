@@ -15,6 +15,10 @@
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
    1. ジャーナルの目次 (スクロール後)
+   - チップ
+     1. Ctrlキーを押しながらクリックすると、ブロックズームまたは単一のジャーナルを開くことができます。
+     1. サイドバーで開くには、Shiftキーを押しながらクリックします。
+
 1. マウスオーバーで、左メニューを自動で隠す (デフォルト: **無効**)
    > 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを使ってください。("Favorite Tree"プラグインの幅調整機能に適合します)
 
