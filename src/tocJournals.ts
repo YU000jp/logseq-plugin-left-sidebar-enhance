@@ -80,24 +80,27 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
                     logseq.hideMainUI()
                 }, 100)
                 ev.preventDefault()
-                if (ev.shiftKey)
-                    pageOpen(title, ev.shiftKey)
+                if (ev.ctrlKey)
+                    logseq.App.pushState("page", { name: title })
                 else
-                    if (ev.ctrlKey)
-                        pageOpen(title, false)
-                    else {
+                    if (ev.shiftKey)
+                        pageOpen(title, ev.shiftKey)
+                    else
+                        if (ev.ctrlKey)
+                            pageOpen(title, false)
+                        else {
 
-                        const cancelButtonEle = parent.document.getElementById("cancel-exclude") as HTMLButtonElement | null //Single Journalプラグイン対策
-                        if (cancelButtonEle) cancelButtonEle.click()
+                            const cancelButtonEle = parent.document.getElementById("cancel-exclude") as HTMLButtonElement | null //Single Journalプラグイン対策
+                            if (cancelButtonEle) cancelButtonEle.click()
 
-                        const journalEle = parent.document.getElementById(title) as HTMLAnchorElement | null
-                        if (journalEle) {
-                            journalEle.scrollIntoView()
-                            //スクロールしたら、タイトルを表示する
-                            journalEle.style.backgroundColor = "var(--ls-selection-background-color)"
-                            setTimeout(() => journalEle.style.backgroundColor = "", 1200)
+                            const journalEle = parent.document.getElementById(title) as HTMLAnchorElement | null
+                            if (journalEle) {
+                                journalEle.scrollIntoView()
+                                //スクロールしたら、タイトルを表示する
+                                journalEle.style.backgroundColor = "var(--ls-selection-background-color)"
+                                setTimeout(() => journalEle.style.backgroundColor = "", 1200)
+                            }
                         }
-                    }
             }
             ulEle.appendChild(journalTitleEle)
         }
