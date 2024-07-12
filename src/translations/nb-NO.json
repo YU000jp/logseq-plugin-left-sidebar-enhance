@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Gå til datosiden",
   "Date Selector": "Datovelger",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Duplikatsjekker utføres ved kjøretid for plugin og hvert 10. minutt.",
   "Enable: Date selector in left sidebar": "Aktivert: Datovelger i sidepanelet til venstre",
+  "Enable: Hide duplicate favorites and history": "Aktivert: Skjul duplikatfavoritter og historikk",
   "Enable: Mouse over to show left sidebar": "Aktivert: Vis venstre sidefelt på mouseover",
   "Enable: Table Of Contents in left sidebar": "Aktivert: Innholdsfortegnelse i venstre sidefelt",
   "Insert header ": "Sett inn overskrift",

@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "날짜 페이지로 이동",
   "Date Selector": "날짜 선택기",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "중복 확인은 플러그인 실행 시 및 10분마다 수행됩니다.",
   "Enable: Date selector in left sidebar": "사용: 왼쪽 사이드바의 날짜 선택기",
+  "Enable: Hide duplicate favorites and history": "사용: 중복 즐겨찾기 및 기록 숨기기",
   "Enable: Mouse over to show left sidebar": "사용: 마우스 오버 시 왼쪽 사이드바 표시",
   "Enable: Table Of Contents in left sidebar": "사용: 왼쪽 사이드바의 목차",
   "Insert header ": "헤더 삽입",

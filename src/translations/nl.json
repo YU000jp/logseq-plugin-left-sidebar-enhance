@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Ga naar de datumpagina",
   "Date Selector": "Datumkiezer",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Dubbele controles worden uitgevoerd bij runtime van de plug-in en elke 10 minuten.",
   "Enable: Date selector in left sidebar": "Ingeschakeld: datumkiezer in de linkerzijbalk",
+  "Enable: Hide duplicate favorites and history": "Ingeschakeld: Verberg dubbele favorieten en geschiedenis",
   "Enable: Mouse over to show left sidebar": "Ingeschakeld: Linkerzijbalk weergeven bij mouseover",
   "Enable: Table Of Contents in left sidebar": "Ingeschakeld: inhoudsopgave in de linkerzijbalk",
   "Insert header ": "Voeg kop in",

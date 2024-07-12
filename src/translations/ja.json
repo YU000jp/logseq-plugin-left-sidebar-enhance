@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "日付ページへ移動",
   "Date Selector": "日付選択",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "重複チェックはプラグインの実行時と10分ごとに行われます。",
   "Enable: Date selector in left sidebar": "有効: 左サイドバーの日付選択",
+  "Enable: Hide duplicate favorites and history": "有効: 重複したお気に入りと履歴を非表示",
   "Enable: Mouse over to show left sidebar": "有効: マウスオーバーで左サイドバーを表示",
   "Enable: Table Of Contents in left sidebar": "有効: 左サイドバーの目次",
   "Insert header ": "見出しを挿入 ",

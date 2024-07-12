@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Przejdź do strony z datą",
   "Date Selector": "Selektor daty",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Sprawdzanie duplikatów jest wykonywane podczas uruchamiania wtyczki i co 10 minut.",
   "Enable: Date selector in left sidebar": "Włączono: Selektor daty na lewym pasku bocznym",
+  "Enable: Hide duplicate favorites and history": "Włączono: Ukryj duplikaty ulubionych i historii",
   "Enable: Mouse over to show left sidebar": "Włączono: Pokaż lewy pasek boczny po najechaniu myszą",
   "Enable: Table Of Contents in left sidebar": "Włączono: Spis treści na lewym pasku bocznym",
   "Insert header ": "Wstaw nagłówek",

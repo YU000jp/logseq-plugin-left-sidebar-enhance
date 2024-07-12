@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Tarih sayfasına git",
   "Date Selector": "Tarih Seçici",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Çift kontrol, eklenti çalışma zamanında ve her 10 dakikada bir gerçekleştirilir.",
   "Enable: Date selector in left sidebar": "Etkin: Sol kenar çubuğunda tarih seçici",
+  "Enable: Hide duplicate favorites and history": "Etkin: Yinelemeli favorileri ve geçmişi gizle",
   "Enable: Mouse over to show left sidebar": "Etkin: Fareyle üzerine gelindiğinde sol kenar çubuğunu göster",
   "Enable: Table Of Contents in left sidebar": "Etkin: Sol kenar çubuğundaki içindekiler tablosu",
   "Insert header ": "Başlık ekle",

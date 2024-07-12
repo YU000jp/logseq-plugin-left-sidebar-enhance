@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Buka halaman tanggal",
   "Date Selector": "Pemilih Tanggal",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Pemeriksaan duplikat dilakukan saat runtime plugin dan setiap 10 menit.",
   "Enable: Date selector in left sidebar": "Diaktifkan: Pemilih tanggal di bilah sisi kiri",
+  "Enable: Hide duplicate favorites and history": "Diaktifkan: Sembunyikan favorit dan riwayat duplikat",
   "Enable: Mouse over to show left sidebar": "Diaktifkan: Tampilkan bilah sisi kiri saat mengarahkan mouse",
   "Enable: Table Of Contents in left sidebar": "Diaktifkan: Daftar isi di bilah sisi kiri",
   "Insert header ": "Masukkan judul ",

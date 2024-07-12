@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Перейти на страницу",
   "Date Selector": "Выбор даты",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Проверка на дубликаты выполняется при запуске плагина и каждые 10 минут.",
   "Enable: Date selector in left sidebar": "Включено: Выбор даты на левой боковой панели",
+  "Enable: Hide duplicate favorites and history": "Включено: Скрыть дубликаты избранного и историю",
   "Enable: Mouse over to show left sidebar": "Включено: Показывать левую боковую панель при наведении курсора мыши",
   "Enable: Table Of Contents in left sidebar": "Включено: Оглавление на левой боковой панели",
   "Insert header ": "Вставить заголовок",

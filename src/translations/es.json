@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Ir a la página de citas",
   "Date Selector": "Selector de fecha",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Las comprobaciones de duplicados se realizan en tiempo de ejecución del plugin y cada 10 minutos.",
   "Enable: Date selector in left sidebar": "Habilitado: Selector de fecha en la barra lateral izquierda",
+  "Enable: Hide duplicate favorites and history": "Habilitado: Ocultar favoritos e historial duplicados",
   "Enable: Mouse over to show left sidebar": "Habilitado: Mostrar la barra lateral izquierda al pasar el ratón por encima",
   "Enable: Table Of Contents in left sidebar": "Habilitado: Tabla de contenido en la barra lateral izquierda",
   "Insert header ": "Insertar encabezado ",

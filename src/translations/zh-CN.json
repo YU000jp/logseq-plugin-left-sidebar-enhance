@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "转到日期页面",
   "Date Selector": "日期选择器",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "在插件运行时和每 10 分钟执行重复检查。",
   "Enable: Date selector in left sidebar": "已启用：左侧边栏中的日期选择器",
+  "Enable: Hide duplicate favorites and history": "启用：隐藏重复的收藏夹和历史记录",
   "Enable: Mouse over to show left sidebar": "已启用：鼠标悬停时显示左侧边栏",
   "Enable: Table Of Contents in left sidebar": "已启用：左侧边栏中的目录",
   "Insert header ": "插入标题",

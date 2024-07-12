@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Ir para a página de data",
   "Date Selector": "Seletor de data",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "As verificações de duplicados são realizadas na execução do plug-in e a cada 10 minutos.",
   "Enable: Date selector in left sidebar": "Ativado: seletor de data na barra lateral esquerda",
+  "Enable: Hide duplicate favorites and history": "Ativar: Ocultar favoritos e histórico duplicados",
   "Enable: Mouse over to show left sidebar": "Ativado: Mostrar a barra lateral esquerda ao passar o rato",
   "Enable: Table Of Contents in left sidebar": "Ativado: Índice na barra lateral esquerda",
   "Insert header ": "Inserir cabeçalho",

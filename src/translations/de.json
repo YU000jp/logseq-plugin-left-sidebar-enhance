@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Zur Datumsseite gehen",
   "Date Selector": "Datumsauswahl",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Duplikatprüfungen werden zur Laufzeit des Plugins und alle 10 Minuten durchgeführt.",
   "Enable: Date selector in left sidebar": "Aktiviert: Datumsauswahl in der linken Seitenleiste",
+  "Enable: Hide duplicate favorites and history": "Aktiviert: Duplikate Favoriten und Verlauf ausblenden",
   "Enable: Mouse over to show left sidebar": "Aktiviert: Linke Seitenleiste beim Mouseover anzeigen",
   "Enable: Table Of Contents in left sidebar": "Aktiviert: Inhaltsverzeichnis in der linken Seitenleiste",
   "Insert header ": "Überschrift einfügen ",

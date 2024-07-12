@@ -4,6 +4,17 @@ import { t } from 'logseq-l10n'
 /* user setting */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 export const settingsTemplate = (): SettingSchemaDesc[] => [
+
+    {// お気に入りと履歴の重複を非表示
+        key: "booleanFavAndRecent",
+        title: t("Enable: Hide duplicate favorites and history"),
+        type: "boolean",
+        default: true,
+        // プラグイン実行時と、10分ごとに重複チェックを行う
+        description: t("Duplicate checks are performed at plugin runtime and every 10 minutes."),
+    },
+
+
     {//Left TOC
         key: "booleanLeftTOC",
         title: t("Enable: Table Of Contents in left sidebar"),
@@ -19,6 +30,8 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         default: "",
         description: t("Separate with line breaks"),
     },
+
+
     {//Switch loadShowByMouseOver
         key: "loadShowByMouseOver",
         type: "boolean",
@@ -36,6 +49,8 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         default: "type B",
         description: t("type A: credit by mæn, type B: credit by sethyuan"),
     },
+
+
     {//date selector
         key: "booleanDateSelector",
         title: t("Enable: Date selector in left sidebar"),
@@ -43,4 +58,5 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         default: false,
         description: "",
     },
+
 ]

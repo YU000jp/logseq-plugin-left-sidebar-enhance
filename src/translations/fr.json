@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Aller à la page de date",
   "Date Selector": "Sélecteur de date",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Les vérifications de doublons sont effectuées à l'exécution du module externe et toutes les 10 minutes.",
   "Enable: Date selector in left sidebar": "Activé : sélecteur de date dans la barre latérale gauche",
+  "Enable: Hide duplicate favorites and history": "Activer : Masquer les favoris et l'historique en double",
   "Enable: Mouse over to show left sidebar": "Activé : Afficher la barre latérale gauche au survol de la souris",
   "Enable: Table Of Contents in left sidebar": "Activé : Table des matières dans la barre latérale gauche",
   "Insert header ": "Insérer une rubrique",

@@ -8,10 +8,14 @@ import { loadTOC } from './toc'
 import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { displayToc } from './tocProcess'
 import { removeContainer } from './lib'
+import { loadFavAndRecent } from './favAndRecent'
 let currentPageName: string = ""
+
+
 
 /* main */
 const main = async () => {
+
   await l10nSetup({ builtinTranslations: { ja } })
   /* user settings */
   logseq.useSettingsSchema(settingsTemplate())
@@ -25,6 +29,8 @@ const main = async () => {
   loadDateSelector()
   //マウスオーバー
   loadShowByMouseOver()
+  //お気に入りと履歴の重複を非表示
+  loadFavAndRecent()
 
   logseq.beforeunload(async () => {
     removeContainer("lse-toc-container")
@@ -33,7 +39,10 @@ const main = async () => {
 
 }/* end_main */
 
+
+
 let processingBlockChanged: boolean = false//処理中 TOC更新中にブロック更新が発生した場合に処理を中断する
+
 export let onBlockChangedOnce: boolean = false//一度のみ
 export const onBlockChanged = () => {
   if (onBlockChangedOnce === true)
@@ -70,7 +79,9 @@ const updateToc = () => {
   }, 300)
 }
 
+
 let processingOnPageChanged: boolean = false //処理中
+
 //ページ読み込み時に実行コールバック
 export const onPageChangedCallback = async () => {
 
@@ -94,4 +105,3 @@ export const onPageChangedCallback = async () => {
 }
 
 logseq.ready(main).catch(console.error)
-

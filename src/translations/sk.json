@@ -1,7 +1,9 @@
 {
   "Date (Single journal)": "Prejsť na stránku s dátumami",
   "Date Selector": "Výber dátumu",
+  "Duplicate checks are performed at plugin runtime and every 10 minutes.": "Duplicitné kontroly sa vykonávajú počas behu zásuvného modulu a každých 10 minút.",
   "Enable: Date selector in left sidebar": "Povolené: Výber dátumu na ľavom postrannom paneli",
+  "Enable: Hide duplicate favorites and history": "Povolené: Skryť duplicitné obľúbené a históriu",
   "Enable: Mouse over to show left sidebar": "Povolené: Zobraziť ľavý postranný panel pri ukázaní myšou",
   "Enable: Table Of Contents in left sidebar": "Povolené: Obsah na ľavom postrannom paneli",
   "Insert header ": "Vložiť nadpis",
