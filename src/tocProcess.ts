@@ -154,29 +154,33 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
         || contentLine.substring(2)}`
       )
       setTimeout(() => {
-        element.addEventListener('click', ({ shiftKey }) =>
-          selectBlock(shiftKey, thisPageName, tocBlocks[i].uuid))
+        element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
+          selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
       }, 800)
       targetElement.append(element)
     }
   }
 }
 
-const selectBlock = async (shiftKey: boolean, pageName: string, blockUuid: string) => {
-  if (shiftKey)
-    logseq.Editor.openInRightSidebar(blockUuid)
-  else {
-    //https://github.com/freder/logseq-plugin-jump-to-block/blob/master/src/components/App.tsx#L39
-    const elem = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
-    if (elem) {
-      logseq.Editor.exitEditingMode()
-      elem.scrollIntoView({ behavior: 'smooth' })
-      setTimeout(() =>
-        logseq.Editor.selectBlock(blockUuid), 150)
-    } else
-      //親ブロックがcollapsedの場合
-      await parentBlockToggleCollapsed(blockUuid)
-  }
+const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
+  if (ctrlKey) {
+    logseq.App.pushState("page", { name: blockUuid })
+    logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
+  } else
+    if (shiftKey)
+      logseq.Editor.openInRightSidebar(blockUuid)
+    else {
+      //https://github.com/freder/logseq-plugin-jump-to-block/blob/master/src/components/App.tsx#L39
+      const elem = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
+      if (elem) {
+        logseq.Editor.exitEditingMode()
+        elem.scrollIntoView({ behavior: 'smooth' })
+        setTimeout(() =>
+          logseq.Editor.selectBlock(blockUuid), 150)
+      } else
+        //親ブロックがcollapsedの場合
+        await parentBlockToggleCollapsed(blockUuid)
+    }
 }
 
 const parentBlockToggleCollapsed = async (blockUuidOrId): Promise<void> => {
