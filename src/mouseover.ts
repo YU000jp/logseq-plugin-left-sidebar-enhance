@@ -20,24 +20,28 @@ export const loadShowByMouseOver = () => {
         if (logseq.settings!.toggleShowByMouseOver === "mouseOver")
             selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
 
-        buttonEvent()
+        handleEvent(300)
 
     }
     //プラグイン設定変更時
     logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-        if (oldSet.showByMouseOverType !== newSet.showByMouseOverType) {
-            if (newSet.loadShowByMouseOver === true) {
-                removeProvideStyle(keyShowByMouseOver)
-                selectShowByMouseOverType(newSet.showByMouseOverType as string)
-                logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
-            }
-        }
-        //
-        if (oldSet.loadShowByMouseOver === false
+
+        // マウスオーバーの表示方法が変更された場合
+        if (oldSet.showByMouseOverType !== newSet.showByMouseOverType
             && newSet.loadShowByMouseOver === true) {
-            newSet.toggleShowByMouseOver = "mouseOver"
+
+            removeProvideStyle(keyShowByMouseOver)
             selectShowByMouseOverType(newSet.showByMouseOverType as string)
-        } else
+            logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
+        }
+
+        // プラグイン設定で無効が有効になった場合は、トグルも強制的に有効にする
+        if (oldSet.loadShowByMouseOver === false
+            && newSet.loadShowByMouseOver === true)
+            setTimeout(() =>
+                logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
+                , 10)
+        else
             if (oldSet.loadShowByMouseOver === true
                 && newSet.loadShowByMouseOver === false)
                 removeProvideStyle(keyShowByMouseOver)
@@ -45,6 +49,7 @@ export const loadShowByMouseOver = () => {
 }
 
 const selectShowByMouseOverType = (setting: string) => {
+
     switch (setting) {
         case "type A":
             logseq.provideStyle({ key: keyShowByMouseOver, style: CSSTypeA })
@@ -53,27 +58,36 @@ const selectShowByMouseOverType = (setting: string) => {
             logseq.provideStyle({ key: keyShowByMouseOver, style: CSSTypeB })
             break
     }
-    buttonEvent()
+    handleEvent(10)
 }
 
 
 
-const buttonEvent = () => setTimeout(() => {
-    if (processingMouseOverButton === true) return
-    const button = parent.document.getElementById("left-menu") as HTMLButtonElement | null
-    if (!button) {
-        console.log("button is null")
-        return
-    }
-    button.addEventListener("click", buttonEventFunction)
-    processingMouseOverButton = true
-}, 300)
+const handleEvent = (time: number) => {
+
+    // 待機が必要。ボタンがまだ生成されていない場合がある
+    setTimeout(() => {
+
+        if (processingMouseOverButton === true) return
+        const button = parent.document.getElementById("left-menu") as HTMLButtonElement | null
+        if (!button) {
+            console.warn("button is null")
+            return
+        }
+        button.addEventListener("click", buttonEventFunction)
+
+        processingMouseOverButton = true // 連続してイベントが発生しないようにする 一度のみ
+    }, time)
+}
 
 
 const buttonEventFunction = () => {
+
     if (logseq.settings!.loadShowByMouseOver === false) return //プラグイン設定で無効化されている場合は何もしない
 
-    if (logseq.settings!.toggleShowByMouseOver === "mouseOver") { //前回のメモリーはマウスオーバー
+    if (logseq.settings!.toggleShowByMouseOver === "mouseOver") {
+        //前回のメモリーはマウスオーバー
+
         //ノーマル表示にする
         logseq.App.setLeftSidebarVisible(true)
         setTimeout(() => {
@@ -82,7 +96,9 @@ const buttonEventFunction = () => {
             logseq.UI.showMsg(t("Left sidebar is now normal display."), "info", { timeout: 2200 })
         }, 10)
     } else
-        if (logseq.settings!.toggleShowByMouseOver === "normal") { //前回のメモリーはノーマル表示
+        if (logseq.settings!.toggleShowByMouseOver === "normal") {
+            //前回のメモリーはノーマル表示
+
             //表示しない
             logseq.App.setLeftSidebarVisible(false)
             setTimeout(() => {
@@ -90,7 +106,9 @@ const buttonEventFunction = () => {
                 logseq.updateSettings({ toggleShowByMouseOver: "off" })
                 logseq.UI.showMsg(t("Left sidebar is now hidden."), "info", { timeout: 2200 })
             }, 10)
-        } else { //前回のメモリーは表示しない
+        } else {
+            //前回のメモリーは表示しない
+
             //マウスオーバーで表示する
             logseq.App.setLeftSidebarVisible(true)
             setTimeout(() => {
