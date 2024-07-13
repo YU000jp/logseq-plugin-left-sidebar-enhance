@@ -11,14 +11,11 @@
 ## Feature Options
 
 1. Table Of Contents in left sidebar
-   > The table of contents generated from the headers (#,##,###,####,#####,####) included in the markdown of the opened page is displayed in the left menu.
+   - The table of contents generated from the headers (#,##,###,####,#####,####) included in the markdown of the opened page is displayed in the left menu. [Introduction](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/wiki/Introduction)
    - Shortcut command for inserting markdown header -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6`
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
-   1. Journals TOC (passive)
-   - Tip
-     1. Ctrl-click to block-zoom or open single journal
-     1. Shift-click to open in sidebar
+
 1. mouse over to show left sidebar (default: *Disable*)
    > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner. (Use it if using the width adjustment feature in "favorite tree" plugin)
 
