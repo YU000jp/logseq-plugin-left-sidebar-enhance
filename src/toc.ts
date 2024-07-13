@@ -35,7 +35,7 @@ export const loadTOC = () => {
     logseq.App.onPageHeadActionsSlotted(async () => {//動作保証のため、2つとも必要
         await routeCheck()
     })
-    
+
     //ヘッダー挿入コマンド
     headerCommand()
 }

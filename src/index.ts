@@ -16,26 +16,38 @@ let currentPageName: string = ""
 /* main */
 const main = async () => {
 
+
+  //l10n
   await l10nSetup({ builtinTranslations: { ja } })
+
   /* user settings */
   logseq.useSettingsSchema(settingsTemplate())
+
+  // First time settings
   if (!logseq.settings)
     setTimeout(() =>
       logseq.showSettingsUI(), 300)
 
+
   //TOC
   loadTOC()
+
   //日付セレクター
   loadDateSelector()
+
   //マウスオーバー
   loadShowByMouseOver()
+
   //お気に入りと履歴の重複を非表示
   loadFavAndRecent()
 
+
+  //プラグイン終了時
   logseq.beforeunload(async () => {
     removeContainer("lse-toc-container")
     removeContainer("lse-dataSelector-container")
   })
+
 
 }/* end_main */
 
@@ -45,10 +57,12 @@ let processingBlockChanged: boolean = false//処理中 TOC更新中にブロッ�
 
 export let onBlockChangedOnce: boolean = false//一度のみ
 export const onBlockChanged = () => {
+
   if (onBlockChangedOnce === true)
     return
   onBlockChangedOnce = true //index.tsの値を書き換える
   logseq.DB.onChanged(async ({ blocks }) => {
+
     if (processingBlockChanged === true
       || currentPageName === ""
       || logseq.settings!.booleanTableOfContents === false)
