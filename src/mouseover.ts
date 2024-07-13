@@ -1,4 +1,4 @@
-import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin"
+import { ExternalCommandType, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin"
 import CSSTypeA from "./mouseoverA.css?inline"
 import CSSTypeB from "./mouseoverB.css?inline"
 import { removeProvideStyle } from "./lib"
@@ -7,6 +7,10 @@ const keyShowByMouseOver = "showByMouseOver"
 let processingMouseOverButton = false
 
 export const loadShowByMouseOver = () => {
+
+    logseq.App.onAfterCommandInvoked("logseq.ui/toggle-left-sidebar" as ExternalCommandType, () => {
+        whenToggleEvent()
+    })
 
     if (logseq.settings!.loadShowByMouseOver === false) {
         //プラグイン設定で無効化されている場合は何もしない 
@@ -74,14 +78,14 @@ const handleEvent = (time: number) => {
             console.warn("button is null")
             return
         }
-        button.addEventListener("click", buttonEventFunction)
+        button.addEventListener("click", whenToggleEvent)
 
         processingMouseOverButton = true // 連続してイベントが発生しないようにする 一度のみ
     }, time)
 }
 
 
-const buttonEventFunction = () => {
+const whenToggleEvent = () => {
 
     if (logseq.settings!.loadShowByMouseOver === false) return //プラグイン設定で無効化されている場合は何もしない
 
