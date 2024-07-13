@@ -1,3 +1,11 @@
+## [1.10.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.10.0...v1.10.1) (2024-07-13)
+
+
+### Bug Fixes
+
+* **bug:** Mouseover menu bar > Not working with tc shortcut key ([a64c69b](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/a64c69b6fe65f7048e05465f28b2e6dd59cbdf47))
+* **bug:** Mouseover menu bar > Sometimes they are changed by mistake. ([f8af8f0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/f8af8f0c3917f2962c89cffe8691267697afabd2))
+
 # [1.10.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.9.0...v1.10.0) (2024-07-12)
 
 
