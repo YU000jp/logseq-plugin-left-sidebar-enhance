@@ -97,7 +97,7 @@ const updateToc = () => {
 let processingOnPageChanged: boolean = false //処理中
 
 //ページ読み込み時に実行コールバック
-export const onPageChangedCallback = async () => {
+export const onPageChangedCallback = async (pageName: string) => {
 
   if (processingOnPageChanged === true)
     return
@@ -107,13 +107,8 @@ export const onPageChangedCallback = async () => {
     processingOnPageChanged = false, 300) //処理中断対策
 
   setTimeout(async () => {
-    if (logseq.settings!.booleanLeftTOC === true) {
-      const current = await logseq.Editor.getCurrentPage() as { originalName: PageEntity["originalName"] } | null
-      if (current) {
-        currentPageName = current.originalName
-        displayToc(currentPageName)
-      }
-    }
+    if (logseq.settings!.booleanLeftTOC === true)
+      displayToc(pageName)
   }, 50)
 
 }

@@ -1,4 +1,4 @@
-import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
+import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import { removeContainer } from "./lib"
 import { onPageChangedCallback } from "."
@@ -90,9 +90,9 @@ const routeCheck = async () => {
     processingRoot = true
     setTimeout(() =>
         processingRoot = false, 100)
-    const currentPage = await logseq.Editor.getCurrentPage() //現在のページ名を取得
+    const currentPage = await logseq.Editor.getCurrentPage() as { originalName: PageEntity["originalName"] } | null //現在のページ名を取得
     if (currentPage)
-        onPageChangedCallback()
+        onPageChangedCallback(currentPage.originalName)
     else {
         const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
         if (journalsEle)
