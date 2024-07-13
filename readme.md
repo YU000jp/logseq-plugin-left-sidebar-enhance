@@ -10,16 +10,16 @@
 
 ## Feature Options
 
-1. Table Of Contents in left sidebar
+1. **Table Of Contents in left sidebar**
    - The table of contents generated from the headers (#,##,###,####,#####,####) included in the markdown of the opened page is displayed in the left menu. [Introduction](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/wiki/Introduction)
-   - Shortcut command for inserting markdown header -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6`
+     > **Shortcut command for inserting markdown header** -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6`
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
 
-1. mouse over to show left sidebar (default: *Disable*)
-   > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner. (Use it if using the width adjustment feature in "favorite tree" plugin)
+1. **mouse over to show left sidebar** (default: *Disable*)
+   > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
 
-1. Easy access to Journal-dates (default: *Disable*)
+1. **Easy access to Journal-dates** (default: *Disable*)
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
@@ -39,9 +39,10 @@ Install from Logseq Marketplace
 
 ### Usage
 
+- Table of contents: when you open each page, the table of contents is automatically displayed in the menu in the left sidebar.
 - Mouseover: Click ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
  button in the top-left corner. The state of left sidebar will switch.
-- Some features are turned on. If not need it, turn it off in the plugin settings.
+- Turn each function on or off in the plugin settings.
 
 ---
 

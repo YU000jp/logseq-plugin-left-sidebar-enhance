@@ -8,19 +8,22 @@
  公開日: 20231002 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
  </div>
 
-## オプション
+## 機能オプション
 
 1. ページの目次
-   > 開いたページのマークダウンに含まれるヘッダー(#,##,###,####,#####,######)から生成した目次を左メニューに表示します
+   - 開いたページのマークダウンに含まれるヘッダー(#,##,###,####,#####,######)から生成した目次を左メニューに表示します
+     > **マークダウンのヘッダーを挿入するショートカット・コマンド** -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6`
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
-   1. ジャーナルの目次 (スクロール後)
-   - チップ
+
+   - Tip:
      1. Ctrlキーを押しながらクリックすると、ブロックズームまたは単一のジャーナルを開くことができます。
      1. サイドバーで開くには、Shiftキーを押しながらクリックします。
+   - Note:
+     1. 日誌では、目次ではなくスクロールで読み込まれている日付のみが表示されます。目次機能をつかうのは、シングルページを開いてください。
 
 1. マウスオーバーで、左メニューを自動で隠す (デフォルト: **無効**)
-   > 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを使ってください。("Favorite Tree"プラグインの幅調整機能に適合します)
+   > 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを使ってください。
 
 1. ジャーナルの日付へのアクセス (デフォルト: **無効**)
 
@@ -41,8 +44,9 @@ Logseq マーケットプレースからインストール
 
 ### 使用方法
 
+- 目次: 各ページを開くと、左サイドバーのメニューに自動的に目次が表示されます。
 - マウスオーバー: 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンをクリックします。左サイドバーの状態が切り替わります。
-- デフォルトで、一部の機能が有効になっています。不要な場合はプラグインの設定で無効にできます。
+- プラグインの設定で、各機能のオン・オフをおこなってください。
 
 ---
 
@@ -50,7 +54,6 @@ Logseq マーケットプレースからインストール
 
 > この種のことを尋ねたり見つけたりするために、[ディスカッション](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) タブに移動してください。
 
-- ジャーナルは見出し検索ができません。タイトルをクリックして 1 ページを開いてください。
 - マウスオーバーの種類
   1. タイプ A: マウスが左隅付近のスペースに近づくと開きます。
      > ⚠️ウィンドウが小さい場合、問題が発生する可能性があります。
