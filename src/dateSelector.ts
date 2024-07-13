@@ -20,7 +20,7 @@ export const loadDateSelector = () => {
         main()
 
     logseq.provideStyle(`
-    div#left-sidebar div#lse-dataSelector-inner>label p{
+    div#left-sidebar div#lse-dataSelector-inner>label p {
             margin-left: 1em;
             white-space: nowrap;
             overflow: visible;
@@ -55,6 +55,7 @@ const main = () => {
         divAsItemEle.id = "lse-dataSelector-container"
         const detailsEle: HTMLDetailsElement = document.createElement("details")
         detailsEle.className = "nav-content-item-inner"
+        detailsEle.open = true
         const summaryEle: HTMLElement = document.createElement("summary")
         summaryEle.className = "header items-center"
         summaryEle.style.cursor = "row-resize"
