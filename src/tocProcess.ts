@@ -96,16 +96,13 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
     if (contentLine.includes("((")
       && contentLine.includes("))")) {
       // Get content if it's q block reference
-      const blockId = /\(([^(())]+)\)/.exec(contentLine)
-      if (!blockId) continue
-      const block = await logseq.Editor.getBlock(blockId[1], {
-        includeChildren: true,
-      })
-      if (!block) continue
-      contentLine = contentLine.replace(
-        `((${blockId[1]}))`,
-        block.content.substring(0, block.content.indexOf("id::"))
-      )
+      const blockIdArray = /\(([^(())]+)\)/.exec(content)
+      if (blockIdArray)
+        for (const blockId of blockIdArray) {
+          const block = await logseq.Editor.getBlock(blockId, { includeChildren: false, })
+          if (block)
+            content = content.replace(`((${blockId}))`, block.content.substring(0, block.content.indexOf("id::")))
+        }
     }
 
     //プロパティを取り除く
