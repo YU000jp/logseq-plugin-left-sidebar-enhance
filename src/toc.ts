@@ -90,10 +90,21 @@ const routeCheck = async () => {
     processingRoot = true
     setTimeout(() =>
         processingRoot = false, 100)
-    const currentPage = await logseq.Editor.getCurrentPage() as { originalName: PageEntity["originalName"] } | null //現在のページ名を取得
-    if (currentPage)
-        onPageChangedCallback(currentPage.originalName)
-    else {
+    const currentPage = await logseq.Editor.getCurrentPage() as PageEntity | BlockEntity | null //現在のページ名を取得
+    if (currentPage) {
+        if (currentPage.originalName) {
+            updateCurrentPage((currentPage as PageEntity).originalName, (currentPage as PageEntity).uuid)
+            onPageChangedCallback((currentPage as PageEntity).originalName)
+        }
+        else
+            if (currentPage.page) {
+                const pageEntity = await logseq.Editor.getPage((currentPage as BlockEntity).page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
+                if (pageEntity) {
+                    updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
+                    onPageChangedCallback(pageEntity.originalName)
+                }
+            }
+    } else {
         const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
         if (journalsEle)
             whenOpenJournals(journalsEle)
