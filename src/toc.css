@@ -11,6 +11,16 @@ body[data-page="page"]>div#root>div>main div#left-sidebar {
             padding-top: 1em;
             user-select: none;
 
+            & table#thfpc--toggleHeader th {
+                padding: 0.3em;
+                white-space: nowrap;
+            }
+
+            & div#lse-toc-buttons span {
+                padding: 0.3em;
+                font-size: 0.84;
+            }
+
             &>div {
                 margin-bottom: .8em;
             }

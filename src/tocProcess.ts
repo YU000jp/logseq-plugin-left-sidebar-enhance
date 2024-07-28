@@ -1,9 +1,20 @@
-import removeMd from "remove-markdown"
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { removeProperties, removeMarkdownLink, removeMarkdownAliasLink, replaceOverCharacters, removeMarkdownImage, removeListWords } from "./markdown"
-import { onBlockChangedOnce, onBlockChanged } from "."
 import { t } from "logseq-l10n"
+import removeMd from "remove-markdown"
+import { currentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
+import { pageOpen } from "./lib"
+import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
 
+
+export const keyToolbarHeaderSpace = "lse-toc-header-space"
+const keyToggleTableId = "thfpc--toggleHeader"
+const keyToggleH = "tabbedHeadersToggleH"
+export const keyToggleH1 = keyToggleH + "1"
+export const keyToggleH2 = keyToggleH + "2"
+export const keyToggleH3 = keyToggleH + "3"
+export const keyToggleH4 = keyToggleH + "4"
+export const keyToggleH5 = keyToggleH + "5"
+export const keyToggleH6 = keyToggleH + "6"
 
 export interface TocBlock {
   content: string
@@ -66,7 +77,7 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
     if (content.includes("((")
       && content.includes("))")) {
-      // Get content if it's q block reference
+      // Get content if it's block reference
       const blockIdArray = /\(([^(())]+)\)/.exec(content)
       if (blockIdArray)
         for (const blockId of blockIdArray) {
@@ -138,7 +149,8 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
   if (ctrlKey || logseq.settings!.booleanZoomPage === true) {
     logseq.App.pushState("page", { name: blockUuid }) //Uuidをページ名としてpushStateするとズームページが開く
-    logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
+    if (logseq.settings!.booleanZoomPage === false)
+      logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
   } else
     if (shiftKey)
       logseq.Editor.openInRightSidebar(blockUuid)
@@ -195,6 +207,10 @@ export const displayToc = async (pageName: string) => {
   if (element) {
     element.innerHTML = "" //elementが存在する場合は中身を削除する
 
+
+    if (logseq.settings!.booleanZoomPage === true) //ページ名を表示
+      generatePageButton(element)
+
     //ページの全ブロックからheaderがあるかどうかを確認する
     let headers = getTocBlocks(await logseq.Editor.getPageBlocksTree(pageName) as Child[])
 
@@ -217,16 +233,64 @@ export const displayToc = async (pageName: string) => {
 }
 
 
+const generatePageButton = (element: HTMLElement) => {
+  let headerSpace = parent.document.getElementById(keyToolbarHeaderSpace) as HTMLElement | null
+  if (!headerSpace) {
+    // #keyToolbarHeaderSpaceが存在しない場合は、elementの先頭に作成する
+    headerSpace = document.createElement("div")
+    headerSpace.id = keyToolbarHeaderSpace
+    headerSpace.className = "flex items-center"
+    element.insertAdjacentElement("beforebegin", headerSpace)
+  }
+  if (headerSpace) {
+    headerSpace.innerHTML = ""//リフレッシュ
+
+    // ページを開くボタン
+    const openButton = document.createElement("button")
+    openButton.title = currentPageOriginalName
+    openButton.textContent = currentPageOriginalName
+    openButton.className = "button"
+    openButton.style.whiteSpace = "nowrap"
+    openButton.addEventListener("click", ({ shiftKey }) => pageOpen(currentPageOriginalName, shiftKey))
+    headerSpace.appendChild(openButton)
+  }
+}
+
+
+let processingButton = false
+export const hideHeaderFromList = (headerName: string) => {
+  if (processingButton) return
+  processingButton = true
+  setTimeout(() => processingButton = false, 300)
+
+  //リストから該当のヘッダーを削除
+  toggleHeaderVisibility(headerName)
+  //keyToggleの色を赤にする
+  const button = parent.document.getElementById(`tabbedHeadersToggle${headerName.toUpperCase()}`) as HTMLButtonElement | null
+  if (button)
+    button.style.color = button.style.color === "red" ?
+      "unset"
+      : "red"
+}
+
+
+const toggleHeaderVisibility = (headerName: string) => {
+  for (const element of (parent.document.querySelectorAll(`#lse-toc-content ${headerName}`) as NodeListOf<HTMLElement>))
+    element.style.display = element.style.display === "none" ?
+      "block"
+      : "none"
+}
+
 const additionalButtons = (thisPageName: string) => {
   const elementButtons = document.createElement("div")
   elementButtons.id = "lse-toc-buttons"
+  elementButtons.className = "flex items-center"
 
   // Update button
   const elementUpdate = document.createElement("span")
   elementUpdate.classList.add("cursor")
   elementUpdate.innerHTML = "🔄"
   elementUpdate.title = t("Update Table of Contents")
-  elementUpdate.style.padding = "1em"
   elementUpdate.addEventListener('click', () => {
     elementUpdate.style.visibility = "hidden"
     setTimeout(() => elementUpdate.style.visibility = "visible", 2000)
@@ -239,8 +303,18 @@ const additionalButtons = (thisPageName: string) => {
   elementTop.classList.add("cursor")
   elementTop.innerHTML = "↑"
   elementTop.title = t("Scroll to top")
-  elementTop.style.padding = "1em"
-  elementTop.addEventListener('click', () => parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container h1.page-title")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to top of the page when clicked on
+  elementTop.addEventListener('click', () => {
+    const titleElement = parent.document.querySelector("h1.page-title") as HTMLElement | null
+    if (titleElement)
+      titleElement.scrollIntoView({ behavior: 'smooth' })
+    else {
+      // ズームページの場合
+      const breadcrumbElement = parent.document.querySelector("div.breadcrumb.block-parents") as HTMLElement | null
+      if (breadcrumbElement)
+        breadcrumbElement.scrollIntoView({ behavior: 'smooth' })
+    }
+  }) // Scroll to top of the page when clicked on
+
   elementButtons.append(elementTop)
 
   // Scroll to bottom
@@ -248,10 +322,34 @@ const additionalButtons = (thisPageName: string) => {
   elementBottom.classList.add("cursor")
   elementBottom.innerHTML = "↓"
   elementBottom.title = t("Scroll to bottom")
-  elementBottom.style.padding = "1em"
-  elementBottom.addEventListener('click', () => parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container div.relative+div")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to bottom of the page when clicked on
+  elementBottom.addEventListener('click', () => {
+    const mainContent = parent.document.querySelector("div#main-content-container div[tabindex='0'].add-button-link-wrap") as HTMLElement | null
+    if (mainContent)
+      mainContent.scrollIntoView({ behavior: 'smooth' })
+  }) // Scroll to bottom of the page when clicked on
+
   elementButtons.append(elementBottom)
 
+  // Headerをトグルするボタンを追加する
+  const elementForHideHeader = document.createElement("span")
+  const elementHeaderTable = document.createElement("table")
+  elementHeaderTable.style.marginLeft = "auto"
+  elementHeaderTable.style.marginRight = "auto"
+  elementHeaderTable.id = keyToggleTableId
+  const tableRow = document.createElement("tr")
+  for (let level = 1; level <= 6; level++) {
+    const th = document.createElement("th")
+    const button = document.createElement("button")
+    button.id = keyToggleH + level
+    button.addEventListener("click", () => hideHeaderFromList("h" + level.toString()))
+    button.title = t("Toggle for hide")
+    button.textContent = `h${level}`
+    th.appendChild(button)
+    tableRow.appendChild(th)
+  }
+  elementHeaderTable.appendChild(tableRow)
+  elementForHideHeader.append(elementHeaderTable)
+  elementButtons.append(elementForHideHeader)
   return elementButtons
 }
 

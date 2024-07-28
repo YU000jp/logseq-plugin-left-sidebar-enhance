@@ -1,5 +1,6 @@
 import { t } from "logseq-l10n"
 import { pageOpen } from "./lib"
+import { keyToolbarHeaderSpace } from "./tocProcess"
 let processing = false
 const rtf = new Intl.RelativeTimeFormat("default", { numeric: "auto" })
 export const whenOpenJournals = (journalsEle: HTMLDivElement) => {
@@ -7,6 +8,8 @@ export const whenOpenJournals = (journalsEle: HTMLDivElement) => {
     //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
     const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
     if (element) {
+        const headerSpace = parent.document.getElementById(keyToolbarHeaderSpace) as HTMLElement | null
+        if (headerSpace) headerSpace.remove()
         if (journalsEle) {
             //element.innerHTML = t("No headers found") + "(journals)"]
             element.innerHTML = ""

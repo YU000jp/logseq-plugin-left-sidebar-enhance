@@ -1,15 +1,21 @@
 import '@logseq/libs' //https://plugins-doc.logseq.com/
+import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { loadDateSelector } from './dateSelector'
+import { loadFavAndRecent } from './favAndRecent'
+import { removeContainer } from './lib'
 import { loadShowByMouseOver } from './mouseover'
 import { settingsTemplate } from './settings'
-import ja from "./translations/ja.json"
 import { loadTOC } from './toc'
-import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { displayToc } from './tocProcess'
-import { removeContainer } from './lib'
-import { loadFavAndRecent } from './favAndRecent'
-let currentPageName: string = ""
+import ja from "./translations/ja.json"
+export let currentPageOriginalName: PageEntity["originalName"] = ""
+export let currentPageUuid: PageEntity["uuid"] = ""
+
+export const updateCurrentPage = async (pageName: string, pageUuid: PageEntity["uuid"]) => {
+  currentPageOriginalName = pageName
+  currentPageUuid = pageUuid
+}
 
 
 
@@ -48,7 +54,6 @@ const main = async () => {
     removeContainer("lse-dataSelector-container")
   })
 
-
 }/* end_main */
 
 
@@ -64,7 +69,7 @@ export const onBlockChanged = () => {
   logseq.DB.onChanged(async ({ blocks }) => {
 
     if (processingBlockChanged === true
-      || currentPageName === ""
+      || currentPageOriginalName === ""
       || logseq.settings!.booleanTableOfContents === false)
       return
     //headingがあるブロックが更新されたら
@@ -88,7 +93,7 @@ const updateToc = () => {
     return
   processingBlockChanged = true //index.tsの値を書き換える
   setTimeout(async () => {
-    await displayToc(currentPageName) //toc更新
+    await displayToc(currentPageOriginalName) //toc更新
     processingBlockChanged = false
   }, 300)
 }
