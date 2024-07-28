@@ -1,10 +1,11 @@
 import { BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import { removeContainer } from "./lib"
-import { onPageChangedCallback, updateCurrentPage } from "."
+import { currentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { headerCommand } from "./headerCommand"
+import { displayToc } from "./tocProcess"
 
 export const loadTOC = () => {
 
@@ -16,6 +17,10 @@ export const loadTOC = () => {
             else
                 removeContainer("lse-toc-container")//消す
         }
+        if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
+            || (oldSet.booleanZoomPage !== newSet.booleanZoomPage))
+            displayToc(currentPageOriginalName) //更新
+
     })
 
     if (logseq.settings!.booleanLeftTOC === true)
