@@ -11,12 +11,14 @@ export interface TocBlock {
   properties?: { [key: string]: string[] }
 }
 
+
 export interface Child {
   content: string
   uuid: string
   properties?: { [key: string]: string[] }
   children?: Child[]
 }
+
 
 export const getTocBlocks = (childrenArr: Child[]): TocBlock[] => {
   let tocBlocks: TocBlock[] = [] // Empty array to push filtered strings to
@@ -51,50 +53,19 @@ export const getTocBlocks = (childrenArr: Child[]): TocBlock[] => {
   return tocBlocks
 }
 
+
 export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBlock[], thisPageName: string): Promise<void> => {
 
-  const elementButtons = document.createElement("div")
-  // Update button
-  const elementUpdate = document.createElement("span")
-  elementUpdate.classList.add("cursor")
-  elementUpdate.innerHTML = "🔄"
-  elementUpdate.title = t("Update Table of Contents")
-  elementUpdate.style.padding = "1em"
-  elementUpdate.addEventListener('click', () => {
-    elementUpdate.style.visibility = "hidden"
-    setTimeout(() =>
-      elementUpdate.style.visibility = "visible", 2000)
-    displayToc(thisPageName)
-  })
-  elementButtons.append(elementUpdate)
-
-  // Scroll to top
-  const elementTop = document.createElement("span")
-  elementTop.classList.add("cursor")
-  elementTop.innerHTML = "↑"
-  elementTop.title = t("Scroll to top")
-  elementTop.style.padding = "1em"
-  elementTop.addEventListener('click', () =>
-    parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container h1.page-title")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to top of the page when clicked on
-  elementButtons.append(elementTop)
-
-  // Scroll to bottom
-  const elementBottom = document.createElement("span")
-  elementBottom.classList.add("cursor")
-  elementBottom.innerHTML = "↓"
-  elementBottom.title = t("Scroll to bottom")
-  elementBottom.style.padding = "1em"
-  elementBottom.addEventListener('click', () =>
-    parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container div.relative+div")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to bottom of the page when clicked on
-  elementButtons.append(elementBottom)
-
-  targetElement.append(elementButtons)
+  // additional buttons
+  targetElement.append(additionalButtons(thisPageName))
 
   // Create list
   for (let i = 0; i < tocBlocks.length; i++) {
-    let contentLine: string = tocBlocks[i].content
-    if (contentLine.includes("((")
-      && contentLine.includes("))")) {
+
+    let content: string = tocBlocks[i].content
+
+    if (content.includes("((")
+      && content.includes("))")) {
       // Get content if it's q block reference
       const blockIdArray = /\(([^(())]+)\)/.exec(content)
       if (blockIdArray)
@@ -106,49 +77,53 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
     }
 
     //プロパティを取り除く
-    contentLine = await removeProperties(tocBlocks, i, contentLine)
+    content = await removeProperties(tocBlocks, i, content)
 
-    if (contentLine.includes("id:: "))
-      contentLine = contentLine.substring(0, contentLine.indexOf("id:: "))
+    if (content.includes("id:: "))
+      content = content.substring(0, content.indexOf("id:: "))
 
     //文字列のどこかで「[[」と「]]」で囲まれているもいのがある場合は、[[と]]を削除する
-    contentLine = removeMarkdownLink(contentLine)
+    content = removeMarkdownLink(content)
+
     //文字列のどこかで[]()形式のリンクがある場合は、[と]を削除する
-    contentLine = removeMarkdownAliasLink(contentLine)
+    content = removeMarkdownAliasLink(content)
+
     //文字数が200文字を超える場合は、200文字以降を「...」に置き換える
-    contentLine = replaceOverCharacters(contentLine)
+    content = replaceOverCharacters(content)
+
     //マークダウンの画像記法を全体削除する
-    contentLine = removeMarkdownImage(contentLine)
+    content = removeMarkdownImage(content)
+
     //リストにマッチする文字列を正規表現で取り除く
-    contentLine = removeListWords(contentLine, logseq.settings!.tocRemoveWordList as string)
+    content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
 
     // Header
-    if (contentLine.startsWith("# ")
-      || contentLine.startsWith("## ")
-      || contentLine.startsWith("### ")
-      || contentLine.startsWith("#### ")
-      || contentLine.startsWith("##### ")
-      || contentLine.startsWith("###### ")
-      || contentLine.startsWith("####### ")) {
+    if (content.startsWith("# ")
+      || content.startsWith("## ")
+      || content.startsWith("### ")
+      || content.startsWith("#### ")
+      || content.startsWith("##### ")
+      || content.startsWith("###### ")
+      || content.startsWith("####### ")) {
       const element: HTMLDivElement =
-        (contentLine.startsWith("# ")) ?
+        (content.startsWith("# ")) ?
           document.createElement("h1") :
-          (contentLine.startsWith("## ")) ?
+          (content.startsWith("## ")) ?
             document.createElement("h2") :
-            (contentLine.startsWith("### ")) ?
+            (content.startsWith("### ")) ?
               document.createElement("h3") :
-              (contentLine.startsWith("#### ")) ?
+              (content.startsWith("#### ")) ?
                 document.createElement("h4") :
-                (contentLine.startsWith("##### ")) ?
+                (content.startsWith("##### ")) ?
                   document.createElement("h5") :
                   document.createElement("h6")
       element.classList.add("cursor")
       //elementのタグ名を取得する
       element.title = element.tagName.toLowerCase()
       element.innerHTML = removeMd(
-        `${(contentLine.includes("collapsed:: true")
-          && contentLine.substring(2, contentLine.length - 16))
-        || contentLine.substring(2)}`
+        `${(content.includes("collapsed:: true") //collapsed:: trueが含まれている場合は、それを削除する
+          && content.substring(2, content.length - 16))
+        || content.substring(2)}`
       )
       setTimeout(() => {
         element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
@@ -158,6 +133,7 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
     }
   }
 }
+
 
 const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
   if (ctrlKey) {
@@ -180,6 +156,7 @@ const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string
     }
 }
 
+
 const parentBlockToggleCollapsed = async (blockUuidOrId): Promise<void> => {
   const block = await logseq.Editor.getBlock(blockUuidOrId) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
   if (!block) return
@@ -194,6 +171,7 @@ const parentBlockToggleCollapsed = async (blockUuidOrId): Promise<void> => {
   } else
     await expandParentBlock(parentBlock)
 }
+
 
 const expandParentBlock = async (block: { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] }): Promise<void> => {
   if (block.parent) {
@@ -210,6 +188,8 @@ const expandParentBlock = async (block: { uuid: BlockEntity["uuid"], parent: Blo
     }
   }
 }
+
+
 export const displayToc = async (pageName: string) => {
   const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
   if (element) {
@@ -218,16 +198,12 @@ export const displayToc = async (pageName: string) => {
     //ページの全ブロックからheaderがあるかどうかを確認する
     let headers = getTocBlocks(await logseq.Editor.getPageBlocksTree(pageName) as Child[])
 
-    if (headers.length > 0) {
+    if (headers.length > 0)
       //headersのcontentに、#や##などのヘッダー記法が含まれているデータのみ処理をする
-      headers = headers.filter(header =>
-        header.content.startsWith("# ")
-        || header.content.startsWith("## ")
-        || header.content.startsWith("### ")
-        || header.content.startsWith("#### ")
-        || header.content.startsWith("##### ")
-        || header.content.startsWith("###### "))
-    }
+      headers = headers.filter((block) => {
+        const headerLevel = getHeaderLevel(block.content)
+        return headerLevel > 0 && headerLevel <= 6
+      })
 
     //フィルター後
     if (headers.length > 0) {
@@ -241,3 +217,49 @@ export const displayToc = async (pageName: string) => {
 }
 
 
+const additionalButtons = (thisPageName: string) => {
+  const elementButtons = document.createElement("div")
+  elementButtons.id = "lse-toc-buttons"
+
+  // Update button
+  const elementUpdate = document.createElement("span")
+  elementUpdate.classList.add("cursor")
+  elementUpdate.innerHTML = "🔄"
+  elementUpdate.title = t("Update Table of Contents")
+  elementUpdate.style.padding = "1em"
+  elementUpdate.addEventListener('click', () => {
+    elementUpdate.style.visibility = "hidden"
+    setTimeout(() => elementUpdate.style.visibility = "visible", 2000)
+    displayToc(thisPageName)
+  })
+  elementButtons.append(elementUpdate)
+
+  // Scroll to top
+  const elementTop = document.createElement("span")
+  elementTop.classList.add("cursor")
+  elementTop.innerHTML = "↑"
+  elementTop.title = t("Scroll to top")
+  elementTop.style.padding = "1em"
+  elementTop.addEventListener('click', () => parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container h1.page-title")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to top of the page when clicked on
+  elementButtons.append(elementTop)
+
+  // Scroll to bottom
+  const elementBottom = document.createElement("span")
+  elementBottom.classList.add("cursor")
+  elementBottom.innerHTML = "↓"
+  elementBottom.title = t("Scroll to bottom")
+  elementBottom.style.padding = "1em"
+  elementBottom.addEventListener('click', () => parent.document.querySelector("body[data-page=\"page\"]>div#root>div>main div#main-content-container div.relative+div")!.scrollIntoView({ behavior: 'smooth' })) // Scroll to bottom of the page when clicked on
+  elementButtons.append(elementBottom)
+
+  return elementButtons
+}
+
+
+const getHeaderLevel = (header: string): number => {
+  const match = header.match(/^(#+)\s/)
+  if (match)
+    return match[1].length
+  else
+    return 0
+}
