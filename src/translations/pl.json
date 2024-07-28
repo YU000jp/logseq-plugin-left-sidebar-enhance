@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Przełączaj się między 3 wzorami: najechanie myszą, normalny i ukryty",
   "Update Table of Contents": "Zaktualizowany spis treści",
   "plugin": "Wtyczki",
-  "type A: credit by mæn, type B: credit by sethyuan": "Typ A: mæn utworzony, typ B: sethyuan utworzony"
+  "type A: credit by mæn, type B: credit by sethyuan": "Typ A: mæn utworzony, typ B: sethyuan utworzony",
+  "Enable: Open as zoom page by default": "Włącz: Domyślnie otwieraj jako stronę powiększenia",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Jeśli ta opcja jest wyłączona, przytrzymaj \"Ctrl\" i kliknij, aby otworzyć jako stronę powiększenia.",
+  "Toggle for hide": "Przełącz, aby ukryć"
 }

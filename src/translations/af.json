@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Wissel tussen 3 patrone: muis, normaal en verborge",
   "Update Table of Contents": "Opgedateerde inhoudsopgawe",
   "plugin": "Inproppe",
-  "type A: credit by mæn, type B: credit by sethyuan": "Tipe A: mæn geskep, Tipe B-tipe: sethyuan geskep"
+  "type A: credit by mæn, type B: credit by sethyuan": "Tipe A: mæn geskep, Tipe B-tipe: sethyuan geskep",
+  "Enable: Open as zoom page by default": "Aktiveer: Maak standaard oop as zoombladsy",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "As dit gedeaktiveer is, hou u die 'Ctrl'-toets ingedruk en klik om as zoom-bladsy oop te maak.",
+  "Toggle for hide": "Wissel vir wegkruip"
 }

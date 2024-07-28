@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Bytt mellom 3 mønstre: mouseover, normal og hidden",
   "Update Table of Contents": "Oppdatert innholdsfortegnelse",
   "plugin": "Plugin-moduler",
-  "type A: credit by mæn, type B: credit by sethyuan": "Type A: mæn opprettet, Type B type: sethyuan opprettet"
+  "type A: credit by mæn, type B: credit by sethyuan": "Type A: mæn opprettet, Type B type: sethyuan opprettet",
+  "Enable: Open as zoom page by default": "Aktiver: Åpne som zoomside som standard",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Hvis den er deaktivert, hold nede 'Ctrl'-tasten og klikk for å åpne som en zoomside.",
+  "Toggle for hide": "Veksle for skjul"
 }

@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Переключение между 3 шаблонами: при наведении курсора мыши, обычный и скрытый",
   "Update Table of Contents": "Обновленное содержание",
   "plugin": "Плагины",
-  "type A: credit by mæn, type B: credit by sethyuan": "Тип A: создан mæn, тип B: создан sethyuan"
+  "type A: credit by mæn, type B: credit by sethyuan": "Тип A: создан mæn, тип B: создан sethyuan",
+  "Enable: Open as zoom page by default": "Включить: Открывать как масштабируемую страницу по умолчанию",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Если опция отключена, удерживайте нажатой клавишу «Ctrl» и нажмите, чтобы открыть страницу в масштабе.",
+  "Toggle for hide": "Переключить для скрытия"
 }

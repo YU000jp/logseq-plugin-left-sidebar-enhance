@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "3가지 패턴 간 전환: mouseover, normal 및 hidden",
   "Update Table of Contents": "업데이트된 목차",
   "plugin": "플러그인",
-  "type A: credit by mæn, type B: credit by sethyuan": "유형 A: mæn 생성됨, 유형 B 유형: sethyuan 생성됨"
+  "type A: credit by mæn, type B: credit by sethyuan": "유형 A: mæn 생성됨, 유형 B 유형: sethyuan 생성됨",
+  "Enable: Open as zoom page by default": "사용: 기본적으로 확대/축소 페이지로 열기",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "비활성화된 경우 'Ctrl' 키를 누른 상태에서 클릭하여 확대/축소 페이지로 엽니다.",
+  "Toggle for hide": "숨기기 전환/해제"
 }

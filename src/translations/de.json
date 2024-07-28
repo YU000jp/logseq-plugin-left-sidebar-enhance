@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Wechseln Sie zwischen 3 Mustern: Mouseover, Normal und Hidden",
   "Update Table of Contents": "Aktualisiertes Inhaltsverzeichnis",
   "plugin": "Plug-ins",
-  "type A: credit by mæn, type B: credit by sethyuan": "Typ A: mæn erstellt, Typ B Typ: sethyuan erstellt"
+  "type A: credit by mæn, type B: credit by sethyuan": "Typ A: mæn erstellt, Typ B Typ: sethyuan erstellt",
+  "Enable: Open as zoom page by default": "Aktivieren: Standardmäßig als Zoomseite öffnen",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Wenn diese Option deaktiviert ist, halten Sie die Strg-Taste gedrückt und klicken Sie, um sie als Zoom-Seite zu öffnen.",
+  "Toggle for hide": "Umschalten zum Ausblenden"
 }

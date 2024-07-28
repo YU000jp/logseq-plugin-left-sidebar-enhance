@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Beralih di antara 3 pola: mouseover, normal, dan tersembunyi",
   "Update Table of Contents": "Daftar Isi yang Diperbarui",
   "plugin": "Plug-in",
-  "type A: credit by mæn, type B: credit by sethyuan": "Tipe A: mæn dibuat, Tipe B tipe: sethyuan dibuat"
+  "type A: credit by mæn, type B: credit by sethyuan": "Tipe A: mæn dibuat, Tipe B tipe: sethyuan dibuat",
+  "Enable: Open as zoom page by default": "Aktifkan: Buka sebagai halaman zoom secara default",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Jika dinonaktifkan, tahan tombol 'Ctrl' dan klik untuk membuka sebagai halaman zoom.",
+  "Toggle for hide": "Beralih untuk menyembunyikan"
 }

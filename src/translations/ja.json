@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "3パターンの切り替え。マウスオーバー、通常、非表示",
   "Update Table of Contents": "目次を更新",
   "plugin": "プラグイン",
-  "type A: credit by mæn, type B: credit by sethyuan": "Aタイプ: mæn 作成, Bタイプ: sethyuan 作成"
+  "type A: credit by mæn, type B: credit by sethyuan": "Aタイプ: mæn 作成, Bタイプ: sethyuan 作成",
+  "Enable: Open as zoom page by default": "有効にする - デフォルトでズームページで開く",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "無効にした場合、`Ctrl`キーを押しながらクリックするとズームページで開きます。",
+  "Toggle for hide": "非表示の切り替え"
 }

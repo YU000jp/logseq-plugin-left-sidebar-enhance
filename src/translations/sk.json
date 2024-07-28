@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Prepínanie medzi 3 vzormi: prechod myšou, normálny a skrytý",
   "Update Table of Contents": "Aktualizovaný obsah",
   "plugin": "Zásuvné moduly",
-  "type A: credit by mæn, type B: credit by sethyuan": "Typ A: mæn vytvorený, typ B Typ: sethyuan created"
+  "type A: credit by mæn, type B: credit by sethyuan": "Typ A: mæn vytvorený, typ B Typ: sethyuan created",
+  "Enable: Open as zoom page by default": "Povoliť: Predvolene otvoriť ako zväčšenie stránky",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Ak je zakázané, podržte stlačený kláves \"Ctrl\" a kliknutím otvorte stránku so zväčšením.",
+  "Toggle for hide": "Prepnúť pre skryť"
 }

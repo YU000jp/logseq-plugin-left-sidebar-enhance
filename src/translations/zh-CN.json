@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "在 3 种模式之间切换：鼠标悬停、正常和隐藏",
   "Update Table of Contents": "更新的目录",
   "plugin": "插件",
-  "type A: credit by mæn, type B: credit by sethyuan": "A型：mæn创建，B型：sethyuan创建"
+  "type A: credit by mæn, type B: credit by sethyuan": "A型：mæn创建，B型：sethyuan创建",
+  "Enable: Open as zoom page by default": "启用：默认以缩放页面的形式打开",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "如果禁用，请按住“Ctrl”键并单击以作为缩放页面打开。",
+  "Toggle for hide": "切换隐藏"
 }

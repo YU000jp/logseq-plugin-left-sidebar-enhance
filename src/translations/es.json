@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Cambia entre 3 patrones: mouseover, normal y oculto",
   "Update Table of Contents": "Tabla de contenido actualizada",
   "plugin": "Plug-ins",
-  "type A: credit by mæn, type B: credit by sethyuan": "Tipo A: mæn creado, Tipo B: sethyuan creado"
+  "type A: credit by mæn, type B: credit by sethyuan": "Tipo A: mæn creado, Tipo B: sethyuan creado",
+  "Enable: Open as zoom page by default": "Habilitar: Abrir como página de zoom de forma predeterminada",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Si está deshabilitado, mantenga presionada la tecla 'Ctrl' y haga clic para abrir como una página de zoom.",
+  "Toggle for hide": "Alternar para ocultar"
 }

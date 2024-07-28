@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Basculez entre 3 modèles : survol de la souris, normal et caché",
   "Update Table of Contents": "Table des matières mise à jour",
   "plugin": "Modules externes",
-  "type A: credit by mæn, type B: credit by sethyuan": "Type A : mæn créé, Type B type : sethyuan créé"
+  "type A: credit by mæn, type B: credit by sethyuan": "Type A : mæn créé, Type B type : sethyuan créé",
+  "Enable: Open as zoom page by default": "Activer : Ouvrir en tant que page de zoom par défaut",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Si cette option est désactivée, maintenez la touche « Ctrl » enfoncée et cliquez pour ouvrir la page en tant que page de zoom.",
+  "Toggle for hide": "Bascule pour masquer"
 }

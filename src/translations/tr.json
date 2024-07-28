@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "3 desen arasında geçiş yapın: fareyle üzerine gelme, normal ve gizli",
   "Update Table of Contents": "Güncellenmiş İçindekiler",
   "plugin": "Eklentiler",
-  "type A: credit by mæn, type B: credit by sethyuan": "A Tipi: mæn oluşturuldu, B Tipi tipi: sethyuan oluşturuldu"
+  "type A: credit by mæn, type B: credit by sethyuan": "A Tipi: mæn oluşturuldu, B Tipi tipi: sethyuan oluşturuldu",
+  "Enable: Open as zoom page by default": "Etkinleştir: Varsayılan olarak yakınlaştırma sayfası olarak aç",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Devre dışıysa, 'Ctrl' tuşunu basılı tutun ve yakınlaştırma sayfası olarak açmak için tıklayın.",
+  "Toggle for hide": "Gizlemek için geçiş yap"
 }

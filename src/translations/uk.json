@@ -23,5 +23,8 @@
   "Toggle 3 pattern: mouse over, normal, and hide.": "Перемикання між 3 шаблонами: наведенням курсору миші, звичайним і прихованим",
   "Update Table of Contents": "Оновлений зміст",
   "plugin": "Плагіни",
-  "type A: credit by mæn, type B: credit by sethyuan": "Тип A: створено mæn, тип B: створено sethyuan"
+  "type A: credit by mæn, type B: credit by sethyuan": "Тип A: створено mæn, тип B: створено sethyuan",
+  "Enable: Open as zoom page by default": "Увімкнути: Відкривати як масштабовану сторінку за замовчуванням",
+  "If disabled, hold down the `Ctrl` key and click to open as a zoom page.": "Якщо вимкнено, утримуйте клавішу «Ctrl» і натисніть, щоб відкрити сторінку масштабування.",
+  "Toggle for hide": "Перемикач для приховування"
 }
