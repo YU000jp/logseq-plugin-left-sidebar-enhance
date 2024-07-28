@@ -34,7 +34,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         key: "booleanZoomPage",
         title: t("Enable: Open as zoom page by default") + "🆕",
         type: "boolean",
-        default: true,
+        default: false,
         // これが無効の場合は、Ctrlキーを同時押しでクリックすることでズームページになる
         description: t("If disabled, hold down the `Ctrl` key and click to open as a zoom page."),
     },
