@@ -136,8 +136,8 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
 
 const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
-  if (ctrlKey) {
-    logseq.App.pushState("page", { name: blockUuid })
+  if (ctrlKey || logseq.settings!.booleanZoomPage === true) {
+    logseq.App.pushState("page", { name: blockUuid }) //Uuidをページ名としてpushStateするとズームページが開く
     logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
   } else
     if (shiftKey)
