@@ -1,3 +1,17 @@
+# [1.11.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.10.1...v1.11.0) (2024-07-28)
+
+
+### Bug Fixes
+
+* **bug:** TOC >> Also shown when a zoom page is opened. ([fd3e864](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/fd3e86493bfe4ce7214871849d1c1cdfca0e1ebf))
+
+
+### Features
+
+* **Add:** TOC >> a new feature `Hide header` ([dc6499c](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/dc6499cf5afbe9111aab8c0d3458c2da4fd3df81))
+* **Add:** TOC >> a new option `Enable: Open as zoom page by default` ([ed94f99](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/ed94f995980ca74e79d4c303bf54ec6fc0c666f7))
+* **TOC:**  If it's a block reference, get the content and process it. ([52509cb](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/52509cbdd27fe118415dc082838a6de13316d8e8))
+
 ## [1.10.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.10.0...v1.10.1) (2024-07-13)
 
 
