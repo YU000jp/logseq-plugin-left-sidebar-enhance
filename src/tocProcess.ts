@@ -106,7 +106,8 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
     content = removeMarkdownImage(content)
 
     //リストにマッチする文字列を正規表現で取り除く
-    content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
+    if (logseq.settings!.tocRemoveWordList as string !== "")
+      content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
 
     // Header
     if (content.startsWith("# ")
