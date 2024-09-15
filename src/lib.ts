@@ -15,7 +15,7 @@ export const pageOpen = async (pageName: string, shiftKey: boolean) => {
 
         else
             logseq.Editor.scrollToBlockInPage(pageName, page.uuid, { replaceState: true })
-        logseq.UI.showMsg(t("The page is opened.\n") + pageName)
+        logseq.UI.showMsg(pageName)
     }
 }
 export const removeContainer = (elementById:string) => {
