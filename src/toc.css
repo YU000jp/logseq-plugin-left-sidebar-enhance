@@ -1,88 +1,119 @@
-body[data-page="page"]>div#root>div>main div#left-sidebar {
-    & div#lse-toc-inner {
-        font-size: .92em;
-        margin-left: 0.6em;
+#lse-toc-inner {
+    font-size: .92em;
+    margin-left: 0.6em;
 
-        &>div#lse-toc-content {
-            font-size: .86em;
-            padding-bottom: 1.3em;
-            padding-left: 0.3em;
-            padding-right: 1.3em;
-            padding-top: 1em;
-            user-select: none;
+    &>#lse-toc-content {
+        font-size: .86em;
+        padding-bottom: 1.3em;
+        padding-left: 0.3em;
+        padding-right: 1.3em;
+        padding-top: 1em;
+        user-select: none;
 
-            & table#thfpc--toggleHeader th {
-                padding: 0.3em;
-                white-space: nowrap;
+        & #thfpc--toggleHeader th {
+            padding: 0.3em;
+            white-space: nowrap;
+        }
+
+        & #lse-toc-buttons span {
+            padding: 0.3em;
+            font-size: 0.84;
+        }
+
+        &>div {
+            margin-bottom: .8em;
+        }
+
+        /* If the user makes changes, increase the level of detail, e.g. 'body #lse-toc-content h1 { }'. */
+        & h1,
+        & h2,
+        & h3,
+        & h4,
+        & h5,
+        & h6 {
+            height: 2.2em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+
+            &:hover {
+                border-radius: 2px;
+                background-color: var(--ls-block-highlight-color);
+                transition: background-color .2s cubic-bezier(0, 1, 0, 1);
             }
 
-            & div#lse-toc-buttons span {
-                padding: 0.3em;
-                font-size: 0.84;
+            &::before {
+                font-size: 12px;
+                padding: 1px;
+                opacity: 0.5;
+                color: var(--ls-active-secondary-color);
+                outline: 1px solid var(--ls-active-secondary-color);
+                margin-right: 0.9em;
+                z-index: auto;
             }
+        }
 
-            &>div {
-                margin-bottom: .8em;
+        & h1 {
+            font-size: 1.1em;
+            margin-top: .8em;
+
+            &::before {
+                content: "h1";
             }
+        }
 
-            &>h1,
-            &>h2,
-            &>h3,
-            &>h4,
-            &>h5,
-            &>h6 {
-                &:hover {
-                    border-radius: 2px;
-                    background-color: var(--ls-block-highlight-color);
-                    transition: background-color .2s cubic-bezier(0, 1, 0, 1);
-                }
+        & h2 {
+            font-size: 1.2em;
+            padding-left: .6em;
+            outline: 1px solid var(--ls-quaternary-background-color);
+            border-bottom: unset;
+
+            &::before {
+                content: "h2";
             }
+        }
 
-            &>h1 {
-                font-size: 1.6em;
-                margin-top: .8em;
-            }
-
-            &>h2 {
-                font-size: 1.4em;
-                padding-left: .6em;
-                outline: 1px solid var(--ls-quaternary-background-color);
-                border-bottom: unset;
-                margin-top: .6em;
-            }
-
-            &>h2,
-            &>h3,
-            &>h4,
-            &>h5,
-            &>h6 {
-                margin-top: .5em;
-                display: list-item;
+        & h2,
+        & h3,
+        & h4,
+        & h5,
+        & h6 {
+            margin-top: .5em;
+            /*  display: list-item;
                 list-style-type: disc;
-                list-style-position: inside;
-            }
+                list-style-position: inside; */
+        }
 
-            &>h3,
-            &>h4,
-            &>h5,
-            &>h6 {
-                padding-top: .6em;
-            }
+        & h3 {
+            padding-left: 1.2em;
 
-            &>h3 {
-                padding-left: 1.2em;
+            &::before {
+                content: "h3";
             }
+        }
 
-            &>h4 {
-                padding-left: 2.0em;
+        & h4 {
+            padding-left: 2.0em;
+
+            &::before {
+                content: "h4";
             }
+        }
 
-            &>h5 {
-                padding-left: 2.8em;
+        & h5 {
+            padding-left: 2.8em;
+
+            &::before {
+                content: "h5";
             }
+        }
 
-            &>h6 {
-                padding-left: 3.6em;
+        & h6 {
+            padding-left: 3.6em;
+
+            &::before {
+                content: "h6";
             }
         }
     }

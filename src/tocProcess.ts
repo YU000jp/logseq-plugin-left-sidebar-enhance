@@ -95,9 +95,7 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
                 (content.startsWith("##### ")) ?
                   document.createElement("h5") :
                   document.createElement("h6")
-      element.classList.add("cursor")
-      //elementのタグ名を取得する
-      element.title = element.tagName.toLowerCase()
+      element.classList.add("left-toc-" + element.tagName.toLowerCase(), "cursor")
 
       if (content.includes("((")
         && content.includes("))")) {
