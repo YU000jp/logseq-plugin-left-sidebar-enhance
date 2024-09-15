@@ -154,9 +154,9 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
 
 const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
-  if (ctrlKey || logseq.settings!.booleanZoomPage === true) {
+  if (ctrlKey || logseq.settings!.booleanAsZoomPage === true) {
     logseq.App.pushState("page", { name: blockUuid }) //Uuidをページ名としてpushStateするとズームページが開く
-    if (logseq.settings!.booleanZoomPage === false)
+    if (logseq.settings!.booleanAsZoomPage === false)
       logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
   } else
     if (shiftKey)
@@ -215,7 +215,7 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
     element.innerHTML = "" //elementが存在する場合は中身を削除する
 
 
-    if (logseq.settings!.booleanZoomPage === true) //ページ名を表示
+    if (logseq.settings!.booleanAsZoomPage === true) //ページ名を表示
       generatePageButton(element)
 
     //ページの全ブロックからheaderがあるかどうかを確認する

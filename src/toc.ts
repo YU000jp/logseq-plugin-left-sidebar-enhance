@@ -18,7 +18,7 @@ export const loadTOC = () => {
                 removeContainer("lse-toc-container")//消す
         }
         if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
-            || (oldSet.booleanZoomPage !== newSet.booleanZoomPage))
+            || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
             displayToc(currentPageOriginalName) //更新
 
     })
