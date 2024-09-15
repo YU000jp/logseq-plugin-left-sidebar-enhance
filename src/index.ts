@@ -102,7 +102,7 @@ const updateToc = () => {
 let processingOnPageChanged: boolean = false //処理中
 
 //ページ読み込み時に実行コールバック
-export const onPageChangedCallback = async (pageName: string) => {
+export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }) => {
 
   if (processingOnPageChanged === true)
     return
@@ -113,7 +113,7 @@ export const onPageChangedCallback = async (pageName: string) => {
 
   setTimeout(async () => {
     if (logseq.settings!.booleanLeftTOC === true)
-      displayToc(pageName)
+      displayToc(pageName, flag ? flag : undefined)
   }, 50)
 
 }

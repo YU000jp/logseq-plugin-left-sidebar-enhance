@@ -65,7 +65,7 @@ export const getTocBlocks = (childrenArr: Child[]): TocBlock[] => {
 }
 
 
-export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBlock[], thisPageName: string): Promise<void> => {
+export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBlock[], thisPageName: string, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }): Promise<void> => {
 
   // additional buttons
   targetElement.append(additionalButtons(thisPageName))
@@ -132,15 +132,24 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       element.classList.add("cursor")
       //elementのタグ名を取得する
       element.title = element.tagName.toLowerCase()
+
+      
       element.innerHTML = removeMd(
         `${(content.includes("collapsed:: true") //collapsed:: trueが含まれている場合は、それを削除する
           && content.substring(2, content.length - 16))
         || content.substring(2)}`
       )
-      setTimeout(() => {
-        element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
-          selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
-      }, 800)
+      element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
+        selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
+
+      //Zoomed
+      if (flag &&
+        flag.zoomIn === true)
+        if (flag.zoomInUuid === tocBlocks[i].uuid) {
+          element.style.backgroundColor = "var(--ls-block-highlight-color)"
+          element.innerHTML += "🔍"
+        }
+
       targetElement.append(element)
     }
   }
@@ -203,7 +212,7 @@ const expandParentBlock = async (block: { uuid: BlockEntity["uuid"], parent: Blo
 }
 
 
-export const displayToc = async (pageName: string) => {
+export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }) => {
   const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
   if (element) {
     element.innerHTML = "" //elementが存在する場合は中身を削除する
@@ -224,7 +233,7 @@ export const displayToc = async (pageName: string) => {
 
     //フィルター後
     if (headers.length > 0) {
-      await headersList(element, headers as TocBlock[], pageName)
+      await headersList(element, headers as TocBlock[], pageName, flag ? flag : undefined)
       //toc更新用のイベントを登録する
       if (onBlockChangedOnce === false)
         onBlockChanged()

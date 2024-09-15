@@ -37,9 +37,9 @@ export const loadTOC = () => {
     logseq.App.onRouteChanged(async () => {
         await routeCheck()
     })
-    logseq.App.onPageHeadActionsSlotted(async () => {//動作保証のため、2つとも必要
-        await routeCheck()
-    })
+    // logseq.App.onPageHeadActionsSlotted(async () => {//動作保証のため、2つとも必要
+    //     await routeCheck()
+    // })
 
     //ヘッダー挿入コマンド
     headerCommand()
@@ -106,7 +106,7 @@ const routeCheck = async () => {
                 const pageEntity = await logseq.Editor.getPage((currentPage as BlockEntity).page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
                 if (pageEntity) {
                     updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
-                    onPageChangedCallback(pageEntity.originalName)
+                    onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: currentPage.uuid })
                 }
             }
     } else {
