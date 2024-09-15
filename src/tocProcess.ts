@@ -75,40 +75,6 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
     let content: string = tocBlocks[i].content
 
-    if (content.includes("((")
-      && content.includes("))")) {
-      // Get content if it's block reference
-      const blockIdArray = /\(([^(())]+)\)/.exec(content)
-      if (blockIdArray)
-        for (const blockId of blockIdArray) {
-          const block = await logseq.Editor.getBlock(blockId, { includeChildren: false, })
-          if (block)
-            content = content.replace(`((${blockId}))`, block.content.substring(0, block.content.indexOf("id::")))
-        }
-    }
-
-    //プロパティを取り除く
-    content = await removeProperties(tocBlocks, i, content)
-
-    if (content.includes("id:: "))
-      content = content.substring(0, content.indexOf("id:: "))
-
-    //文字列のどこかで「[[」と「]]」で囲まれているもいのがある場合は、[[と]]を削除する
-    content = removeMarkdownLink(content)
-
-    //文字列のどこかで[]()形式のリンクがある場合は、[と]を削除する
-    content = removeMarkdownAliasLink(content)
-
-    //文字数が200文字を超える場合は、200文字以降を「...」に置き換える
-    content = replaceOverCharacters(content)
-
-    //マークダウンの画像記法を全体削除する
-    content = removeMarkdownImage(content)
-
-    //リストにマッチする文字列を正規表現で取り除く
-    if (logseq.settings!.tocRemoveWordList as string !== "")
-      content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
-
     // Header
     if (content.startsWith("# ")
       || content.startsWith("## ")
@@ -133,7 +99,40 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       //elementのタグ名を取得する
       element.title = element.tagName.toLowerCase()
 
-      
+      if (content.includes("((")
+        && content.includes("))")) {
+        // Get content if it's block reference
+        const blockIdArray = /\(([^(())]+)\)/.exec(content)
+        if (blockIdArray)
+          for (const blockId of blockIdArray) {
+            const block = await logseq.Editor.getBlock(blockId, { includeChildren: false, })
+            if (block)
+              content = content.replace(`((${blockId}))`, block.content.substring(0, block.content.indexOf("id::")))
+          }
+      }
+
+      //プロパティを取り除く
+      content = await removeProperties(tocBlocks, i, content)
+
+      if (content.includes("id:: "))
+        content = content.substring(0, content.indexOf("id:: "))
+
+      //文字列のどこかで「[[」と「]]」で囲まれているもいのがある場合は、[[と]]を削除する
+      content = removeMarkdownLink(content)
+
+      //文字列のどこかで[]()形式のリンクがある場合は、[と]を削除する
+      content = removeMarkdownAliasLink(content)
+
+      //文字数が200文字を超える場合は、200文字以降を「...」に置き換える
+      content = replaceOverCharacters(content)
+
+      //マークダウンの画像記法を全体削除する
+      content = removeMarkdownImage(content)
+
+      //リストにマッチする文字列を正規表現で取り除く
+      if (logseq.settings!.tocRemoveWordList as string !== "")
+        content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
+
       element.innerHTML = removeMd(
         `${(content.includes("collapsed:: true") //collapsed:: trueが含まれている場合は、それを削除する
           && content.substring(2, content.length - 16))
