@@ -1,3 +1,11 @@
+# [1.12.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.11.0...v1.12.0) (2024-10-19)
+
+
+### Features
+
+* highlight Zoomed-block item ([936a20d](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/936a20d67191fcc4095e9796c74035f02a36dda7))
+* **TOC:** Display the header name of the item (h1,h2...) ([3b0783b](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/3b0783b6a7e8f3c2796bd9c45f22832e68bec55d))
+
 # [1.11.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.10.1...v1.11.0) (2024-07-28)
 
 
