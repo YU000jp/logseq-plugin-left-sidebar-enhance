@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.12.0...v1.12.1) (2025-04-29)
+
+
+### Performance Improvements
+
+* **ref:** Improved processing performance through the use of queries ([182967c](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/182967ca8fb0df3c1e4e4462490c128439101d99))
+
 # [1.12.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.11.0...v1.12.0) (2024-10-19)
 
 
