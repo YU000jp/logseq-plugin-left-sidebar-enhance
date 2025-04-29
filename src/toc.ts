@@ -1,10 +1,11 @@
 import { BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
-import { removeContainer } from "./lib"
 import { currentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
+import { headerCommand } from "./headerCommand"
+import { removeContainer } from "./lib"
+import { getCurrentPageOriginalNameAndUuid } from "./query/advancedQuery"
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
-import { headerCommand } from "./headerCommand"
 import { displayToc } from "./tocProcess"
 
 export const loadTOC = () => {
@@ -95,29 +96,30 @@ const routeCheck = async () => {
     processingRoot = true
     setTimeout(() =>
         processingRoot = false, 100)
-    const currentPage = await logseq.Editor.getCurrentPage() as PageEntity | BlockEntity | null //現在のページ名を取得
+    const currentPage = await getCurrentPageOriginalNameAndUuid() as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
     if (currentPage) {
-        if (currentPage.originalName) {
-            updateCurrentPage((currentPage as PageEntity).originalName, (currentPage as PageEntity).uuid)
-            onPageChangedCallback((currentPage as PageEntity).originalName)
-        }
-        else
-            if (currentPage.page) {
-                const pageEntity = await logseq.Editor.getPage((currentPage as BlockEntity).page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
-                if (pageEntity) {
-                    updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
-                    onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: currentPage.uuid })
-                }
-            }
+        updateCurrentPage(currentPage.originalName, currentPage.uuid)
+        onPageChangedCallback(currentPage.originalName)
     } else {
+        // 日誌を開いている場合
         const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
         if (journalsEle)
             whenOpenJournals(journalsEle)
         else {
-            //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
-            const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-            if (element)
-                element.innerHTML = t("No headers found")
+            // ズームページの場合
+            const currentPage = await logseq.Editor.getCurrentPage() as BlockEntity | null // ズームページの場合はgetCurrentPage()で取得
+            if (currentPage && currentPage.page) {
+                const pageEntity = await logseq.Editor.getPage(currentPage.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
+                if (pageEntity) {
+                    updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
+                    onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: currentPage.uuid })
+                }
+            } else {
+                //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+                const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+                if (element)
+                    element.innerHTML = t("No headers found")
+            }
         }
     }
 }

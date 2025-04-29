@@ -4,6 +4,7 @@ import removeMd from "remove-markdown"
 import { currentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
 import { pageOpen } from "./lib"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
+import { getContentFromUuid } from "./query/advancedQuery"
 
 
 export const keyToolbarHeaderSpace = "lse-toc-header-space"
@@ -103,9 +104,9 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
         const blockIdArray = /\(([^(())]+)\)/.exec(content)
         if (blockIdArray)
           for (const blockId of blockIdArray) {
-            const block = await logseq.Editor.getBlock(blockId, { includeChildren: false, })
-            if (block)
-              content = content.replace(`((${blockId}))`, block.content.substring(0, block.content.indexOf("id::")))
+            const blockContent = await getContentFromUuid(blockId) as BlockEntity["content"] | null
+            if (blockContent)
+              content = content.replace(`((${blockId}))`, blockContent.substring(0, blockContent.indexOf("id::")))
           }
       }
 
