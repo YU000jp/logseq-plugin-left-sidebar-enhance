@@ -1,7 +1,7 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import removeMd from "remove-markdown"
-import { currentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
+import { booleanLogseqVersionMd, currentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
 import { pageOpen } from "./lib"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
 import { getContentFromUuid } from "./query/advancedQuery"
@@ -20,18 +20,22 @@ export const keyToggleH6 = keyToggleH + "6"
 export interface TocBlock {
   content: string
   uuid: string
-  properties?: { [key: string]: string[] }
+  properties?: { [key: string]: string[] | string }
+  [":logseq.property/heading"]?: number
 }
 
 
 export interface Child {
   content: string
   uuid: string
-  properties?: { [key: string]: string[] }
+  properties?: { [key: string]: string[] | string }
   children?: Child[]
 }
 
 
+
+// md系統のバージョン用
+// ヘッダーを取得する関数
 export const getTocBlocks = (childrenArr: Child[]): TocBlock[] => {
   let tocBlocks: TocBlock[] = [] // Empty array to push filtered strings to
 
@@ -66,7 +70,44 @@ export const getTocBlocks = (childrenArr: Child[]): TocBlock[] => {
 }
 
 
-export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBlock[], thisPageName: string, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }): Promise<void> => {
+// dbバージョン用
+// ヘッダーを取得する関数
+export const getTocBlocksForDb = (childrenArr: Child[]): TocBlock[] => {
+  let tocBlocks: TocBlock[] = [] // Empty array to push filtered strings to
+
+  // Recursive function to map all headers in a linear array
+  const findAllHeaders = (childrenArr: Child[]) => {
+    if (!childrenArr) return
+    for (let a = 0; a < childrenArr.length; a++) {
+      if (
+        childrenArr[a][":logseq.property/heading"] === 1
+        || childrenArr[a][":logseq.property/heading"] === 2
+        || childrenArr[a][":logseq.property/heading"] === 3
+        || childrenArr[a][":logseq.property/heading"] === 4
+        || childrenArr[a][":logseq.property/heading"] === 5
+        || childrenArr[a][":logseq.property/heading"] === 6
+      ) {
+        tocBlocks.push({
+          content: childrenArr[a].content,
+          uuid: childrenArr[a].uuid,
+          properties: childrenArr[a].properties,
+          [":logseq.property/heading"]: childrenArr[a][":logseq.property/heading"]
+        })
+      }
+      if (childrenArr[a].children)
+        findAllHeaders(childrenArr[a].children as Child[])
+      else
+        return
+    }
+  }
+
+  findAllHeaders(childrenArr)
+  return tocBlocks
+}
+
+
+
+export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBlock[], thisPageName: string, versionMd: boolean, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }): Promise<void> => {
 
   // additional buttons
   targetElement.append(additionalButtons(thisPageName))
@@ -77,15 +118,24 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
     let content: string = tocBlocks[i].content
 
     // Header
-    if (content.startsWith("# ")
-      || content.startsWith("## ")
-      || content.startsWith("### ")
-      || content.startsWith("#### ")
-      || content.startsWith("##### ")
-      || content.startsWith("###### ")
-      || content.startsWith("####### ")) {
-      const element: HTMLDivElement =
-        (content.startsWith("# ")) ?
+    if ((versionMd === true
+      && (content.startsWith("# ")
+        || content.startsWith("## ")
+        || content.startsWith("### ")
+        || content.startsWith("#### ")
+        || content.startsWith("##### ")
+        || content.startsWith("###### ")
+        || content.startsWith("####### ")))
+      || (versionMd === false
+        && (tocBlocks[i][":logseq.property/heading"] === 1
+          || tocBlocks[i][":logseq.property/heading"] === 2
+          || tocBlocks[i][":logseq.property/heading"] === 3
+          || tocBlocks[i][":logseq.property/heading"] === 4
+          || tocBlocks[i][":logseq.property/heading"] === 5
+          || tocBlocks[i][":logseq.property/heading"] === 6))) {
+      let element: HTMLElement
+      if (versionMd === true)
+        element = (content.startsWith("# ")) ?
           document.createElement("h1") :
           (content.startsWith("## ")) ?
             document.createElement("h2") :
@@ -96,6 +146,13 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
                 (content.startsWith("##### ")) ?
                   document.createElement("h5") :
                   document.createElement("h6")
+      else {
+        const headerLevel = tocBlocks[i][":logseq.property/heading"] as number | 0
+        if (headerLevel > 0 && headerLevel <= 6)
+          element = document.createElement(`h${headerLevel}`)
+        else
+          continue
+      }
       element.classList.add("left-toc-" + element.tagName.toLowerCase(), "cursor")
 
       if (content.includes("((")
@@ -113,7 +170,7 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       //プロパティを取り除く
       content = await removeProperties(tocBlocks, i, content)
 
-      if (content.includes("id:: "))
+      if (versionMd === true && content.includes("id:: "))
         content = content.substring(0, content.indexOf("id:: "))
 
       //文字列のどこかで「[[」と「]]」で囲まれているもいのがある場合は、[[と]]を削除する
@@ -132,11 +189,13 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       if (logseq.settings!.tocRemoveWordList as string !== "")
         content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
 
-      element.innerHTML = removeMd(
-        `${(content.includes("collapsed:: true") //collapsed:: trueが含まれている場合は、それを削除する
-          && content.substring(2, content.length - 16))
-        || content.substring(2)}`
-      )
+      element.innerHTML = versionMd === true ?
+        removeMd(
+          `${(content.includes("collapsed:: true") //collapsed:: trueが含まれている場合は、それを削除する
+            && content.substring(2, content.length - 16))
+          || content.substring(2)}`
+        )
+        : removeMd(content) // dbバージョン用
       element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
         selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
 
@@ -215,14 +274,15 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
   if (element) {
     element.innerHTML = "" //elementが存在する場合は中身を削除する
 
-
     if (logseq.settings!.booleanAsZoomPage === true) //ページ名を表示
       generatePageButton(element)
 
+    const versionMd = booleanLogseqVersionMd()
+    const blocks = await logseq.Editor.getPageBlocksTree(pageName) as Child[]
     //ページの全ブロックからheaderがあるかどうかを確認する
-    let headers = getTocBlocks(await logseq.Editor.getPageBlocksTree(pageName) as Child[])
+    let headers = versionMd === true ? getTocBlocks(blocks) : getTocBlocksForDb(blocks)
 
-    if (headers.length > 0)
+    if (versionMd === true && headers.length > 0)
       //headersのcontentに、#や##などのヘッダー記法が含まれているデータのみ処理をする
       headers = headers.filter((block) => {
         const headerLevel = getHeaderLevel(block.content)
@@ -231,7 +291,7 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
 
     //フィルター後
     if (headers.length > 0) {
-      await headersList(element, headers as TocBlock[], pageName, flag ? flag : undefined)
+      await headersList(element, headers as TocBlock[], pageName, versionMd, flag ? flag : undefined)
       //toc更新用のイベントを登録する
       if (onBlockChangedOnce === false)
         onBlockChanged()

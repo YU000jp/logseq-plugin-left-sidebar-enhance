@@ -26,8 +26,11 @@ export const isPageExist = async (pageName: string): Promise<boolean> => {
   return !!result?.[0]?.uuid
 }
 
-export const getCurrentPageOriginalNameAndUuid = async (): Promise<{ originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null> => {
-  const query = `
+export const getCurrentPageOriginalNameAndUuid = async (versionMd: boolean): Promise<{ originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null> => {
+
+  if (versionMd === true) {
+    // mdバージョンの場合は original-nameが取得できる
+    const query = `
     [:find (pull ?p [:block/original-name :block/uuid])
      :in $ ?current
      :where
@@ -36,12 +39,23 @@ export const getCurrentPageOriginalNameAndUuid = async (): Promise<{ originalNam
      [?p :block/uuid ?uuid]
      [?p :block/original-name ?original-name]]
   `
-  const result = await advancedQuery<{ "original-name": PageEntity["originalName"], uuid: PageEntity["uuid"] }[]>(query, ":current-page")
-  if (result?.[0]) {
-    const { "original-name": originalName, uuid } = result[0]
-    return { originalName, uuid }
+    const result = await advancedQuery<{ "original-name": PageEntity["originalName"], uuid: PageEntity["uuid"] }[]>(query, ":current-page")
+    if (result?.[0]) {
+      const { "original-name": originalName, uuid } = result[0]
+      return { originalName, uuid }
+    }
+    return null
+  } else {
+    // mdバージョンでない場合は、queryで取得できないので、getCurrentPageを使う
+    const current = await logseq.Editor.getCurrentPage() as PageEntity | null
+    if (current?.properties) {
+      // propertiesの中にtitleがあるので、titleを取得し、それをoriginalNameとして返す
+      const originalName = current.properties["title"] ?? current.title
+      const uuid = current.uuid
+      return { originalName, uuid }
+    }
+    return null
   }
-  return null
 }
 
 export const getContentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["content"] | null> => {

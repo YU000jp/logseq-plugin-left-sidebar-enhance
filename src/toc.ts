@@ -1,6 +1,6 @@
 import { BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
-import { currentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
+import { currentPageOriginalName, booleanLogseqVersionMd, onPageChangedCallback, updateCurrentPage } from "."
 import { headerCommand } from "./headerCommand"
 import { removeContainer } from "./lib"
 import { getCurrentPageOriginalNameAndUuid } from "./query/advancedQuery"
@@ -53,7 +53,7 @@ const main = () => {
 
     setTimeout(async () => {
         //左サイドバーのnav-contents-containerにスペースを追加する
-        const navEle: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null
+        const navEle = (parent.document.querySelector("#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement) || (parent.document.querySelector("#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement) || null
         if (navEle === null) return //nullの場合はキャンセル
 
         const divAsItemEle: HTMLDivElement = document.createElement("div")
@@ -91,35 +91,87 @@ const main = () => {
 }
 
 let processingRoot = false
+
+interface PageEntityType {
+    title: PageEntity["title"]
+    properties: PageEntity["properties"]
+    uuid: PageEntity["uuid"]
+}
+
+interface BlockEntityType {
+    page: BlockEntity["page"]
+    uuid: BlockEntity["uuid"]
+}
+
 const routeCheck = async () => {
     if (processingRoot) return
     processingRoot = true
     setTimeout(() =>
         processingRoot = false, 100)
-    const currentPage = await getCurrentPageOriginalNameAndUuid() as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
-    if (currentPage) {
-        updateCurrentPage(currentPage.originalName, currentPage.uuid)
-        onPageChangedCallback(currentPage.originalName)
-    } else {
-        // 日誌を開いている場合
-        const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
-        if (journalsEle)
-            whenOpenJournals(journalsEle)
-        else {
-            // ズームページの場合
-            const currentPage = await logseq.Editor.getCurrentPage() as BlockEntity | null // ズームページの場合はgetCurrentPage()で取得
-            if (currentPage && currentPage.page) {
-                const pageEntity = await logseq.Editor.getPage(currentPage.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
-                if (pageEntity) {
-                    updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
-                    onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: currentPage.uuid })
+
+    const versionMd = booleanLogseqVersionMd()
+    if (versionMd) {
+        // Logseq mdバージョン用
+        const currentPage = await getCurrentPageOriginalNameAndUuid(versionMd) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
+        if (currentPage) {
+            updateCurrentPage(currentPage.originalName, currentPage.uuid)
+            onPageChangedCallback(currentPage.originalName)
+        } else {
+            // 日誌を開いている場合
+            const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+            if (journalsEle)
+                whenOpenJournals(journalsEle)
+            else {
+                // ズームページの場合
+                const currentPage = await logseq.Editor.getCurrentPage() as BlockEntity | null // ズームページの場合はgetCurrentPage()で取得
+                if (currentPage && currentPage.page) {
+                    const pageEntity = await logseq.Editor.getPage(currentPage.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
+                    if (pageEntity) {
+                        updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
+                        onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: currentPage.uuid })
+                    }
+                } else {
+                    //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+                    const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+                    if (element)
+                        element.innerHTML = t("No headers found")
                 }
-            } else {
-                //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
-                const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-                if (element)
-                    element.innerHTML = t("No headers found")
             }
         }
+    } else {
+        // Logseq dbバージョン用
+        const currentPage = await logseq.Editor.getCurrentPage() as PageEntityType | BlockEntityType | null
+        if (currentPage)
+            if ((currentPage as BlockEntityType).page) {
+                const current = currentPage as BlockEntityType
+                // 日誌を開いている場合
+                const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+                if (journalsEle)
+                    whenOpenJournals(journalsEle)
+                else {
+                    // ズームページの場合
+                    if (current && current.page) {
+                        const pageEntity = await logseq.Editor.getPage(current.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
+                        if (pageEntity) {
+                            updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
+                            onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: current.uuid })
+                        }
+                    } else {
+                        //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+                        const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+                        if (element)
+                            element.innerHTML = t("No headers found")
+                    }
+                }
+            } else
+                if ((currentPage as PageEntityType).properties) {
+                    const current = currentPage as PageEntityType
+                    // propertiesの中にtitleがあるので、titleを取得し、それをoriginalNameとして返す
+                    const originalName = current.properties!["title"] ?? current.title
+                    updateCurrentPage(originalName, currentPage.uuid)
+                    onPageChangedCallback(originalName)
+                }
     }
 }
+
+
