@@ -1,6 +1,6 @@
 import '@logseq/libs' //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
-import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { removeContainer } from './lib'
@@ -59,6 +59,16 @@ const main = async () => {
   logseq.beforeunload(async () => {
     removeContainer("lse-toc-container")
     removeContainer("lse-dataSelector-container")
+  })
+
+  logseq.App.onCurrentGraphChanged(async () => {
+    //グラフが変更されたときに実行されるコールバック
+    currentPageOriginalName = ""
+    currentPageUuid = ""
+    await checkLogseqVersion()
+
+    // TOCの初期化
+    removeContainer("lse-toc-container")
   })
 
 }/* end_main */
