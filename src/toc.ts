@@ -8,7 +8,7 @@ import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { displayToc } from "./tocProcess"
 
-export const loadTOC = () => {
+export const loadTOC = (versionMd:boolean) => {
 
     //プラグイン設定変更時
     logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
@@ -20,7 +20,7 @@ export const loadTOC = () => {
         }
         if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
             || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
-            displayToc(currentPageOriginalName) //更新
+            await displayToc(currentPageOriginalName) //更新
 
     })
 
@@ -31,12 +31,12 @@ export const loadTOC = () => {
 
     //プラグイン起動時
     setTimeout(() => {
-        routeCheck()
+        routeCheck(versionMd)
     }, 200)
 
     //ページ読み込み時に実行コールバック
     logseq.App.onRouteChanged(async () => {
-        await routeCheck()
+        await routeCheck(versionMd)
     })
     // logseq.App.onPageHeadActionsSlotted(async () => {//動作保証のため、2つとも必要
     //     await routeCheck()
@@ -104,13 +104,12 @@ interface BlockEntityType {
     uuid: BlockEntity["uuid"]
 }
 
-const routeCheck = async () => {
+const routeCheck = async (versionMd:boolean) => {
     if (processingRoot) return
     processingRoot = true
     setTimeout(() =>
         processingRoot = false, 100)
 
-    const versionMd = booleanLogseqVersionMd()
     if (versionMd) {
         // Logseq mdバージョン用
         const currentPage = await getCurrentPageOriginalNameAndUuid(versionMd) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null

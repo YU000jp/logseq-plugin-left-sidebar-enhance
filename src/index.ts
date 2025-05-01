@@ -1,6 +1,6 @@
-import '@logseq/libs'; //https://plugins-doc.logseq.com/
+import '@logseq/libs' //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { removeContainer } from './lib'
@@ -39,11 +39,11 @@ const main = async () => {
       logseq.showSettingsUI(), 300)
 
   // バージョンチェック
-  await checkLogseqVersion()
+  logseqVersionMd = await checkLogseqVersion()
 
 
   //TOC
-  loadTOC()
+  loadTOC(logseqVersionMd)
 
   //日付セレクター
   loadDateSelector()
@@ -65,7 +65,7 @@ const main = async () => {
     //グラフが変更されたときに実行されるコールバック
     currentPageOriginalName = ""
     currentPageUuid = ""
-    await checkLogseqVersion()
+    logseqVersionMd = await checkLogseqVersion()
 
     // TOCの初期化
     const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
@@ -133,7 +133,7 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
   setTimeout(async () => {
     // console.log("onPageChangedCallback")
     if (logseq.settings!.booleanLeftTOC === true)
-      displayToc(pageName, flag ? flag : undefined)
+      await displayToc(pageName, flag ? flag : undefined)
   }, 50)
 
 }
@@ -142,7 +142,7 @@ logseq.ready(main).catch(console.error)
 
 
 
-const checkLogseqVersion = async () => {
+const checkLogseqVersion = async (): Promise<boolean> => {
   const logseqInfo = await logseq.App.getInfo("version") as AppInfo | any
   //  0.11.0もしくは0.11.0-alpha+nightly.20250427のような形式なので、先頭の3つの数値(1桁、2桁、2桁)を正規表現で取得する
   const version = logseqInfo.match(/(\d+)\.(\d+)\.(\d+)/)
@@ -150,14 +150,14 @@ const checkLogseqVersion = async () => {
     logseqVersion = version[0] //バージョンを取得
     console.log("logseq version: ", logseqVersion)
 
-    // もし バージョンが0.9.*系やそれ以下ならば、logseqVersionMdをtrueにする
-    if (logseqVersion.match(/0\.9\.\d+/) || logseqVersion.match(/0\.8\.\d+/)) {
+    // もし バージョンが0.10.*系やそれ以下ならば、logseqVersionMdをtrueにする
+    if (logseqVersion.match(/0\.10\.\d+/) || logseqVersion.match(/0\.9\.\d+/)) {
       logseqVersionMd = true
-      console.log("logseq version is 0.9.* or lower")
-    } else {
+      console.log("logseq version is 0.10.* or lower")
+      return true
+    } else
       logseqVersionMd = false
-    }
-  } else {
+  } else
     logseqVersion = "0.0.0"
-  }
+  return false
 }

@@ -405,7 +405,7 @@ const additionalButtons = (thisPageName: string) => {
   elementBottom.innerHTML = "↓"
   elementBottom.title = t("Scroll to bottom")
   elementBottom.addEventListener('click', () => {
-    const mainContent = parent.document.querySelector("div#main-content-container div[tabindex='0'].add-button-link-wrap") as HTMLElement | null
+    const mainContent = parent.document.querySelector("#main-content-container div[tabindex='0'].add-button-link-wrap") as HTMLElement | null
     if (mainContent)
       mainContent.scrollIntoView({ behavior: 'smooth' })
   }) // Scroll to bottom of the page when clicked on
