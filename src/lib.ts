@@ -7,17 +7,17 @@ export const removeProvideStyle = (className: string) => {
     ) as HTMLStyleElement | null
     if (doc) doc.remove()
 }
-export const pageOpen = async (pageName: string, shiftKey: boolean) => {
+export const pageOpen = async (pageName: string, shiftKey: boolean, replaceState: boolean) => {
     const pageUuid = await getPageUuid(pageName) as PageEntity["uuid"] | null
     if (pageUuid) {
         if (shiftKey)
             logseq.Editor.openInRightSidebar(pageUuid)
         else
-            logseq.Editor.scrollToBlockInPage(pageName, pageUuid, { replaceState: true })
+            logseq.Editor.scrollToBlockInPage(pageName, pageUuid, { replaceState })
         logseq.UI.showMsg(pageName)
     }
 }
-export const removeContainer = (elementById:string) => {
+export const removeContainer = (elementById: string) => {
     const ele: HTMLDivElement | null = parent.document.getElementById(elementById) as HTMLDivElement | null
     if (ele) ele.remove()
 }

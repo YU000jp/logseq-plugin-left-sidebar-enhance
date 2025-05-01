@@ -2,6 +2,7 @@ import { AppUserConfigs, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.use
 import { format } from "date-fns/format"
 import { t } from "logseq-l10n"
 import { removeContainer, pageOpen } from "./lib"
+import { booleanLogseqVersionMd } from "."
 
 export const loadDateSelector = () => {
 
@@ -20,7 +21,7 @@ export const loadDateSelector = () => {
         main()
 
     logseq.provideStyle(`
-    div#left-sidebar div#lse-dataSelector-inner>label p {
+    #left-sidebar #lse-dataSelector-inner>label p {
             margin-left: 1em;
             white-space: nowrap;
             overflow: visible;
@@ -42,49 +43,58 @@ export const loadDateSelector = () => {
 }
 
 const main = () => {
-    if (parent.document.getElementById("lse-dataSelector-container"))
-        removeContainer("lse-dataSelector-container")//すでに存在する場合は削除する
+    const versionMd = booleanLogseqVersionMd()
+    if (versionMd === false) {
+        logseq.updateSettings({ booleanDateSelector: false })
+        // 日付セレクター機能はLogseq dbバージョンでは対応していません。というメッセージを通知
+        logseq.UI.showMsg(t("The date selector function is not supported in the Logseq db version. Changed to off."), "warning", { timeout: 3000 })
+    } else {
 
-    setTimeout(async () => {
-        //左サイドバーのnav-contents-containerにスペースを追加する
-        const navEle: HTMLDivElement | null = parent.document.querySelector("div#main-container div#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement | null
-        if (navEle === null) return //nullの場合はキャンセル
+        if (parent.document.getElementById("lse-dataSelector-container"))
+            removeContainer("lse-dataSelector-container")//すでに存在する場合は削除する
 
-        const divAsItemEle: HTMLDivElement = document.createElement("div")
-        divAsItemEle.className = "nav-content-item mt-3 is-expand flex-shrink-0"
-        divAsItemEle.id = "lse-dataSelector-container"
-        const detailsEle: HTMLDetailsElement = document.createElement("details")
-        detailsEle.className = "nav-content-item-inner"
-        detailsEle.open = true
-        const summaryEle: HTMLElement = document.createElement("summary")
-        summaryEle.className = "header items-center"
-        summaryEle.style.cursor = "row-resize"
-        summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
-        summaryEle.innerText = t("Date Selector")// タイトルを入れる
-        summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
-        const containerEle: HTMLDivElement = document.createElement("div")
-        containerEle.className = "bg"
-        containerEle.id = "lse-dataSelector-inner"
-        detailsEle.appendChild(summaryEle)
-        detailsEle.appendChild(containerEle)
-        divAsItemEle.appendChild(detailsEle)
-        navEle.appendChild(divAsItemEle)
+        setTimeout(async () => {
+            //左サイドバーのnav-contents-containerにスペースを追加する
+            const navEle: HTMLDivElement | null = parent.document.querySelector(versionMd as boolean === true ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
 
-        const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs
+            if (navEle === null) return //nullの場合はキャンセル
 
-        //スペースに日付セレクターを追加する
-        setTimeout(() => {
-            const containerEle: HTMLDivElement | null = parent.document.getElementById("lse-dataSelector-inner") as HTMLDivElement | null
+            const divAsItemEle: HTMLDivElement = document.createElement("div")
+            divAsItemEle.className = "nav-content-item mt-3 is-expand flex-shrink-0"
+            divAsItemEle.id = "lse-dataSelector-container"
+            const detailsEle: HTMLDetailsElement = document.createElement("details")
+            detailsEle.className = "nav-content-item-inner"
+            detailsEle.open = true
+            const summaryEle: HTMLElement = document.createElement("summary")
+            summaryEle.className = "header items-center"
+            summaryEle.style.cursor = "row-resize"
+            summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
+            summaryEle.innerText = t("Date Selector")// タイトルを入れる
+            summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
+            const containerEle: HTMLDivElement = document.createElement("div")
+            containerEle.className = "bg"
+            containerEle.id = "lse-dataSelector-inner"
+            detailsEle.appendChild(summaryEle)
+            detailsEle.appendChild(containerEle)
+            divAsItemEle.appendChild(detailsEle)
+            navEle.appendChild(divAsItemEle)
 
-            if (containerEle === null) return //nullの場合はキャンセル
+            const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs
 
-            if (containerEle.dataset.flag !== "true")//すでに存在する場合はキャンセル
-                createSelector(preferredDateFormat, containerEle)//label>input#lse-dataSelector
+            //スペースに日付セレクターを追加する
+            setTimeout(() => {
+                const containerEle: HTMLDivElement | null = parent.document.getElementById("lse-dataSelector-inner") as HTMLDivElement | null
 
-            containerEle.dataset.flag = "true" //フラグを立てる
-        }, 1)
+                if (containerEle === null) return //nullの場合はキャンセル
 
-    }, 500)
+                if (containerEle.dataset.flag !== "true")//すでに存在する場合はキャンセル
+                    createSelector(preferredDateFormat, containerEle)//label>input#lse-dataSelector
+
+                containerEle.dataset.flag = "true" //フラグを立てる
+            }, 1)
+
+        }, 500)
+    }
 }
 
 const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HTMLDivElement) => {
@@ -105,7 +115,7 @@ const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HT
     okButton.addEventListener("click", async ({ shiftKey }) => {
         const date = parent.document.getElementById("lse-dataSelector-date") as HTMLInputElement | null
         if (!date) return
-        await pageOpen(format(new Date(date.value), preferredDateFormat), shiftKey)
+        await pageOpen(format(new Date(date.value), preferredDateFormat), shiftKey, false)
     })
     //type: month
     p2Element.title = t("Month (yyyy/MM)")
@@ -121,7 +131,7 @@ const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HT
     okButton2.addEventListener("click", async ({ shiftKey }) => {
         const date = parent.document.getElementById("lse-dataSelector-month") as HTMLInputElement | null
         if (!date) return
-        await pageOpen(format(new Date(date.value), "yyyy/MM"), shiftKey)
+        await pageOpen(format(new Date(date.value), "yyyy/MM"), shiftKey, false)
     })
     selectorLabel.append(pElement)
     selectorLabel.append(p2Element)

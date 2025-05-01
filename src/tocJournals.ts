@@ -84,17 +84,17 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
                 ev.preventDefault()
 
                 if (ev.shiftKey)
-                    pageOpen(title, ev.shiftKey)
+                    pageOpen(title, ev.shiftKey, false)
                 else
                     if (ev.ctrlKey)
-                        pageOpen(title, false)
+                        pageOpen(title, false, false)
                     else {
                         const cancelButtonEle = parent.document.getElementById("cancel-exclude") as HTMLButtonElement | null //Single Journalプラグイン対策
                         if (cancelButtonEle) cancelButtonEle.click()
 
                         const journalEle = parent.document.getElementById(title) as HTMLAnchorElement | null
                         if (journalEle) {
-                                journalEle.scrollIntoView({ behavior: "smooth", block: "center" })
+                            journalEle.scrollIntoView({ behavior: "smooth", block: "center" })
                             //スクロールしたら、タイトルを表示する
                             journalEle.style.backgroundColor = "var(--ls-selection-background-color)"
                             setTimeout(() => journalEle.style.backgroundColor = "", 1200)

@@ -48,12 +48,13 @@ export const loadTOC = () => {
 
 
 const main = () => {
+    const versionMd = booleanLogseqVersionMd()
     if (parent.document.getElementById("lse-toc-container"))
         removeContainer("lse-toc-container")//すでに存在する場合は削除する
 
     setTimeout(async () => {
         //左サイドバーのnav-contents-containerにスペースを追加する
-        const navEle = (parent.document.querySelector("#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement) || (parent.document.querySelector("#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement) || null
+        const navEle = parent.document.querySelector(versionMd === true ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
         if (navEle === null) return //nullの場合はキャンセル
 
         const divAsItemEle: HTMLDivElement = document.createElement("div")

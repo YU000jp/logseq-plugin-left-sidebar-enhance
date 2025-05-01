@@ -302,7 +302,7 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
         const headerLevel = getHeaderLevel(block.content)
         return headerLevel > 0 && headerLevel <= 6
       })
-    
+
     //フィルター後
     if (headers.length > 0) {
       await headersList(element, headers as TocBlock[], pageName, versionMd, flag ? flag : undefined)
@@ -333,7 +333,7 @@ const generatePageButton = (element: HTMLElement) => {
     openButton.textContent = currentPageOriginalName
     openButton.className = "button"
     openButton.style.whiteSpace = "nowrap"
-    openButton.addEventListener("click", ({ shiftKey }) => pageOpen(currentPageOriginalName, shiftKey))
+    openButton.addEventListener("click", ({ shiftKey }) => pageOpen(currentPageOriginalName, shiftKey, false))
     headerSpace.appendChild(openButton)
   }
 }
