@@ -1,5 +1,4 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin"
-import { t } from "logseq-l10n"
 import { getPageUuid } from "./query/advancedQuery"
 
 export const removeProvideStyle = (className: string) => {
@@ -13,7 +12,6 @@ export const pageOpen = async (pageName: string, shiftKey: boolean) => {
     if (pageUuid) {
         if (shiftKey)
             logseq.Editor.openInRightSidebar(pageUuid)
-
         else
             logseq.Editor.scrollToBlockInPage(pageName, pageUuid, { replaceState: true })
         logseq.UI.showMsg(pageName)

@@ -11,23 +11,17 @@ const advancedQuery = async <T>(query: string, ...input: Array<any>): Promise<T 
   }
 }
 
-// フィールドを取得するクエリ
-const createBaseQuery = (field: string): string => `
-  [:find (pull ?b [:block/${field}])
-   :in $ ?name
-   :where
-   [?b :block/original-name ?name]
-   [?b :block/${field} ?${field}]] 
-`
-
-// ページが存在するかどうかを確認
-export const isPageExist = async (pageName: string): Promise<boolean> => {
-  const result = await advancedQuery<{ uuid: PageEntity["uuid"] }[]>(createBaseQuery("uuid"), `"${pageName}"`)
-  return !!result?.[0]?.uuid
-}
-
 export const getPageUuid = async (pageName: string): Promise<PageEntity["uuid"] | null> => {
-  const result = await advancedQuery<{ uuid: PageEntity["uuid"] }[]>(createBaseQuery("uuid"), `"${pageName}"`)
+
+  const query = `
+    [:find (pull ?p [:block/uuid])
+     :in $ ?input
+     :where
+     [?p :block/name ?name]
+     [(= ?name ?input)]
+     [?p :block/uuid ?uuid]]
+  `
+  const result = await advancedQuery<{ uuid: PageEntity["uuid"] }[]>(query, `"${pageName}"`)
   return result?.[0]?.uuid ?? null
 }
 

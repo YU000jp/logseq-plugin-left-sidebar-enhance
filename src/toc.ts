@@ -165,12 +165,13 @@ const routeCheck = async () => {
             const zoomBlockElement = parent.document.querySelector("#main-content-container div.page>div>div.ls-page-blocks>div>div.page-blocks-inner>div>div[id]") as HTMLDivElement | null
             if (zoomBlockElement) {
                 const uuid = zoomBlockElement.id
-                const block = await getBlockParentPageFromUuid(uuid) as BlockEntityType | null
-                if (block) {
-                    const pageEntity = await logseq.Editor.getPage(block.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
+                const blockParentPage = await getBlockParentPageFromUuid(uuid) as BlockEntity["page"] | null
+                if (blockParentPage) {
+                    const pageEntity = await logseq.Editor.getPage(blockParentPage.id) as { title: PageEntity["originalName"], properties: PageEntity["properties"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
                     if (pageEntity) {
-                        updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
-                        onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: block.uuid })
+                        const pageTitle = pageEntity.properties!["title"] || pageEntity.title
+                        updateCurrentPage(pageTitle, pageEntity.uuid)
+                        onPageChangedCallback(pageTitle, { zoomIn: true, zoomInUuid: uuid })
                     }
                 }
             }
