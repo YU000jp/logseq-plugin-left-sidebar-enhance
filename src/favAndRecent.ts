@@ -39,7 +39,7 @@ const main = async () => {
             logseq.provideStyle({
                 key,
                 style: `
-                    div#left-sidebar div.nav-content-item.recent li[title].recent-item {
+                    left-sidebar div.nav-content-item.recent li[title].recent-item {
                         ${matchArray.map((value) => `&:has(span.page-title[data-orig-text="${value}"])`).join(", ")} {
                         display: none;
                         }
