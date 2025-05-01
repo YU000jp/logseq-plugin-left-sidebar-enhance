@@ -1,7 +1,7 @@
 # Logseq プラグイン: Left Sidebar Enhance 
 
-> [!WARNING]
->このプラグインはLogseq dbバージョンでは動作しません。
+> [!NOTE]
+>このプラグインはLogseq dbバージョンで動作します。
 
 <div align="right">
  
@@ -28,7 +28,7 @@
 1. マウスオーバーで、左メニューを自動で隠す (デフォルト: **無効**)
    > 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを使ってください。
 
-1. ジャーナルの日付へのアクセス (デフォルト: **無効**)
+1. ジャーナルの日付へのアクセス (デフォルト: **無効**) ✖ dbバージョン
 
    ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 

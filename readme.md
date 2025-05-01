@@ -1,7 +1,7 @@
 # Logseq Plugin: Left-Sidebar Enhance
 
-> [!WARNING]
-This plugin does not work with Logseq db version.
+> [!NOTE]
+This plugin works in Logseq db version.
 
 <div align="right">
  
@@ -26,7 +26,7 @@ This plugin does not work with Logseq db version.
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
-   1. Date selector
+   1. Date selector (✖ db version)
       - Access daily journal page
 
    1. Month selector
