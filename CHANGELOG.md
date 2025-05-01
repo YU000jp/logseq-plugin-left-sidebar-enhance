@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.12.1...v1.13.0) (2025-05-01)
+
+
+### Features
+
+* **TOC:** Compatibility for db version [#16](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/16) ([c492698](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/c4926983163debc9154291a2cbd3ab280ceb0b22))
+
 ## [1.12.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.12.0...v1.12.1) (2025-04-29)
 
 
