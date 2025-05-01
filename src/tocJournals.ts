@@ -27,6 +27,9 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
     // 表示処理
     updateJournalList(journalsEle, tocContentEle)
 
+
+    console.log("journalsEle", journalsEle)
+
     // div#main-content-containerをスクロールしたら、journalTitlesを更新する
     const mainContentContainer = parent.document.getElementById("main-content-container") as HTMLDivElement | null
     if (mainContentContainer) {

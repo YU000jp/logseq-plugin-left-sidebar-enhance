@@ -139,28 +139,20 @@ const routeCheck = async () => {
             }
         }
     } else {
+        // 反映した場合のフラグ
+        let flag: boolean = false
         // Logseq dbバージョン用
         const currentPage = await logseq.Editor.getCurrentPage() as PageEntityType | BlockEntityType | null
-        if (currentPage)
+        if (currentPage) {
             if ((currentPage as BlockEntityType).page) {
                 const current = currentPage as BlockEntityType
-                // 日誌を開いている場合
-                const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
-                if (journalsEle)
-                    whenOpenJournals(journalsEle)
-                else {
-                    // ズームページの場合
-                    if (current && current.page) {
-                        const pageEntity = await logseq.Editor.getPage(current.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
-                        if (pageEntity) {
-                            updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
-                            onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: current.uuid })
-                        }
-                    } else {
-                        //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
-                        const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-                        if (element)
-                            element.innerHTML = t("No headers found")
+                // ズームページの場合
+                if (current && current.page) {
+                    const pageEntity = await logseq.Editor.getPage(current.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
+                    if (pageEntity) {
+                        updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
+                        onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: current.uuid })
+                        flag = true
                     }
                 }
             } else
@@ -170,7 +162,21 @@ const routeCheck = async () => {
                     const originalName = current.properties!["title"] ?? current.title
                     updateCurrentPage(originalName, currentPage.uuid)
                     onPageChangedCallback(originalName)
+                    flag = true
                 }
+        }
+        if (flag === false) {
+            // 日誌を開いている場合
+            const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+            if (journalsEle)
+                whenOpenJournals(journalsEle)
+            else {
+                //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+                const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+                if (element)
+                    element.innerHTML = t("No headers found")
+            }
+        }
     }
 }
 

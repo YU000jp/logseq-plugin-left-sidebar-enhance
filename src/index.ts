@@ -1,6 +1,6 @@
-import '@logseq/libs' //https://plugins-doc.logseq.com/
+import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
-import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { removeContainer } from './lib'
@@ -68,7 +68,9 @@ const main = async () => {
     await checkLogseqVersion()
 
     // TOCの初期化
-    removeContainer("lse-toc-container")
+    const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+    if (element)
+      element.innerHTML = "" //elementが存在する場合は中身を削除する
   })
 
 }/* end_main */

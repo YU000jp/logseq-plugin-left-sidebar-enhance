@@ -132,26 +132,25 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
           || tocBlocks[i][":logseq.property/heading"] === 3
           || tocBlocks[i][":logseq.property/heading"] === 4
           || tocBlocks[i][":logseq.property/heading"] === 5
-          || tocBlocks[i][":logseq.property/heading"] === 6))) {
+          || tocBlocks[i][":logseq.property/heading"] === 6)
+        || (content.startsWith("# ")
+          || content.startsWith("## ")
+          || content.startsWith("### ")
+          || content.startsWith("#### ")
+          || content.startsWith("##### ")
+          || content.startsWith("###### ")
+          || content.startsWith("####### "))
+      )) {
       let element: HTMLElement
-      if (versionMd === true)
-        element = (content.startsWith("# ")) ?
-          document.createElement("h1") :
-          (content.startsWith("## ")) ?
-            document.createElement("h2") :
-            (content.startsWith("### ")) ?
-              document.createElement("h3") :
-              (content.startsWith("#### ")) ?
-                document.createElement("h4") :
-                (content.startsWith("##### ")) ?
-                  document.createElement("h5") :
-                  document.createElement("h6")
+      if (versionMd === true) // mdバージョン
+        element = generateHeaderElement(content)
       else {
+        // dbバージョン dbグラフ
         const headerLevel = tocBlocks[i][":logseq.property/heading"] as number | 0
         if (headerLevel > 0 && headerLevel <= 6)
           element = document.createElement(`h${headerLevel}`)
-        else
-          continue
+        else // dbバージョン mdグラフ
+          element = generateHeaderElement(content)
       }
       element.classList.add("left-toc-" + element.tagName.toLowerCase(), "cursor")
 
@@ -280,15 +279,30 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
     const versionMd = booleanLogseqVersionMd()
     const blocks = await logseq.Editor.getPageBlocksTree(pageName) as Child[]
     //ページの全ブロックからheaderがあるかどうかを確認する
-    let headers = versionMd === true ? getTocBlocks(blocks) : getTocBlocksForDb(blocks)
+    let headers: TocBlock[]
+    let versionDbMdGraphFlag = false
 
-    if (versionMd === true && headers.length > 0)
+    if (versionMd === true)
+      headers = getTocBlocks(blocks)
+    else {
+      const dbGraph = getTocBlocksForDb(blocks)
+      if (dbGraph.length > 0)
+        headers = dbGraph
+      else {
+        headers = getTocBlocks(blocks)
+        versionDbMdGraphFlag = true
+      }
+    }
+
+    if ((versionMd === true
+      || versionDbMdGraphFlag === true)
+      && headers.length > 0)
       //headersのcontentに、#や##などのヘッダー記法が含まれているデータのみ処理をする
       headers = headers.filter((block) => {
         const headerLevel = getHeaderLevel(block.content)
         return headerLevel > 0 && headerLevel <= 6
       })
-
+    
     //フィルター後
     if (headers.length > 0) {
       await headersList(element, headers as TocBlock[], pageName, versionMd, flag ? flag : undefined)
@@ -429,3 +443,16 @@ const getHeaderLevel = (header: string): number => {
   else
     return 0
 }
+const generateHeaderElement = (content: string) =>
+  (content.startsWith("# ")) ?
+    document.createElement("h1") :
+    (content.startsWith("## ")) ?
+      document.createElement("h2") :
+      (content.startsWith("### ")) ?
+        document.createElement("h3") :
+        (content.startsWith("#### ")) ?
+          document.createElement("h4") :
+          (content.startsWith("##### ")) ?
+            document.createElement("h5") :
+            document.createElement("h6")
+
