@@ -2,76 +2,27 @@ import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
 import { t } from "logseq-l10n"
 import { booleanLogseqVersionMd } from "."
 
-export const headerCommand = () => {
+type HeaderLevel = 1 | 2 | 3 | 4 | 5 | 6
 
+const registerHeaderCommand = (level: HeaderLevel) => {
+    const headerMarks = '#'.repeat(level)
+    logseq.App.registerCommandPalette({
+        key: `header${level}`,
+        label: t("Insert header ") + headerMarks,
+        keybinding: {
+            binding: `alt+${level}`,
+            mode: "editing",
+        }
+    }, async () => await insertHeader(headerMarks))
+}
+
+export const headerCommand = () => {
     const versionMd = booleanLogseqVersionMd()
     if (versionMd === true) {
-        //コマンドパレットに「header #」を追加
-        logseq.App.registerCommandPalette({
-            key: "header1",
-            label: t("Insert header ") + "#",
-            keybinding: {
-                binding: "alt+1",
-                mode: "editing",
-            }
-        }, async () =>
-            await insertHeader("#")
-        )
-        //コマンドパレットに「header ##」を追加
-        logseq.App.registerCommandPalette({
-            key: "header2",
-            label: t("Insert header ") + "##",
-            keybinding: {
-                binding: "alt+2",
-                mode: "editing",
-            }
-        }, async () =>
-            await insertHeader("##")
-        )
-        //コマンドパレットに「header ###」を追加
-        logseq.App.registerCommandPalette({
-            key: "header3",
-            label: t("Insert header ") + "###",
-            keybinding: {
-                binding: "alt+3",
-                mode: "editing",
-            }
-        }, async () =>
-            await insertHeader("###")
-        )
-        //コマンドパレットに「header ####」を追加
-        logseq.App.registerCommandPalette({
-            key: "header4",
-            label: t("Insert header ") + "####",
-            keybinding: {
-                binding: "alt+4",
-                mode: "editing",
-            }
-        }, async () =>
-            await insertHeader("####")
-        )
-        //コマンドパレットに「header #####」を追加
-        logseq.App.registerCommandPalette({
-            key: "header5",
-            label: t("Insert header ") + "#####",
-            keybinding: {
-                binding: "alt+5",
-                mode: "editing",
-            }
-        }, async () =>
-            await insertHeader("#####")
-        )
-        //コマンドパレットに「header ######」を追加
-        logseq.App.registerCommandPalette({
-            key: "header6",
-            label: t("Insert header ") + "######",
-            keybinding: {
-                binding: "alt+6",
-                mode: "editing",
-            }
-        }, async () =>
-            await insertHeader("######")
-        )
+        // ヘッダーレベル1-6を登録
+        ([1, 2, 3, 4, 5, 6] as HeaderLevel[]).forEach(level => {
+            registerHeaderCommand(level)
+        })
     }
 }
 
