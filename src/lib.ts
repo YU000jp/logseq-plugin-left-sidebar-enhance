@@ -1,5 +1,6 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin"
 import { t } from "logseq-l10n"
+import { getPageUuid } from "./query/advancedQuery"
 
 export const removeProvideStyle = (className: string) => {
     const doc = parent.document.head.querySelector(
@@ -8,13 +9,13 @@ export const removeProvideStyle = (className: string) => {
     if (doc) doc.remove()
 }
 export const pageOpen = async (pageName: string, shiftKey: boolean) => {
-    const page = await logseq.Editor.getPage(pageName) as PageEntity | null
-    if (page) {
+    const pageUuid = await getPageUuid(pageName) as PageEntity["uuid"] | null
+    if (pageUuid) {
         if (shiftKey)
-            logseq.Editor.openInRightSidebar(page.uuid)
+            logseq.Editor.openInRightSidebar(pageUuid)
 
         else
-            logseq.Editor.scrollToBlockInPage(pageName, page.uuid, { replaceState: true })
+            logseq.Editor.scrollToBlockInPage(pageName, pageUuid, { replaceState: true })
         logseq.UI.showMsg(pageName)
     }
 }

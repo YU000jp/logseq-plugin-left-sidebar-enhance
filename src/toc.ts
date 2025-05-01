@@ -3,7 +3,7 @@ import { t } from "logseq-l10n"
 import { currentPageOriginalName, booleanLogseqVersionMd, onPageChangedCallback, updateCurrentPage } from "."
 import { headerCommand } from "./headerCommand"
 import { removeContainer } from "./lib"
-import { getCurrentPageOriginalNameAndUuid } from "./query/advancedQuery"
+import { getCurrentPageOriginalNameAndUuid, getBlockParentPageFromUuid } from "./query/advancedQuery"
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { displayToc } from "./tocProcess"
@@ -120,7 +120,7 @@ const routeCheck = async () => {
             // 日誌を開いている場合
             const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
             if (journalsEle)
-                whenOpenJournals(journalsEle)
+                whenOpenJournals(journalsEle, versionMd)
             else {
                 // ズームページの場合
                 const currentPage = await logseq.Editor.getCurrentPage() as BlockEntity | null // ズームページの場合はgetCurrentPage()で取得
@@ -139,20 +139,17 @@ const routeCheck = async () => {
             }
         }
     } else {
-        // 反映した場合のフラグ
-        let flag: boolean = false
         // Logseq dbバージョン用
         const currentPage = await logseq.Editor.getCurrentPage() as PageEntityType | BlockEntityType | null
         if (currentPage) {
             if ((currentPage as BlockEntityType).page) {
                 const current = currentPage as BlockEntityType
-                // ズームページの場合
+                // ズームページの場合 mdグラフのみ
                 if (current && current.page) {
                     const pageEntity = await logseq.Editor.getPage(current.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
                     if (pageEntity) {
                         updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
                         onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: current.uuid })
-                        flag = true
                     }
                 }
             } else
@@ -162,14 +159,25 @@ const routeCheck = async () => {
                     const originalName = current.properties!["title"] ?? current.title
                     updateCurrentPage(originalName, currentPage.uuid)
                     onPageChangedCallback(originalName)
-                    flag = true
                 }
-        }
-        if (flag === false) {
+        } else {
+            // ズームページの場合 dbグラフの場合(getCurrentPage()はnullを返すため)
+            const zoomBlockElement = parent.document.querySelector("#main-content-container div.page>div>div.ls-page-blocks>div>div.page-blocks-inner>div>div[id]") as HTMLDivElement | null
+            if (zoomBlockElement) {
+                const uuid = zoomBlockElement.id
+                const block = await getBlockParentPageFromUuid(uuid) as BlockEntityType | null
+                if (block) {
+                    const pageEntity = await logseq.Editor.getPage(block.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
+                    if (pageEntity) {
+                        updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
+                        onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: block.uuid })
+                    }
+                }
+            }
             // 日誌を開いている場合
             const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
             if (journalsEle)
-                whenOpenJournals(journalsEle)
+                whenOpenJournals(journalsEle, versionMd)
             else {
                 //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
                 const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null

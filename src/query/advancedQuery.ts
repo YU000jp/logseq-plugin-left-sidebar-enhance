@@ -26,6 +26,11 @@ export const isPageExist = async (pageName: string): Promise<boolean> => {
   return !!result?.[0]?.uuid
 }
 
+export const getPageUuid = async (pageName: string): Promise<PageEntity["uuid"] | null> => {
+  const result = await advancedQuery<{ uuid: PageEntity["uuid"] }[]>(createBaseQuery("uuid"), `"${pageName}"`)
+  return result?.[0]?.uuid ?? null
+}
+
 export const getCurrentPageOriginalNameAndUuid = async (versionMd: boolean): Promise<{ originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null> => {
 
   if (versionMd === true) {
@@ -68,4 +73,17 @@ export const getContentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<Blo
   `
   const result = await advancedQuery<{ content: BlockEntity["content"] }[]>(query)
   return result?.[0]?.["content"] ?? null
+}
+
+
+export const getBlockParentPageFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["page"] | null> => {
+  const query = `
+    [:find (pull ?p [:block/page])
+     :where
+     [?p :block/uuid ?uuid]
+     [(str ?uuid) ?str]
+     [(= ?str "${uuid}")]]
+  `
+  const result = await advancedQuery<{ page: BlockEntity["page"] }[]>(query)
+  return result?.[0]?.["page"] ?? null
 }
