@@ -15,7 +15,20 @@ This plugin works in Logseq db version.
 
 1. **Table Of Contents in left sidebar**
    - The table of contents generated from the headers (`#`,`##`,`###`,`####`,`#####`,`######`) included in the markdown of the opened page is displayed in the left menu. [Introduction](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/wiki/Introduction)
-     > **Shortcut command for inserting markdown header** -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6`
+     > **Shortcut command for inserting markdown header** -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6` (MD graph only)
+
+   > How it works:
+   > - Automatically detects headers in both Markdown format (#) and Logseq DB format
+   > - Updates in real-time when content changes
+   > - Click to scroll to header location
+   > - Ctrl+Click to open as zoom page
+   > - Shift+Click to open in right sidebar
+   >
+   > Technical details:
+   > - Recursively scans blocks of the page to find all headers
+   > - Supports both Markdown style headers (#) and Logseq DB properties
+   > - Clean display with automatic markdown removal and link processing
+   > - Real-time updates through block change monitoring
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
 
@@ -46,6 +59,21 @@ Install from Logseq Marketplace
 - Mouseover: Click ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
  button in the top-left corner. The state of left sidebar will switch.
 - Turn each function on or off in the plugin settings.
+
+### Plugin Settings
+
+1. Table of Contents settings
+   - Enable/disable TOC feature
+   - Remove specific words from TOC entries (enter words separated by line breaks)
+   > Open as zoom page by default (if disabled, hold Ctrl key to open as zoom page)
+1. Hide duplicate favorites and history
+   - When enabled, prevents the same pages from appearing in both favorites and recent items
+   > Checks for duplicates at plugin startup and every 10 minutes
+1. Mouse over settings
+   - Enable/disable mouse over feature to show left sidebar
+   - Choose between type A (corner hover) or type B (edge hover) behavior
+1. Date selector
+   - Enable/disable the date selector feature in left sidebar
 
 ---
 
