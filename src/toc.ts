@@ -1,9 +1,9 @@
 import { BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
-import { currentPageOriginalName, booleanLogseqVersionMd, onPageChangedCallback, updateCurrentPage } from "."
+import { booleanLogseqVersionMd, getCurrentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
 import { headerCommand } from "./headerCommand"
 import { removeContainer } from "./lib"
-import { getCurrentPageOriginalNameAndUuid, getBlockParentPageFromUuid } from "./query/advancedQuery"
+import { getBlockParentPageFromUuid, getCurrentPageOriginalNameAndUuid } from "./query/advancedQuery"
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { displayToc } from "./tocProcess"
@@ -20,7 +20,7 @@ export const loadTOC = (versionMd:boolean) => {
         }
         if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
             || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
-            await displayToc(currentPageOriginalName) //更新
+            await displayToc(getCurrentPageOriginalName()) //更新
 
     })
 
@@ -113,6 +113,7 @@ const routeCheck = async (versionMd:boolean) => {
     if (versionMd) {
         // Logseq mdバージョン用
         const currentPage = await getCurrentPageOriginalNameAndUuid(versionMd) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null
+        console.log("currentPage", currentPage)
         if (currentPage) {
             updateCurrentPage(currentPage.originalName, currentPage.uuid)
             onPageChangedCallback(currentPage.originalName)

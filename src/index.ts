@@ -9,8 +9,8 @@ import { settingsTemplate } from './settings'
 import { loadTOC } from './toc'
 import { displayToc } from './tocProcess'
 import ja from "./translations/ja.json"
-export let currentPageOriginalName: PageEntity["originalName"] = ""
-export let currentPageUuid: PageEntity["uuid"] = ""
+let currentPageOriginalName: PageEntity["originalName"] = ""
+let currentPageUuid: PageEntity["uuid"] = ""
 let logseqVersion: string = ""//バージョンチェック用
 let logseqVersionMd: boolean = false//バージョンチェック用
 export const getLogseqVersion = () => logseqVersion //バージョンチェック用
@@ -21,6 +21,8 @@ export const updateCurrentPage = async (pageName: string, pageUuid: PageEntity["
   currentPageUuid = pageUuid
 }
 
+export const getCurrentPageOriginalName = () => currentPageOriginalName; // 現在のページ名を取得
+export const getCurrentPageUuid = () => currentPageUuid; // 現在のページUUIDを取得
 
 
 /* main */

@@ -1,7 +1,7 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import removeMd from "remove-markdown"
-import { booleanLogseqVersionMd, currentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
+import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
 import { pageOpen } from "./lib"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
 import { getContentFromUuid } from "./query/advancedQuery"
@@ -316,6 +316,8 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
 
 
 const generatePageButton = (element: HTMLElement) => {
+  const currentPageOriginalName = getCurrentPageOriginalName()
+  if (currentPageOriginalName === "") return
   let headerSpace = parent.document.getElementById(keyToolbarHeaderSpace) as HTMLElement | null
   if (!headerSpace) {
     // #keyToolbarHeaderSpaceが存在しない場合は、elementの先頭に作成する
