@@ -5,22 +5,27 @@ import { removeContainer, pageOpen } from "./lib"
 import { booleanLogseqVersionMd } from "."
 
 export const loadDateSelector = () => {
+    const versionMd = booleanLogseqVersionMd()
+    if (versionMd === false) {
+        logseq.updateSettings({ booleanDateSelector: false })
+        // 日付セレクター機能はLogseq dbバージョンでは対応していません。というメッセージを通知
+        logseq.UI.showMsg(t("The date selector function is not supported in the Logseq db version. Changed to off."), "warning", { timeout: 3000 })
+    } else {
+        //プラグイン設定変更時
+        logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
+            if (oldSet.booleanDateSelector !== newSet.booleanDateSelector) {
+                if (newSet.booleanDateSelector === true)
+                    main()//表示する
+                else
+                    removeContainer("lse-dataSelector-container")//消す
+            }
 
-    //プラグイン設定変更時
-    logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-        if (oldSet.booleanDateSelector !== newSet.booleanDateSelector) {
-            if (newSet.booleanDateSelector === true)
-                main()//表示する
-            else
-                removeContainer("lse-dataSelector-container")//消す
-        }
+        })
 
-    })
+        if (logseq.settings!.booleanDateSelector === true)
+            main()
 
-    if (logseq.settings!.booleanDateSelector === true)
-        main()
-
-    logseq.provideStyle(`
+        logseq.provideStyle(`
     #left-sidebar #lse-dataSelector-inner>label p {
             margin-left: 1em;
             white-space: nowrap;
@@ -40,61 +45,54 @@ export const loadDateSelector = () => {
             }
     }
     `)
+    }
 }
 
 const main = () => {
-    const versionMd = booleanLogseqVersionMd()
-    if (versionMd === false) {
-        logseq.updateSettings({ booleanDateSelector: false })
-        // 日付セレクター機能はLogseq dbバージョンでは対応していません。というメッセージを通知
-        logseq.UI.showMsg(t("The date selector function is not supported in the Logseq db version. Changed to off."), "warning", { timeout: 3000 })
-    } else {
+    if (parent.document.getElementById("lse-dataSelector-container"))
+        removeContainer("lse-dataSelector-container")//すでに存在する場合は削除する
 
-        if (parent.document.getElementById("lse-dataSelector-container"))
-            removeContainer("lse-dataSelector-container")//すでに存在する場合は削除する
+    setTimeout(async () => {
+        //左サイドバーのnav-contents-containerにスペースを追加する
+        const navEle: HTMLDivElement | null = parent.document.querySelector("#left-sidebar>div.left-sidebar-inner div.nav-contents-container") as HTMLDivElement || null
 
-        setTimeout(async () => {
-            //左サイドバーのnav-contents-containerにスペースを追加する
-            const navEle: HTMLDivElement | null = parent.document.querySelector(versionMd as boolean === true ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
+        if (navEle === null) return //nullの場合はキャンセル
 
-            if (navEle === null) return //nullの場合はキャンセル
+        const divAsItemEle: HTMLDivElement = document.createElement("div")
+        divAsItemEle.className = "nav-content-item mt-3 is-expand flex-shrink-0"
+        divAsItemEle.id = "lse-dataSelector-container"
+        const detailsEle: HTMLDetailsElement = document.createElement("details")
+        detailsEle.className = "nav-content-item-inner"
+        detailsEle.open = true
+        const summaryEle: HTMLElement = document.createElement("summary")
+        summaryEle.className = "header items-center"
+        summaryEle.style.cursor = "row-resize"
+        summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
+        summaryEle.innerText = t("Date Selector")// タイトルを入れる
+        summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
+        const containerEle: HTMLDivElement = document.createElement("div")
+        containerEle.className = "bg"
+        containerEle.id = "lse-dataSelector-inner"
+        detailsEle.appendChild(summaryEle)
+        detailsEle.appendChild(containerEle)
+        divAsItemEle.appendChild(detailsEle)
+        navEle.appendChild(divAsItemEle)
 
-            const divAsItemEle: HTMLDivElement = document.createElement("div")
-            divAsItemEle.className = "nav-content-item mt-3 is-expand flex-shrink-0"
-            divAsItemEle.id = "lse-dataSelector-container"
-            const detailsEle: HTMLDetailsElement = document.createElement("details")
-            detailsEle.className = "nav-content-item-inner"
-            detailsEle.open = true
-            const summaryEle: HTMLElement = document.createElement("summary")
-            summaryEle.className = "header items-center"
-            summaryEle.style.cursor = "row-resize"
-            summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
-            summaryEle.innerText = t("Date Selector")// タイトルを入れる
-            summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
-            const containerEle: HTMLDivElement = document.createElement("div")
-            containerEle.className = "bg"
-            containerEle.id = "lse-dataSelector-inner"
-            detailsEle.appendChild(summaryEle)
-            detailsEle.appendChild(containerEle)
-            divAsItemEle.appendChild(detailsEle)
-            navEle.appendChild(divAsItemEle)
+        const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs
 
-            const { preferredDateFormat } = await logseq.App.getUserConfigs() as AppUserConfigs
+        //スペースに日付セレクターを追加する
+        setTimeout(() => {
+            const containerEle: HTMLDivElement | null = parent.document.getElementById("lse-dataSelector-inner") as HTMLDivElement | null
 
-            //スペースに日付セレクターを追加する
-            setTimeout(() => {
-                const containerEle: HTMLDivElement | null = parent.document.getElementById("lse-dataSelector-inner") as HTMLDivElement | null
+            if (containerEle === null) return //nullの場合はキャンセル
 
-                if (containerEle === null) return //nullの場合はキャンセル
+            if (containerEle.dataset.flag !== "true")//すでに存在する場合はキャンセル
+                createSelector(preferredDateFormat, containerEle)//label>input#lse-dataSelector
 
-                if (containerEle.dataset.flag !== "true")//すでに存在する場合はキャンセル
-                    createSelector(preferredDateFormat, containerEle)//label>input#lse-dataSelector
+            containerEle.dataset.flag = "true" //フラグを立てる
+        }, 1)
 
-                containerEle.dataset.flag = "true" //フラグを立てる
-            }, 1)
-
-        }, 500)
-    }
+    }, 500)
 }
 
 const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HTMLDivElement) => {
