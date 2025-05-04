@@ -114,7 +114,6 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
   targetElement.append(additionalButtons(thisPageName))
 
   //// CSSで、左メニューの目次内のヘッダーと、ページ内のヘッダーを連動させる (outlineをつける)
-  let css = ""
 
   // Create list
   for (let i = 0; i < tocBlocks.length; i++) {
@@ -205,21 +204,33 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
         selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
 
-      element.addEventListener('mouseover', () => {
-        const pageHeader = parent.document.querySelector(`#block-content-${tocBlocks[i].uuid}`) as HTMLElement | null;
-        if (pageHeader) {
-          pageHeader.style.outline = "6px solid var(--ls-block-highlight-color)";
-          pageHeader.style.outlineOffset = "6px";
-        }
-      });
+      let hoverTimeout: NodeJS.Timeout | null = null
 
-      element.addEventListener('mouseout', () => {
-        const pageHeader = parent.document.querySelector(`#block-content-${tocBlocks[i].uuid}`) as HTMLElement | null;
-        if (pageHeader) {
-          pageHeader.style.outline = "unset";
-          pageHeader.style.outlineOffset = "unset";
-        }
-      });
+      if (logseq.settings!.highlightBlockOnHover === true) {
+        const selector = `#main-content-container div.page div.blocks-container div.ls-block[level][blockid="${tocBlocks[i].uuid}"]`
+
+        element.addEventListener('mouseover', () => {
+          if (hoverTimeout) clearTimeout(hoverTimeout)
+          hoverTimeout = setTimeout(() => {
+            const pageHeader = parent.document.querySelector(selector) as HTMLElement | null
+            if (pageHeader) {
+              pageHeader.style.outline = "6px solid var(--ls-block-highlight-color)"
+              pageHeader.style.outlineOffset = "6px"
+            }
+          }, 20) // 20msの遅延を設定
+        })
+
+        element.addEventListener('mouseout', () => {
+          if (hoverTimeout) clearTimeout(hoverTimeout)
+          hoverTimeout = setTimeout(() => {
+            const pageHeader = parent.document.querySelector(selector) as HTMLElement | null
+            if (pageHeader) {
+              pageHeader.style.outline = "unset"
+              pageHeader.style.outlineOffset = "unset"
+            }
+          }, 10) // 10msの遅延を設定
+        })
+      }
 
       //Zoomed
       if (flag &&
@@ -230,10 +241,6 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
         }
 
       targetElement.append(element)
-
-      css += `
-      #left-sidebar
-      `
     }
   }
 }

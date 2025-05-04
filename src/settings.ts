@@ -38,6 +38,14 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         // これが無効の場合は、Ctrlキーを同時押しでクリックすることでズームページになる
         description: t("If disabled, hold down the `Ctrl` key and click to open as a zoom page."),
     },
+    {// ヘッダーリストにカーソルを合わせた時に、該当するブロックをハイライトする
+        key: "highlightBlockOnHover",
+        title: t("Enable: Highlight block on hover"),
+        type: "boolean",
+        default: true,
+        // ヘッダーリストのヘッダー項目にカーソルを合わせた時に、該当するブロックをハイライトする
+        description: t("Highlight the corresponding block when hovering over the header item in the header list."),
+    },
 
 
     {//Switch loadShowByMouseOver
