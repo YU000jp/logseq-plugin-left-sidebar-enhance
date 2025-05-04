@@ -188,13 +188,16 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       if (logseq.settings!.tocRemoveWordList as string !== "")
         content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
 
-      element.innerHTML = versionMd === true ?
+
+      const headerText = versionMd === true ?
         removeMd(
           `${(content.includes("collapsed:: true") //collapsed:: trueが含まれている場合は、それを削除する
             && content.substring(2, content.length - 16))
           || content.substring(2)}`
         )
         : removeMd(content) // dbバージョン用
+      element.innerHTML = headerText
+      element.title = headerText // ツールチップに表示する
       element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
         selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
 
