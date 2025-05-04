@@ -34,6 +34,21 @@ export const getContentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<Blo
   return result?.content ?? null
 }
 
+export const getParentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["uuid"] | null> => {
+  const query = `
+    [:find (pull ?p [{:block/parent [:block/uuid]}])
+     :where
+     [?p :block/uuid ?uuid]
+     [(str ?uuid) ?str]
+     [(= ?str "${uuid}")]]`
+  const result = await advancedQuery<{ parent: BlockEntity["parent"] }>(query)
+  console.warn("getParentFromUuid", result)
+  if(result?.[0]?.parent) {
+    const parentUuid = result[0].parent.uuid
+    return parentUuid
+  }
+  return null
+}
 
 
 // MD バージョン用の関数

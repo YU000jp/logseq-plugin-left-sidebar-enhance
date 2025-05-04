@@ -1,10 +1,10 @@
-import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import removeMd from "remove-markdown"
 import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
 import { pageOpen } from "./lib"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
-import { getContentFromUuid } from "./query/advancedQuery"
+import { getContentFromUuid, getParentFromUuid } from "./query/advancedQuery"
 import { clearTOC } from "./toc"
 
 
@@ -234,7 +234,7 @@ const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string
           logseq.Editor.selectBlock(blockUuid), 150)
       } else
         //親ブロックがcollapsedの場合
-        await parentBlockToggleCollapsed(blockUuid)
+        await expandAndScrollToBlock(blockUuid, true)
     }
 }
 
@@ -248,25 +248,13 @@ const scrollToAndSelectBlock = async (blockUuid: string) => {
   return false
 }
 
-const parentBlockToggleCollapsed = async (blockUuidOrId): Promise<void> => {
-  const block = await logseq.Editor.getBlock(blockUuidOrId) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
-  if (!block) return
-  const parentBlock = await logseq.Editor.getBlock(block.parent.id) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
-  if (!parentBlock) return
-  await logseq.Editor.setBlockCollapsed(parentBlock.uuid, false)
-  if (!(await scrollToAndSelectBlock(block.uuid)))
-    await expandParentBlock(parentBlock)
-}
-
-const expandParentBlock = async (block: { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] }): Promise<void> => {
-  if (block.parent) {
-    const parentBlock = await logseq.Editor.getBlock(block.parent.id) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
-    if (parentBlock) {
-      await logseq.Editor.setBlockCollapsed(parentBlock.uuid, false)
-      if (!(await scrollToAndSelectBlock(parentBlock.uuid)))
-        await expandParentBlock(parentBlock)
-    }
-  }
+const expandAndScrollToBlock = async (blockUuid: BlockEntity["uuid"], isInitialCall = false): Promise<void> => {
+  if (!isInitialCall)
+    await logseq.Editor.setBlockCollapsed(blockUuid, false)
+  const parentUuid = await getParentFromUuid(blockUuid) as BlockEntity["uuid"] | null
+  if (parentUuid
+    && !(await scrollToAndSelectBlock(blockUuid)))
+    await expandAndScrollToBlock(parentUuid, false)
 }
 
 export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }) => {
