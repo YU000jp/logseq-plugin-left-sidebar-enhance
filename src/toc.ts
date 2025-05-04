@@ -149,10 +149,23 @@ const routeCheck = async (versionMd: boolean) => {
 
         if (pageOrZoom.check === "page" && pageOrZoom.page) { // titleが存在する場合はページと認識する
 
-            // ページの場合
-            updateCurrentPage(pageOrZoom.page.title, pageOrZoom.page.uuid) // currentPageを更新
-            onPageChangedCallback(pageOrZoom.page.title) // ページが変更されたときのコールバックへ渡す
-            return
+            if (pageOrZoom.page.uuid.startsWith("00000001-")) {
+                // 日誌のページの場合は、今日のページ名が返される
+                // 日誌の場合は、今日のページ名が返される
+
+                // 日誌を開いている場合
+                setTimeout(() => {
+                    const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+                    if (journalsEle)
+                        whenOpenJournals(journalsEle, versionMd)
+                }, 50)
+
+            } else {
+                // ページの場合
+                updateCurrentPage(pageOrZoom.page.title, pageOrZoom.page.uuid) // currentPageを更新
+                onPageChangedCallback(pageOrZoom.page.title) // ページが変更されたときのコールバックへ渡す
+                return
+            }
 
         } else
             if (pageOrZoom.check === "zoom") {
@@ -182,12 +195,8 @@ const routeCheck = async (versionMd: boolean) => {
                 }
             }
 
-        // 日誌を開いている場合
-        const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
-        if (journalsEle) {
-            whenOpenJournals(journalsEle, versionMd)
-            return
-        }
+        // console.log("Not found page or zoom") // ページもズームも見つからない場合は何もしない   
+
 
     }
     clearTOC()

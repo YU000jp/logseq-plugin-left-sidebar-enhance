@@ -2,7 +2,7 @@ import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import removeMd from "remove-markdown"
 import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
-import { pageOpen } from "./lib"
+import { scrollToWithOffset, pageOpen } from "./lib"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
 import { getContentFromUuid, getParentFromUuid } from "./query/advancedQuery"
 import { clearTOC } from "./toc"
@@ -217,31 +217,31 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
 
 const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
-  if (ctrlKey || logseq.settings!.booleanAsZoomPage === true) {
-    logseq.App.pushState("page", { name: blockUuid }) //Uuidをページ名としてpushStateするとズームページが開く
-    if (logseq.settings!.booleanAsZoomPage === false)
-      logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
+  if (shiftKey) {
+    logseq.Editor.openInRightSidebar(blockUuid)
   } else
-    if (shiftKey)
-      logseq.Editor.openInRightSidebar(blockUuid)
-    else {
-      //https://github.com/freder/logseq-plugin-jump-to-block/blob/master/src/components/App.tsx#L39
+    if (ctrlKey || logseq.settings!.booleanAsZoomPage === true) {
+      logseq.App.pushState("page", { name: blockUuid }) // Uuidをページ名としてpushStateするとズームページが開く
+      if (logseq.settings!.booleanAsZoomPage === false)
+        logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
+    } else {
+
+      await logseq.Editor.selectBlock(blockUuid)
       const elem = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
       if (elem) {
         logseq.Editor.exitEditingMode()
-        elem.scrollIntoView({ block: 'center' })
-        setTimeout(() =>
-          logseq.Editor.selectBlock(blockUuid), 150)
-      } else
-        //親ブロックがcollapsedの場合
+        scrollToWithOffset(elem) // 共通関数を利用
+      } else {
+        // 親ブロックがcollapsedの場合
         await expandAndScrollToBlock(blockUuid, true)
+      }
     }
 }
 
 const scrollToAndSelectBlock = async (blockUuid: string) => {
   const element = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
   if (element) {
-    element.scrollIntoView({ block: 'center' })
+    scrollToWithOffset(element) // 共通関数を利用
     setTimeout(() => logseq.Editor.selectBlock(blockUuid), 50)
     return true
   }

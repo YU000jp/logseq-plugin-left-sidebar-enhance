@@ -1,29 +1,27 @@
-import { t } from "logseq-l10n"
-import { pageOpen } from "./lib"
-import { keyToolbarHeaderSpace } from "./tocProcess"
+import { pageOpen, scrollToWithOffset } from "./lib"
+import { clearTOC } from "./toc"
+
 let processing = false
+
 const rtf = new Intl.RelativeTimeFormat("default", { numeric: "auto" })
+
 export const whenOpenJournals = (journalsEle: HTMLDivElement, versionMd: boolean) => {
-    processing = false
+    if (processing) return
+    processing = true
+    setTimeout(() =>
+        processing = false, 1000)
     //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
     const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
     if (element) {
-        const headerSpace = parent.document.getElementById(keyToolbarHeaderSpace) as HTMLElement | null
-        if (headerSpace) headerSpace.remove()
         if (journalsEle) {
-            //element.innerHTML = t("No headers found") + "(journals)"]
             element.innerHTML = ""
             getJournalTitles(journalsEle, element, versionMd)
         } else
-            element.innerHTML = t("No headers found") //HOMEの場合
+            clearTOC()
     }
 }
 
 const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, versionMd: boolean) => {
-    if (processing) return
-    processing = true
-    setTimeout(() =>
-        processing = false, 3000)
     // 表示処理
     updateJournalList(journalsEle, tocContentEle, versionMd)
 
@@ -31,10 +29,6 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
     const mainContentContainer = parent.document.getElementById("main-content-container") as HTMLDivElement | null
     if (mainContentContainer) {
         const scrollEvent = () => {
-            if (processing) return
-            processing = true
-            setTimeout(() =>
-                processing = false, 2000)
             const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
             if (journalsEle)
                 updateJournalList(journalsEle, tocContentEle, versionMd) // 表示処理
@@ -44,7 +38,6 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
         mainContentContainer.addEventListener("scroll", scrollEvent)
     }
 }
-
 
 const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, versionMd: boolean) => {
     tocContentEle.innerHTML = ""
@@ -76,7 +69,7 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
             }
 
             journalTitleEle.style.cursor = "pointer"
-            journalTitleEle.onclick = (ev) => {
+            journalTitleEle.onclick = async (ev) => {
                 logseq.showMainUI() // ダブルクリック対策
                 setTimeout(() => {
                     logseq.hideMainUI()
@@ -94,7 +87,7 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
 
                         const journalEle = parent.document.getElementById(title) as HTMLAnchorElement | null
                         if (journalEle) {
-                            journalEle.scrollIntoView({ behavior: "smooth", block: "center" })
+                            scrollToWithOffset(journalEle); // 共通関数を利用
                             //スクロールしたら、タイトルを表示する
                             journalEle.style.backgroundColor = "var(--ls-selection-background-color)"
                             setTimeout(() => journalEle.style.backgroundColor = "", 1200)
