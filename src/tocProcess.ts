@@ -5,6 +5,7 @@ import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onB
 import { pageOpen } from "./lib"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
 import { getContentFromUuid } from "./query/advancedQuery"
+import { clearTOC } from "./toc"
 
 
 export const keyToolbarHeaderSpace = "lse-toc-header-space"
@@ -313,7 +314,7 @@ export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoo
       if (onBlockChangedOnce === false)
         onBlockChanged()
     } else
-      element.innerHTML = t("No headers found")
+      clearTOC()
   }
 }
 

@@ -3,26 +3,36 @@ import { t } from "logseq-l10n"
 import { booleanLogseqVersionMd, getCurrentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
 import { headerCommand } from "./headerCommand"
 import { removeContainer } from "./lib"
-import { zoomBlockWhenDb, getCurrentPageOriginalNameAndUuid } from "./query/advancedQuery"
+import { getCurrentPageOriginalNameAndUuid, zoomBlockWhenDb } from "./query/advancedQuery"
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { displayToc } from "./tocProcess"
 
+
+// プラグイン起動後、5秒間はロックをかける
+let processing = true
 export const loadTOC = (versionMd: boolean) => {
 
-    //プラグイン設定変更時
-    logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-        if (oldSet.booleanLeftTOC !== newSet.booleanLeftTOC) {
-            if (newSet.booleanLeftTOC === true)
-                main()//表示する
-            else
-                removeContainer("lse-toc-container")//消す
-        }
-        if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
-            || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
-            await displayToc(getCurrentPageOriginalName()) //更新
 
-    })
+    setTimeout(() => {
+        //プラグイン設定変更時
+        logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
+            if (processing) return
+            if (oldSet.booleanLeftTOC !== newSet.booleanLeftTOC) {
+                if (newSet.booleanLeftTOC === true)
+                    main()//表示する
+                else
+                    removeContainer("lse-toc-container")//消す
+            }
+            if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
+                || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
+                await displayToc(getCurrentPageOriginalName()) //更新
+
+        })
+        logseq.App.onCurrentGraphChanged(async () => {
+           routeCheck(versionMd)//グラフ変更時に実行
+        })
+    }, 5000)
 
     if (logseq.settings!.booleanLeftTOC === true)
         main()
@@ -181,7 +191,12 @@ const routeCheck = async (versionMd: boolean) => {
             }
         }
     }
-    //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+    clearTOC()
+}
+
+
+//"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+export const clearTOC = () => {
     const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
     if (element)
         element.innerHTML = t("No headers found")

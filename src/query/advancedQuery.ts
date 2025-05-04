@@ -85,9 +85,9 @@ export const zoomBlockWhenDb = async (uuid: BlockEntity["uuid"]): Promise<{ uuid
      [(str ?uuid) ?str]
      [(= ?str "${uuid}")]]`
   const result = await advancedQuery<{ uuid: PageEntity["uuid"], title: string }>(query)
-  if (result) {
-    const { page } = result[0]
-    return page
-  }
+  if (result)
+    return result[0] ?
+      { uuid: result[0].page.uuid, title: result[0].page.title }
+      : null
   return null
 }
