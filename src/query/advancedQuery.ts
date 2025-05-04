@@ -77,13 +77,17 @@ export const getContentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<Blo
   return result?.content ?? null
 }
 
-export const getBlockParentPageFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["page"] | null> => {
+export const zoomBlockWhenDb = async (uuid: BlockEntity["uuid"]): Promise<{ uuid: PageEntity["uuid"], title: string } | null> => {
   const query = `
-    [:find (pull ?p [:block/page])
+    [:find (pull ?p [{:block/page [:block/uuid :block/title]}])
      :where
      [?p :block/uuid ?uuid]
      [(str ?uuid) ?str]
      [(= ?str "${uuid}")]]`
-  const result = await advancedQuery<{ page: BlockEntity["page"] }>(query)
-  return result?.page ?? null
+  const result = await advancedQuery<{ uuid: PageEntity["uuid"], title: string }>(query)
+  if (result) {
+    const { page } = result[0]
+    return page
+  }
+  return null
 }
