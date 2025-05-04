@@ -229,7 +229,7 @@ const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string
       const elem = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
       if (elem) {
         logseq.Editor.exitEditingMode()
-        elem.scrollIntoView({ behavior: 'smooth' })
+        elem.scrollIntoView({ block: 'center' })
         setTimeout(() =>
           logseq.Editor.selectBlock(blockUuid), 150)
       } else
@@ -241,7 +241,7 @@ const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string
 const scrollToAndSelectBlock = async (blockUuid: string) => {
   const element = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
+    element.scrollIntoView({ block: 'center' })
     setTimeout(() => logseq.Editor.selectBlock(blockUuid), 50)
     return true
   }
