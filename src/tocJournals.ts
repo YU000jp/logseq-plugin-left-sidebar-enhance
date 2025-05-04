@@ -45,7 +45,7 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
     //list-style
     ulEle.style.listStyle = "disc"
     ulEle.style.marginLeft = "3em"
-    const journalTitles = journalsEle.querySelectorAll(versionMd === true ? "a.journal-title" : "div.ls-page-title span.block-title-wrap") as NodeListOf<HTMLAnchorElement>
+    const journalTitles = journalsEle.querySelectorAll(versionMd === true ? "a.journal-title" : "div.ls-page-title span.block-title-wrap,div#journals div.is-journals h1.page-title>span") as NodeListOf<HTMLAnchorElement>
     journalTitles.forEach((journalTitle) => {
         const title = journalTitle.textContent
         if (title) {

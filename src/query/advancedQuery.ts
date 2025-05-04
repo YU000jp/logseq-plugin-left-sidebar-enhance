@@ -13,37 +13,36 @@ const advancedQuery = async <T>(query: string, ...input: Array<any>): Promise<T 
 }
 
 export const getPageUuid = async (pageName: string): Promise<PageEntity["uuid"] | null> => {
-  const query = `
+  const result = await advancedQuery<{ uuid: PageEntity["uuid"] }[]>(`
     [:find (pull ?p [:block/uuid])
      :in $ ?input
      :where
      [?p :block/name ?name]
      [(= ?name ?input)]
-     [?p :block/uuid ?uuid]]`
-  const result = await advancedQuery<{ uuid: PageEntity["uuid"] }[]>(query, `"${pageName}"`)
+     [?p :block/uuid ?uuid]]
+     `  , `"${pageName}"`)
   return result?.[0]?.uuid ?? null
 }
 
 export const getContentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["content"] | null> => {
-  const query = `
+  const result = await advancedQuery<{ content: BlockEntity["content"] }>(`
     [:find (pull ?p [:block/content])
      :where
      [?p :block/uuid ?uuid]
      [(str ?uuid) ?str]
-     [(= ?str "${uuid}")]]`
-  const result = await advancedQuery<{ content: BlockEntity["content"] }>(query)
+     [(= ?str "${uuid}")]]
+     ` )
   return result?.content ?? null
 }
 
 export const getParentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["uuid"] | null> => {
-  const query = `
+  const result = await advancedQuery<{ parent: BlockEntity["parent"] }>(`
     [:find (pull ?p [{:block/parent [:block/uuid]}])
      :where
      [?p :block/uuid ?uuid]
      [(str ?uuid) ?str]
-     [(= ?str "${uuid}")]]`
-  const result = await advancedQuery<{ parent: BlockEntity["parent"] }>(query)
-  console.warn("getParentFromUuid", result)
+     [(= ?str "${uuid}")]]
+     `)
   if (result?.[0]?.parent) {
     const parentUuid = result[0].parent.uuid
     return parentUuid
@@ -56,15 +55,15 @@ export const getParentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<Bloc
 
 export const getCurrentPageForMd = async (): Promise<{ originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null> => {
   // mdバージョンの場合は original-nameが取得できる
-  const query = `
+  const result = await advancedQuery<{ "original-name": PageEntity["originalName"], uuid: PageEntity["uuid"] }[]>(`
       [:find (pull ?p [:block/original-name :block/uuid])
        :in $ ?current
        :where
        [?p :block/name ?name]
        [(= ?name ?current)]
        [?p :block/uuid ?uuid]
-       [?p :block/original-name ?original-name]]`
-  const result = await advancedQuery<{ "original-name": PageEntity["originalName"], uuid: PageEntity["uuid"] }[]>(query, ":current-page")
+       [?p :block/original-name ?original-name]]
+       `, ":current-page")
   if (result?.[0]) {
     const { "original-name": originalName, uuid } = result[0]
     return { originalName, uuid }
@@ -74,15 +73,15 @@ export const getCurrentPageForMd = async (): Promise<{ originalName: PageEntity[
 
 export const getCurrentZoomForMd = async (): Promise<{ uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } } | null> => {
   // mdバージョンの場合は original-nameが取得できる
-  const query = `
+  const result = await advancedQuery<{ uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } }[]>(`
       [:find (pull ?b [:block/uuid {:block/page [:block/uuid :block/original-name]}])
        :in $ ?current
        :where
        [?b :block/uuid ?uuid]
        [(str ?uuid) ?str]
-       [(= ?str ?current)]]`
-  const result = await advancedQuery<{ uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } }[]>(query, ":current-page")
-  if (result?.[0])
+       [(= ?str ?current)]]
+       ` , ":current-page")
+  if (result?.[0] && result[0].page)
     return { uuid: result[0].uuid, page: { originalName: result[0].page["original-name"], uuid: result[0].page.uuid } }
   return null
 }
@@ -93,13 +92,13 @@ export const getCurrentZoomForMd = async (): Promise<{ uuid: BlockEntity["uuid"]
 
 
 export const zoomBlockWhenDb = async (uuid: BlockEntity["uuid"]): Promise<{ uuid: PageEntity["uuid"], title: string } | null> => {
-  const query = `
+  const result = await advancedQuery<{ uuid: PageEntity["uuid"], title: string }>(`
     [:find (pull ?p [{:block/page [:block/uuid :block/title]}])
      :where
      [?p :block/uuid ?uuid]
      [(str ?uuid) ?str]
-     [(= ?str "${uuid}")]]`
-  const result = await advancedQuery<{ uuid: PageEntity["uuid"], title: string }>(query)
+     [(= ?str "${uuid}")]]
+     ` )
   if (result)
     return result[0] ?
       { uuid: result[0].page.uuid, title: result[0].page.title }
@@ -111,18 +110,18 @@ export const zoomBlockWhenDb = async (uuid: BlockEntity["uuid"]): Promise<{ uuid
 // :current-pageで、:block/pageが返ってくる場合はズーム中として認識する
 export const CurrentCheckPageOrZoom = async (): Promise<{ check: "page" | "zoom", page?: { title: string, uuid: PageEntity["uuid"] } }> => {
 
-  //:current-pageで、:block/titleが存在する場合
-  const query = `
+  //:current-pageで、:block/titleが存在する場合は、dbバージョンかつページを開いていると認識する
+  const result = await advancedQuery<{ title: string, uuid: PageEntity["uuid"] }>(`
     [:find (pull ?p [:block/title :block/uuid])
      :in $ ?current
      :where
      [?p :block/title ?title]
      [?p :block/uuid ?uuid]
      [?p :block/name ?name]
-     [(= ?name ?current)]]`
-  const result = await advancedQuery<{ title: string }>(query, ":current-page")
-  if (result?.[0]?.title)
+     [(= ?name ?current)]]
+     ` , ":current-page")
+  if (result?.[0]?.title) // titleが存在する場合はdbグラフかつページと認識する
     return { check: "page", page: { title: result[0].title, uuid: result[0].uuid } }
-  else
-    return { check: "zoom" }
+  return { check: "zoom" } // :current-pageが存在しない場合はズーム中と認識する
+
 }

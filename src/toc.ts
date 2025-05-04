@@ -3,7 +3,7 @@ import { t } from "logseq-l10n"
 import { booleanLogseqVersionMd, getCurrentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
 import { headerCommand } from "./headerCommand"
 import { removeContainer } from "./lib"
-import { getCurrentPageForMd, CurrentCheckPageOrZoom, getCurrentZoomForMd, zoomBlockWhenDb } from "./query/advancedQuery"
+import { getCurrentPageForMd, CurrentCheckPageOrZoom, getCurrentZoomForMd, zoomBlockWhenDb, getPageUuid } from "./query/advancedQuery"
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { displayToc } from "./tocProcess"
@@ -146,11 +146,11 @@ const routeCheck = async (versionMd: boolean) => {
 
 
         const pageOrZoom = await CurrentCheckPageOrZoom() as { check: "page" | "zoom", page?: { title: string, uuid: PageEntity["uuid"] } }
+        // md グラフの場合もzoom扱いにする
 
         if (pageOrZoom.check === "page" && pageOrZoom.page) { // titleが存在する場合はページと認識する
 
             if (pageOrZoom.page.uuid.startsWith("00000001-")) {
-                // 日誌のページの場合は、今日のページ名が返される
                 // 日誌の場合は、今日のページ名が返される
 
                 // 日誌を開いている場合
@@ -158,7 +158,7 @@ const routeCheck = async (versionMd: boolean) => {
                     const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
                     if (journalsEle)
                         whenOpenJournals(journalsEle, versionMd)
-                }, 50)
+                }, 150)
 
             } else {
                 // ページの場合
@@ -169,29 +169,33 @@ const routeCheck = async (versionMd: boolean) => {
 
         } else
             if (pageOrZoom.check === "zoom") {
-                // ズームの場合
+                // ズームの場合と、mdグラフの場合もここに入る
 
-                // mdグラフの場合 (original-nameが取得できる)
-                const currentZoom = await getCurrentZoomForMd() as { uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } } | null
-                if (currentZoom) {
-                    updateCurrentPage(currentZoom.page.originalName, currentZoom.page.uuid)
-                    onPageChangedCallback(currentZoom.page.originalName, { zoomIn: true, zoomInUuid: currentZoom.uuid })
-                    return
-
+                // :current-pageが使えないので、DOMから取得する
+                const zoomBlockElement = parent.document.querySelector("#main-content-container div.page>div>div.mb-4+div.ls-page-blocks>div>div.page-blocks-inner>div>div[id]") as HTMLDivElement | null
+                if (zoomBlockElement) {
+                    const uuid = zoomBlockElement.id
+                    const blockParentPage = await zoomBlockWhenDb(uuid) as { uuid: PageEntity["uuid"], title: string } | null
+                    if (blockParentPage) {
+                        updateCurrentPage(blockParentPage.title, blockParentPage.uuid)
+                        onPageChangedCallback(blockParentPage.title, { zoomIn: true, zoomInUuid: uuid })
+                        return
+                    }
                 } else {
 
-                    // dbグラフの場合 (:current-pageが使えないので、DOMから取得する)
-                    const zoomBlockElement = parent.document.querySelector("#main-content-container div.page>div>div.ls-page-blocks>div>div.page-blocks-inner>div>div[id]") as HTMLDivElement | null
-                    if (zoomBlockElement) {
-                        const uuid = zoomBlockElement.id
-                        const blockParentPage = await zoomBlockWhenDb(uuid) as { uuid: PageEntity["uuid"], title: string } | null
-                        if (blockParentPage) {
-                            updateCurrentPage(blockParentPage.title, blockParentPage.uuid)
-                            onPageChangedCallback(blockParentPage.title, { zoomIn: true, zoomInUuid: uuid })
-                            return
+                    // mdグラフの場合
+                    const pageTitleElement = parent.document.querySelector("#main-content-container div.page h1.page-title>span") as HTMLSpanElement | null
+                    if (pageTitleElement) {
+                        const pageTitle = pageTitleElement.dataset.ref || pageTitleElement.innerText
+                        if (pageTitle) {
+                            const pageUuid = await logseq.Editor.getPage(pageTitle) as PageEntity["uuid"] | null // ページのUUIDを取得 ※なぜかクエリーでUUIDが取得できない
+                            if (pageUuid) {
+                                updateCurrentPage(pageTitle, pageUuid) // currentPageを更新
+                                onPageChangedCallback(pageTitle) // ページが変更されたときのコールバックへ渡す
+                                return
+                            }
                         }
                     }
-
                 }
             }
 
