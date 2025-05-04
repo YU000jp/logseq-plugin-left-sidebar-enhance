@@ -238,6 +238,15 @@ const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string
     }
 }
 
+const scrollToAndSelectBlock = async (blockUuid: string) => {
+  const element = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+    setTimeout(() => logseq.Editor.selectBlock(blockUuid), 50)
+    return true
+  }
+  return false
+}
 
 const parentBlockToggleCollapsed = async (blockUuidOrId): Promise<void> => {
   const block = await logseq.Editor.getBlock(blockUuidOrId) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
@@ -245,32 +254,20 @@ const parentBlockToggleCollapsed = async (blockUuidOrId): Promise<void> => {
   const parentBlock = await logseq.Editor.getBlock(block.parent.id) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
   if (!parentBlock) return
   await logseq.Editor.setBlockCollapsed(parentBlock.uuid, false)
-  const element = parent.document.getElementById('block-content-' + block.uuid) as HTMLDivElement | null
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
-    setTimeout(() =>
-      logseq.Editor.selectBlock(block.uuid), 50)
-  } else
+  if (!(await scrollToAndSelectBlock(block.uuid)))
     await expandParentBlock(parentBlock)
 }
-
 
 const expandParentBlock = async (block: { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] }): Promise<void> => {
   if (block.parent) {
     const parentBlock = await logseq.Editor.getBlock(block.parent.id) as { uuid: BlockEntity["uuid"], parent: BlockEntity["parent"] } | null
     if (parentBlock) {
       await logseq.Editor.setBlockCollapsed(parentBlock.uuid, false)
-      const element = parent.document.getElementById('block-content-' + parentBlock.uuid) as HTMLDivElement | null
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
-        setTimeout(() =>
-          logseq.Editor.selectBlock(block.uuid), 50)
-      } else
+      if (!(await scrollToAndSelectBlock(parentBlock.uuid)))
         await expandParentBlock(parentBlock)
     }
   }
 }
-
 
 export const displayToc = async (pageName: string, flag?: { zoomIn: boolean, zoomInUuid: BlockEntity["uuid"] }) => {
   const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
