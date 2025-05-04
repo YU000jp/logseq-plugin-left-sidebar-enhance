@@ -1,3 +1,19 @@
+# [1.14.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.13.0...v1.14.0) (2025-05-04)
+
+
+### Bug Fixes
+
+* **bug:** bug: Page cannot be detected when in zoom mode [#20](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/20) ([953b186](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/953b186326d2bc170333feac8c0cb2a36c177212))
+* **bug:** Link does not work when in zoom mode [#21](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/21) ([9319dcb](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/9319dcb8dfbadf790b4ae1bef4d23cb7634dff35))
+* **bug:** The left menu remains closed when the app is opened ([6b5eb30](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/6b5eb30d7bddb622452bdd339ffcaf85107cace8))
+
+
+### Features
+
+* **Add:** Highlight block on hover [#19](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/19) ([fc15311](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/fc15311f43e174e4d35702e87e13cfcb63a44854))
+* **Add:** Highlight header on hover [#19](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/19) ([e48b86f](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/e48b86fad2076afb80b18db16cc689f5def2615e))
+* Header text also displayed in the tooltip ([169f8f0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/169f8f0199c5db48aad6d9998dc856942b06c5c8))
+
 # [1.13.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.12.1...v1.13.0) (2025-05-01)
 
 
