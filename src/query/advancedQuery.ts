@@ -56,9 +56,9 @@ export const getCurrentPageOriginalNameAndUuid = async (versionMd: boolean): Pro
   } else {
     // mdバージョンでない場合は、queryで取得できないので、getCurrentPageを使う
     const current = await logseq.Editor.getCurrentPage() as PageEntity | null
-    if (current?.properties) {
+    if (current) {
       // propertiesの中にtitleがあるので、titleを取得し、それをoriginalNameとして返す
-      const originalName = current.properties["title"] ?? current.title
+      const originalName = current.properties!["title"] ?? current.title
       const uuid = current.uuid
       return { originalName, uuid }
     }
