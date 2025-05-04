@@ -113,7 +113,8 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
   // additional buttons
   targetElement.append(additionalButtons(thisPageName))
 
-  //// CSSで、左メニューの目次内のヘッダーと、ページ内のヘッダーを連動させる (outlineをつける)
+  // ページコンテンツのヘッダーにカーソルを合わせた時に、CSSでヘッダーリストのUUIDが一致する、該当する項目をハイライトする
+  let css = ""
 
   // Create list
   for (let i = 0; i < tocBlocks.length; i++) {
@@ -204,32 +205,39 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
       element.addEventListener('click', ({ shiftKey, ctrlKey }) =>
         selectBlock(shiftKey, ctrlKey, thisPageName, tocBlocks[i].uuid))
 
-      let hoverTimeout: NodeJS.Timeout | null = null
 
+      const selector = `#main-content-container div.page div.blocks-container div.ls-block[level][blockid="${tocBlocks[i].uuid}"]`
       if (logseq.settings!.highlightBlockOnHover === true) {
-        const selector = `#main-content-container div.page div.blocks-container div.ls-block[level][blockid="${tocBlocks[i].uuid}"]`
-
+        const pageHeader = parent.document.querySelector(selector) as HTMLElement | null
         element.addEventListener('mouseover', () => {
-          if (hoverTimeout) clearTimeout(hoverTimeout)
-          hoverTimeout = setTimeout(() => {
-            const pageHeader = parent.document.querySelector(selector) as HTMLElement | null
-            if (pageHeader) {
-              pageHeader.style.outline = "6px solid var(--ls-block-highlight-color)"
-              pageHeader.style.outlineOffset = "6px"
-            }
-          }, 20) // 20msの遅延を設定
+          if (pageHeader) {
+            pageHeader.style.outline = "6px solid var(--ls-block-highlight-color)"
+            pageHeader.style.outlineOffset = "6px"
+          }
         })
-
         element.addEventListener('mouseout', () => {
-          if (hoverTimeout) clearTimeout(hoverTimeout)
-          hoverTimeout = setTimeout(() => {
-            const pageHeader = parent.document.querySelector(selector) as HTMLElement | null
-            if (pageHeader) {
-              pageHeader.style.outline = "unset"
-              pageHeader.style.outlineOffset = "unset"
-            }
-          }, 10) // 10msの遅延を設定
+          if (pageHeader) {
+            pageHeader.style.outline = "unset"
+            pageHeader.style.outlineOffset = "unset"
+          }
         })
+      }
+
+      if (logseq.settings!.highlightHeaderOnHover === true) {
+
+        const headerItemElement = parent.document.querySelector(selector) as HTMLDivElement | null
+        if (headerItemElement) {
+          headerItemElement.addEventListener('mouseover', () => {
+            if (element) {
+              element.style.textDecoration = "underline"
+            }
+          })
+          headerItemElement.addEventListener('mouseout', () => {
+            if (element) {
+              element.style.textDecoration = "unset"
+            }
+          })
+        }
       }
 
       //Zoomed
@@ -242,6 +250,13 @@ export const headersList = async (targetElement: HTMLElement, tocBlocks: TocBloc
 
       targetElement.append(element)
     }
+  }
+  // CSSを追加する処理
+  if (css !== "") {
+    // <style>要素を作成し、#lse-toc-contentに追加する
+    const styleElement = document.createElement("style")
+    styleElement.innerHTML = css
+    targetElement.appendChild(styleElement)
   }
 }
 

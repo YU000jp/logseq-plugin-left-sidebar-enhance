@@ -46,8 +46,14 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         // ヘッダーリストのヘッダー項目にカーソルを合わせた時に、該当するブロックをハイライトする
         description: t("Highlight the corresponding block when hovering over the header item in the header list."),
     },
-
-
+    {// ページ内のヘッダーにカーソルを合わせた時に、ヘッダーリストの該当する項目をハイライトする
+        key: "highlightHeaderOnHover",
+        title: t("Enable: Highlight header on hover"),
+        type: "boolean",
+        default: true,
+        // ページ内のヘッダーにカーソルを合わせた時に、ヘッダーリストの該当する項目をハイライトする 
+        description: t("Highlight the corresponding item in the header list when hovering over the header in the page."),
+    },
     {//Switch loadShowByMouseOver
         key: "loadShowByMouseOver",
         type: "boolean",
