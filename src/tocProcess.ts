@@ -230,9 +230,19 @@ const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string
       const elem = parent.document.getElementById('block-content-' + blockUuid) as HTMLDivElement | null
       if (elem) {
         logseq.Editor.exitEditingMode()
-        scrollToWithOffset(elem) // 共通関数を利用
+        scrollToWithOffset(elem)
+        return
+      }
+
+      if (logseq.settings!.booleanAsZoomPage === true) {
+        await expandAndScrollToBlock(blockUuid, true)
+        return
+      }
+
+      const zoomPageElement = parent.document.querySelector("#main-content-container div.page div.breadcrumb") as HTMLElement | null
+      if (zoomPageElement) {
+        await logseq.Editor.scrollToBlockInPage(pageName, blockUuid, { replaceState: true })
       } else {
-        // 親ブロックがcollapsedの場合
         await expandAndScrollToBlock(blockUuid, true)
       }
     }
