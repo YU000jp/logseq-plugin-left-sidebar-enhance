@@ -1,4 +1,5 @@
 import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { title } from "process"
 
 // クエリを実行する共通関数
 const advancedQuery = async <T>(query: string, ...input: Array<any>): Promise<T | null> => {
@@ -43,7 +44,7 @@ export const getParentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<Bloc
      [(= ?str "${uuid}")]]`
   const result = await advancedQuery<{ parent: BlockEntity["parent"] }>(query)
   console.warn("getParentFromUuid", result)
-  if(result?.[0]?.parent) {
+  if (result?.[0]?.parent) {
     const parentUuid = result[0].parent.uuid
     return parentUuid
   }
@@ -104,4 +105,24 @@ export const zoomBlockWhenDb = async (uuid: BlockEntity["uuid"]): Promise<{ uuid
       { uuid: result[0].page.uuid, title: result[0].page.title }
       : null
   return null
+}
+
+
+// :current-pageで、:block/pageが返ってくる場合はズーム中として認識する
+export const CurrentCheckPageOrZoom = async (): Promise<{ check: "page" | "zoom", page?: { title: string, uuid: PageEntity["uuid"] } }> => {
+
+  //:current-pageで、:block/titleが存在する場合
+  const query = `
+    [:find (pull ?p [:block/title :block/uuid])
+     :in $ ?current
+     :where
+     [?p :block/title ?title]
+     [?p :block/uuid ?uuid]
+     [?p :block/name ?name]
+     [(= ?name ?current)]]`
+  const result = await advancedQuery<{ title: string }>(query, ":current-page")
+  if (result?.[0]?.title)
+    return { check: "page", page: { title: result[0].title, uuid: result[0].uuid } }
+  else
+    return { check: "zoom" }
 }

@@ -1,4 +1,4 @@
-import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import removeMd from "remove-markdown"
 import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."

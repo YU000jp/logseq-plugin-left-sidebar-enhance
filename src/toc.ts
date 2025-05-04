@@ -3,7 +3,7 @@ import { t } from "logseq-l10n"
 import { booleanLogseqVersionMd, getCurrentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
 import { headerCommand } from "./headerCommand"
 import { removeContainer } from "./lib"
-import { getCurrentPageForMd, getCurrentZoomForMd, zoomBlockWhenDb } from "./query/advancedQuery"
+import { getCurrentPageForMd, CurrentCheckPageOrZoom, getCurrentZoomForMd, zoomBlockWhenDb } from "./query/advancedQuery"
 import tocCSS from "./toc.css?inline"
 import { whenOpenJournals } from "./tocJournals"
 import { displayToc } from "./tocProcess"
@@ -101,18 +101,9 @@ const main = () => {
     }, 500)
 }
 
+
+
 let processingRoot = false
-
-interface PageEntityType {
-    title: PageEntity["title"]
-    properties: PageEntity["properties"]
-    uuid: PageEntity["uuid"]
-}
-
-interface BlockEntityType {
-    page: BlockEntity["page"]
-    uuid: BlockEntity["uuid"]
-}
 
 const routeCheck = async (versionMd: boolean) => {
     if (processingRoot) return
@@ -138,16 +129,14 @@ const routeCheck = async (versionMd: boolean) => {
             if (journalsEle) {
                 whenOpenJournals(journalsEle, versionMd) // 日誌のタイトルを取得して表示する
                 return
+            }
 
-            } else {
-
-                // ズームの場合
-                const currentZoom = await getCurrentZoomForMd() as { uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } } | null
-                if (currentZoom) {
-                    updateCurrentPage(currentZoom.page.originalName, currentZoom.page.uuid)
-                    onPageChangedCallback(currentZoom.page.originalName, { zoomIn: true, zoomInUuid: currentZoom.uuid })
-                    return
-                }
+            // ズームの場合
+            const currentZoom = await getCurrentZoomForMd() as { uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } } | null
+            if (currentZoom) {
+                updateCurrentPage(currentZoom.page.originalName, currentZoom.page.uuid)
+                onPageChangedCallback(currentZoom.page.originalName, { zoomIn: true, zoomInUuid: currentZoom.uuid })
+                return
             }
 
         }
@@ -155,46 +144,49 @@ const routeCheck = async (versionMd: boolean) => {
     } else {
         // Logseq dbバージョン用
 
-        const currentPage = await logseq.Editor.getCurrentPage() as PageEntityType | BlockEntityType | null
-        if (currentPage) {
-            if ((currentPage as BlockEntityType).page) {
-                const current = currentPage as BlockEntityType
-                // ズームページの場合 mdグラフのみ
-                if (current && current.page) {
-                    const pageEntity = await logseq.Editor.getPage(current.page.id) as { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } | null // idはuuidではないので注意 (クエリーでは扱えない)
-                    if (pageEntity) {
-                        updateCurrentPage(pageEntity.originalName, pageEntity.uuid)
-                        onPageChangedCallback(pageEntity.originalName, { zoomIn: true, zoomInUuid: current.uuid })
-                        return
+
+        const pageOrZoom = await CurrentCheckPageOrZoom() as { check: "page" | "zoom", page?: { title: string, uuid: PageEntity["uuid"] } }
+
+        if (pageOrZoom.check === "page" && pageOrZoom.page) { // titleが存在する場合はページと認識する
+
+            // ページの場合
+            updateCurrentPage(pageOrZoom.page.title, pageOrZoom.page.uuid) // currentPageを更新
+            onPageChangedCallback(pageOrZoom.page.title) // ページが変更されたときのコールバックへ渡す
+            return
+
+        } else
+            if (pageOrZoom.check === "zoom") {
+                // ズームの場合
+
+                // mdグラフの場合 (original-nameが取得できる)
+                const currentZoom = await getCurrentZoomForMd() as { uuid: BlockEntity["uuid"], page: { originalName: PageEntity["originalName"], uuid: PageEntity["uuid"] } } | null
+                if (currentZoom) {
+                    updateCurrentPage(currentZoom.page.originalName, currentZoom.page.uuid)
+                    onPageChangedCallback(currentZoom.page.originalName, { zoomIn: true, zoomInUuid: currentZoom.uuid })
+                    return
+
+                } else {
+
+                    // dbグラフの場合 (:current-pageが使えないので、DOMから取得する)
+                    const zoomBlockElement = parent.document.querySelector("#main-content-container div.page>div>div.ls-page-blocks>div>div.page-blocks-inner>div>div[id]") as HTMLDivElement | null
+                    if (zoomBlockElement) {
+                        const uuid = zoomBlockElement.id
+                        const blockParentPage = await zoomBlockWhenDb(uuid) as { uuid: PageEntity["uuid"], title: string } | null
+                        if (blockParentPage) {
+                            updateCurrentPage(blockParentPage.title, blockParentPage.uuid)
+                            onPageChangedCallback(blockParentPage.title, { zoomIn: true, zoomInUuid: uuid })
+                            return
+                        }
                     }
-                }
-            } else
-                if ((currentPage as PageEntityType).properties) {
-                    const current = currentPage as PageEntityType
-                    // propertiesの中にtitleがあるので、titleを取得し、それをoriginalNameとして返す
-                    const originalName = current.properties!["title"] ?? current.title
-                    updateCurrentPage(originalName, currentPage.uuid)
-                    onPageChangedCallback(originalName)
-                    return
-                }
-        } else {
-            // ズームページの場合 dbグラフの場合(getCurrentPage()はnullを返すため)
-            const zoomBlockElement = parent.document.querySelector("#main-content-container div.page>div>div.ls-page-blocks>div>div.page-blocks-inner>div>div[id]") as HTMLDivElement | null
-            if (zoomBlockElement) {
-                const uuid = zoomBlockElement.id
-                const blockParentPage = await zoomBlockWhenDb(uuid) as { uuid: PageEntity["uuid"], title: string } | null
-                if (blockParentPage) {
-                    updateCurrentPage(blockParentPage.title, blockParentPage.uuid)
-                    onPageChangedCallback(blockParentPage.title, { zoomIn: true, zoomInUuid: uuid })
-                    return
+
                 }
             }
-            // 日誌を開いている場合
-            const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
-            if (journalsEle) {
-                whenOpenJournals(journalsEle, versionMd)
-                return
-            }
+
+        // 日誌を開いている場合
+        const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+        if (journalsEle) {
+            whenOpenJournals(journalsEle, versionMd)
+            return
         }
 
     }
