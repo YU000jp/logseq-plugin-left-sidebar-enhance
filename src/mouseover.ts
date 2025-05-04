@@ -8,61 +8,69 @@ let processingMouseOverButton = false
 
 export const loadShowByMouseOver = () => {
 
-    logseq.App.onAfterCommandInvoked("logseq.ui/toggle-left-sidebar" as ExternalCommandType, () => {
-        whenToggleEvent()
-    })
+    setTimeout(() => {
+        logseq.App.onAfterCommandInvoked("logseq.ui/toggle-left-sidebar" as ExternalCommandType, () => {
+            if (logseq.settings!.loadShowByMouseOver === true)
+                whenToggleEvent()
+        })
 
-    if (logseq.settings!.loadShowByMouseOver === false) {
-        //プラグイン設定で無効化されている場合は何もしない 
-    } else {
+        //プラグイン設定変更時
+        logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
 
-        //初期設定
-        if (!logseq.settings!.toggleShowByMouseOver)
-            logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
+            // マウスオーバーの表示方法が変更された場合
+            if (oldSet.showByMouseOverType !== newSet.showByMouseOverType
+                && newSet.loadShowByMouseOver === true) {
 
-        //前回のメモリー
-        if (logseq.settings!.toggleShowByMouseOver === "mouseOver")
-            selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
-
-        handleEvent(300)
-
-    }
-    //プラグイン設定変更時
-    logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-
-        // マウスオーバーの表示方法が変更された場合
-        if (oldSet.showByMouseOverType !== newSet.showByMouseOverType
-            && newSet.loadShowByMouseOver === true) {
-
-            removeProvideStyle(keyShowByMouseOver)
-            selectShowByMouseOverType(newSet.showByMouseOverType as string)
-            logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
-        }
-
-        // プラグイン設定で無効が有効になった場合は、トグルも強制的に有効にする
-        if (oldSet.loadShowByMouseOver === false
-            && newSet.loadShowByMouseOver === true)
-            setTimeout(() =>
-                logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
-                , 10)
-        else
-            if (oldSet.loadShowByMouseOver === true
-                && newSet.loadShowByMouseOver === false)
                 removeProvideStyle(keyShowByMouseOver)
-    })
+                if (newSet.toggleShowByMouseOver === "mouseOver")
+                    selectShowByMouseOverType(newSet.showByMouseOverType as string)
+                logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
+            }
+
+            // プラグイン設定で無効が有効になった場合は、トグルも強制的に有効にする
+            if (oldSet.loadShowByMouseOver === false
+                && newSet.loadShowByMouseOver === true)
+                setTimeout(() =>
+                    logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
+                    , 10)
+            else
+                if (oldSet.loadShowByMouseOver === true
+                    && newSet.loadShowByMouseOver === false)
+                    removeProvideStyle(keyShowByMouseOver)
+        })
+    }, 1000)
+
+
+    if (logseq.settings!.loadShowByMouseOver === true) {
+
+        //前回のメモリーで、マウスオーバー表示の場合
+        if (logseq.settings!.toggleShowByMouseOver === "mouseOver") {
+            selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
+            logseq.App.setLeftSidebarVisible(true)
+        } else
+            if (logseq.settings!.toggleShowByMouseOver === "normal") {
+                logseq.App.setLeftSidebarVisible(true)
+            } else
+                if (logseq.settings!.toggleShowByMouseOver === "off") {
+                    logseq.App.setLeftSidebarVisible(false)
+                }
+
+        // 左メニューのボタンのスイッチング用
+        handleEvent(1000)
+    }
+
 }
 
 const selectShowByMouseOverType = (setting: string) => {
-
     switch (setting) {
         case "type A":
             logseq.provideStyle({ key: keyShowByMouseOver, style: CSSTypeA })
             break
-        default: //type B
+        case "type B":
             logseq.provideStyle({ key: keyShowByMouseOver, style: CSSTypeB })
             break
     }
-    handleEvent(10)
+
 }
 
 
@@ -90,9 +98,7 @@ const whenToggleEvent = () => {
     if (logseq.settings!.loadShowByMouseOver === false) return //プラグイン設定で無効化されている場合は何もしない
 
     if (logseq.settings!.toggleShowByMouseOver === "mouseOver") {
-        //前回のメモリーはマウスオーバー
-
-        //ノーマル表示にする
+        //前回のメモリーがマウスオーバーの場合、ノーマル表示にする
         logseq.App.setLeftSidebarVisible(true)
         setTimeout(() => {
             removeProvideStyle(keyShowByMouseOver)
@@ -101,24 +107,22 @@ const whenToggleEvent = () => {
         }, 10)
     } else
         if (logseq.settings!.toggleShowByMouseOver === "normal") {
-            //前回のメモリーはノーマル表示
-
-            //表示しない
+            //前回のメモリーはノーマル表示の場合、非表示にする
             logseq.App.setLeftSidebarVisible(false)
             setTimeout(() => {
                 removeProvideStyle(keyShowByMouseOver)
                 logseq.updateSettings({ toggleShowByMouseOver: "off" })
                 logseq.UI.showMsg(t("Left sidebar is now hidden."), "info", { timeout: 2200 })
             }, 10)
-        } else {
-            //前回のメモリーは表示しない
-
-            //マウスオーバーで表示する
-            logseq.App.setLeftSidebarVisible(true)
-            setTimeout(() => {
-                selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
-                logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
-                logseq.UI.showMsg(t("Left sidebar is now mouse over display."), "info", { timeout: 2200 })
-            }, 10)
-        }
+        } else
+            if (logseq.settings!.toggleShowByMouseOver === "off") {
+                //前回のメモリーが非表示の場合、マウスオーバーにする
+                logseq.App.setLeftSidebarVisible(true)
+                setTimeout(() => {
+                    selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
+                    handleEvent(100)
+                    logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
+                    logseq.UI.showMsg(t("Left sidebar is now mouse over display."), "info", { timeout: 2200 })
+                }, 10)
+            }
 }
