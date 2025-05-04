@@ -1,5 +1,4 @@
 import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { title } from "process"
 
 // クエリを実行する共通関数
 const advancedQuery = async <T>(query: string, ...input: Array<any>): Promise<T | null> => {
