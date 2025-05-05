@@ -1,3 +1,21 @@
+# [1.15.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.14.0...v1.15.0) (2025-05-05)
+
+
+### Bug Fixes
+
+* **bug:** Avoid duplicating history and favourites: Remove differences between upper and lower case letters. ([f0c0a8f](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/f0c0a8faf6238c4df7defa4c60243a940e6238b1))
+
+
+### Features
+
+* **Add:** Always uncollapsed block for TOC ([689e416](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/689e41621f880b7c22c1670b007491ecfe3435d7))
+
+
+### Performance Improvements
+
+* **ref:** Caching process for TOC ([5651780](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/5651780dc07be4cb5d480cca6a776331f7747337))
+* **ref:** Improved processing performance (only the first line of a block is processed for text) & Fixed a bug that prevented embedding from being reflected. ([7a8e3bb](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/7a8e3bb254ce768f9afd079bc3e91708ef64aee0))
+
 # [1.14.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.13.0...v1.14.0) (2025-05-04)
 
 
