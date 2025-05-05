@@ -219,6 +219,7 @@ export const headersList = async (
 
 
 const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
+  await logseq.Editor.setBlockCollapsed(blockUuid, false)
   if (shiftKey) {
     logseq.Editor.openInRightSidebar(blockUuid)
   } else
