@@ -1,101 +1,112 @@
-# Logseq Plugin: Left-Sidebar Enhance
+# Logseq Plugin: Left Sidebar Enhance
 
 > [!NOTE]
-This plugin works in Logseq db version.
+> This plugin works on Logseq db version.
 
 <div align="right">
- 
+
 [English](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance)|[日本語](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/blob/main/readme.ja.md) [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-left-sidebar-enhance)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-left-sidebar-enhance?color=blue)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-left-sidebar-enhance/total.svg)](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/releases)
- Published 20231002 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
- </div>
+ Released: 20231002 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
+</div>
 
-## Feature Options
+### Main Features
 
-1. **Table Of Contents in left sidebar**
-   - The table of contents generated from the headers (`#`,`##`,`###`,`####`,`#####`,`######`) included in the markdown of the opened page is displayed in the left menu. [Introduction](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/wiki/Introduction)
-     > **Shortcut command for inserting markdown header** -> `Alt+1` `Alt+2` `Alt+3` `Alt+4` `Alt+5` `Alt+6` (MD graph only)
+This plugin provides three main features:
 
-   > How it works:
-   > - Automatically detects headers in both Markdown format (#) and Logseq DB format
-   > - Updates in real-time when content changes
-   > - Click to scroll to header location
-   > - Ctrl+Click to open as zoom page
-   > - Shift+Click to open in right sidebar
-   >
-   > Technical details:
-   > - Recursively scans blocks of the page to find all headers
-   > - Supports both Markdown style headers (#) and Logseq DB properties
-   > - Clean display with automatic markdown removal and link processing
-   > - Real-time updates through block change monitoring
-
-   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
-
-1. **mouse over to show left sidebar** (default: *Disable*)
-   > Enable toggling of ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
-
-1. **Easy access to Journal-dates** (default: *Disable*)
-
-   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
-
-   1. Date selector (✖ db version)
-      - Access daily journal page
-
-   1. Month selector
-      - Access a hierarchical page (`yyyy/MM`) for monthly Journal
+1. Table of Contents (Auto-generated)
+2. Auto-hide/show Left Sidebar
+3. Date Access (Daily & Monthly)
 
 ---
 
-## Getting Started
+1. **Page Outline Feature**
+   - Automatically displays a table of contents in the left menu, generated from headers in the opened page's content
+   > (Markdown headers: `#`,`##`,`###`,`####`,`#####`,`######`)
+   
+   Quick Actions:
+   - Click: Jump to header position
+   - Ctrl+Click: Open as zoom page
+   - Shift+Click: Open in right sidebar
+   - Shortcut keys (MD version only): `Alt+1` to `Alt+6` to insert headers
+
+   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
+
+2. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
+   > Use the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
+
+3. Journal Date Access (Default: **Disabled**) db version ✖
+
+   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
+
+   - Date selector: Access to date pages
+   - Month selector: Access to monthly journals (like `yyyy/MM`)
+
+---
+
+### Installation
 
 Install from Logseq Marketplace
 
-  - Press [`---`] on the top right toolbar to open [`Plugins`]. Select marketplace. Type `Left` in the search field, select it from the search results and install.
+- Click [`---`] on the toolbar to open [`Plugins`]. Select Marketplace. Type `Left` in the search field and select it from the results to install.
 
 ### Usage
 
-- Table of contents: when you open each page, the table of contents is automatically displayed in the menu in the left sidebar.
-- Mouseover: Click ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9)
- button in the top-left corner. The state of left sidebar will switch.
-- Turn each function on or off in the plugin settings.
+- Table of Contents: When opening any page, the TOC automatically appears in the left sidebar menu.
+   - How it works:
+      > Automatically detects both Markdown (#) and Logseq DB format headers
+      - Updates automatically when content changes
+      - Click to scroll to header position
+   - Note:
+     - By default, when opening the journal, it shows a list of dates loaded by scrolling. To view the TOC, open a date page.
+     > Turn off this option in plugin settings to show header list for the current day's page.
+- Mouse Over: Click the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner. The left sidebar state will toggle. Shortcut keys work the same way.
+- Use plugin settings to enable/disable each feature.
 
-### Plugin Settings
+### User Settings
 
-1. Table of Contents settings
+1. Hide Duplicates in Favorites and History
+   - Automatically hides duplicates between favorites and recent items
+   > Checks for duplicates on plugin startup and every 10 minutes
+
+2. Left Sidebar Mouse Over Feature
+   - Enable/disable auto-show left sidebar on mouse over
+   - Select display type: Type A (Corner Hover) or Type B (Edge Hover)
+   - Mouse Over Types
+      1. Type A: Opens when mouse approaches the left corner area
+         > ⚠️May cause issues with small windows
+      1. Type B (Recommended): Opens when mouse is placed on the leftmost column
+
+3. Date Selector
+   - Enable/disable date selector feature in left sidebar
+   > Not supported in Logseq db version
+
+4. Page Outline (TOC) Feature
    - Enable/disable TOC feature
-   - Remove specific words from TOC entries (enter words separated by line breaks)
-   > Open as zoom page by default (if disabled, hold Ctrl key to open as zoom page)
-1. Hide duplicate favorites and history
-   - When enabled, prevents the same pages from appearing in both favorites and recent items
-   > Checks for duplicates at plugin startup and every 10 minutes
-1. Mouse over settings
-   - Enable/disable mouse over feature to show left sidebar
-   - Choose between type A (corner hover) or type B (edge hover) behavior
-1. Date selector
-   - Enable/disable the date selector feature in left sidebar
+   - Open as zoom page by default
+     > If disabled, Ctrl+Click for zoom page view
+   - Mouse over highlight feature
+     - Highlight corresponding block when hovering over header
+     - Highlight corresponding header when hovering over block
+   - Show date list in journal pages
+   - List of words to exclude from TOC (line-separated)
 
 ---
 
 ## Showcase / Questions / Ideas / Help
 
-> Go to the [Discussions](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) tab to ask and find this kind of things.
+> Head to the [Discussion](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) tab to ask and find this kind of things.
 
-- Journals are not headline searchable, please click on the title to open a single page.
-- This plugin relies on Logseq's DOM (Document Object Model) structure. If the DOM structure changes due to a Logseq version update, styles may not be applied. We will adjust the CSS to deal with it. If you notice something, please raise an issue.
-- Type of mouse over
-  1. Type A: It opens when the mouse approaches the space near the left corner.
-      > ⚠️If the window is small, problems may occur.
-  1. Type B: It opens when hover the mouse over the leftmost line.
 - Recommended
-  1. [sethyuan / Favorite tree plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
+  1. [sethyuan / Favorite Tree Plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
 
-## Prior art & Credit
+## Prior Art & Credit
 
-- CSS code (mouse over to show left sidebar) >
-  1. Type A: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338) 
-  1. Type B (default): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
-- "Table of contents" feature:
-  1. [@hkgnp/ logseq-toc plugin](https://github.com/hkgnp/logseq-toc-plugin/)
-  1. [@freder/ logseq-plugin-jump-to-block plugin](https://github.com/freder/logseq-plugin-jump-to-block/)
-- Author > [@YU000jp](https://github.com/YU000jp)
+- CSS code (Show left sidebar on mouse over) >
+  1. Type A: [@mæn](https://discord.com/channels/725182569297215569/775936939638652948/1155251493486727338)
+  1. Type B (Default): [@sethyuan](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/1#issue-1910716211)
+- Logseq Plugin >
+  1. [@hkgnp/ logseq-toc-plugin](https://github.com/hkgnp/logseq-toc-plugin/) (TOC display)
+  1. [@freder/ logseq-plugin-jump-to-block](https://github.com/freder/logseq-plugin-jump-to-block/) (TOC display)
+- Author: [@YU000jp](https://github.com/YU000jp)
