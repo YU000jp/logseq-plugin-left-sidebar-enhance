@@ -5,7 +5,7 @@ import { clearTOC } from "./DOM"
 import { whenOpenJournals } from "./journalsList"
 
 // デバッグモードのスイッチ
-const debugMode = true
+const debugMode = false
 
 // ルートチェック
 
@@ -141,6 +141,7 @@ const handleDbVersionZoom = async () => {
 
 
 
+// ジャーナルかどうか
 const validateJournalsElement = (versionMd: boolean): boolean => {
     if (debugMode) console.log("validateJournalsElement")
     const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
