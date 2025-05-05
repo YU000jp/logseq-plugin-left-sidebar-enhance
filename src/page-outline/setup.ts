@@ -75,7 +75,6 @@ const renderTOCContainer = () => {
         })
         const summaryEle = createElementWithAttributes("summary", {
             class: "header items-center",
-            style: "cursor: row-resize; background-color: var(--ls-tertiary-background-color);",
             title: "Left Sidebar Enhance " + t("plugin"),
         })
         summaryEle.innerText = t("Table of Contents")

@@ -1,3 +1,9 @@
+#lse-toc-container>details>summary {
+    font-size: .9em;
+    cursor: row-resize;
+    background-color: var(--ls-tertiary-background-color);
+}
+
 #lse-toc-inner {
     font-size: .92em;
     margin-left: 0.6em;
