@@ -8,21 +8,10 @@ export const createElementWithAttributes = (tag: string, attributes: { [key: str
              return element
 }
 
-/**
- * Clears all zoom marks from the table of contents.
- */
-export const clearZoomMarks = () => {
-             const zoomedElements = parent.document.querySelectorAll("#lse-toc-content [data-uuid]")
-             zoomedElements.forEach((el) => {
-                          const markElement = el.querySelector(".zoom-mark") as HTMLElement | null
-                          if (markElement) markElement.style.display = "none" // マークを非表示
-             })
-}
 
 /**
  * Scrolls to a specific element with an offset.
  */
-
 export const scrollToWithOffset = (element: HTMLElement) => {
              element.scrollIntoView({
                           block: 'center',
