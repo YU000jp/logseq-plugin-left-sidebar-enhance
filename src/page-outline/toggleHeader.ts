@@ -3,6 +3,7 @@ import { createElementWithAttributes } from "../util/domUtils"
 import { refreshPageHeaders, keyToggleTableId, keyToggleH, keyToolbarHeaderSpace } from "./pageHeaders"
 import { getCurrentPageOriginalName } from ".."
 import { pageOpen } from "../util/lib"
+import { clearCachedHeaders } from "./cache"
 
 
 let processingButton = false
@@ -40,6 +41,7 @@ export const additionalButtons = (thisPageName: string) => {
   elementUpdate.addEventListener("click", () => {
     elementUpdate.style.visibility = "hidden"
     setTimeout(() => (elementUpdate.style.visibility = "visible"), 2000)
+    clearCachedHeaders()
     refreshPageHeaders(thisPageName)
   })
   elementButtons.append(elementUpdate)

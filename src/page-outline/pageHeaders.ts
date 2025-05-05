@@ -1,6 +1,6 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { booleanLogseqVersionMd, onBlockChanged, onBlockChangedOnce } from ".."
-import { isHeadersCacheEqual, setCachedHeaders } from "../cache/tocCache"
+import { isHeadersCacheEqual, setCachedHeaders } from "./cache"
 import { clearTOC } from "./DOM"
 import { getTocBlocks, getTocBlocksForDb } from "./findHeaders"
 import { createHeaderElement } from "./headerItem"

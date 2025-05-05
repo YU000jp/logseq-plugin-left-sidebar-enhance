@@ -1,5 +1,5 @@
 import { t } from "logseq-l10n"
-import { clearCachedHeaders } from "../cache/tocCache"
+import { clearCachedHeaders } from "./cache"
 
 
 //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)

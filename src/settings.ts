@@ -54,6 +54,13 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         // ページ内のヘッダーにカーソルを合わせた時に、ヘッダーリストの該当する項目をハイライトする 
         description: t("Highlight the corresponding item in the header list when hovering over the header in the page."),
     },
+    {// ジャーナルのときに、日付リストを表示するかどうか
+        key: "enableJournalsList",
+        title: t("In journals, display the date list"),
+        type: "boolean",
+        default: true,
+        description: "",
+    },
     {//Switch loadShowByMouseOver
         key: "loadShowByMouseOver",
         type: "boolean",

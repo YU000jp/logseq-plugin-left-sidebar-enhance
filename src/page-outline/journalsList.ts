@@ -1,6 +1,7 @@
 import { pageOpen } from "../util/lib"
 import { clearTOC } from "./DOM"
 import { scrollToWithOffset } from "../util/domUtils"
+import { clearCachedHeaders } from "./cache"
 
 let processing = false
 
@@ -11,15 +12,17 @@ export const whenOpenJournals = (journalsEle: HTMLDivElement, versionMd: boolean
     processing = true
     setTimeout(() =>
         processing = false, 1000)
+
     //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
     const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-    if (element) {
-        if (journalsEle) {
-            element.innerHTML = ""
-            getJournalTitles(journalsEle, element, versionMd)
-        } else
-            clearTOC()
+    if (element && journalsEle) {
+        clearCachedHeaders()
+        element.innerHTML = ""
+        getJournalTitles(journalsEle, element, versionMd)
+        return
     }
+
+    clearTOC()
 }
 
 
@@ -30,8 +33,9 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
     // div#main-content-containerをスクロールしたら、journalTitlesを更新する
     const mainContentContainer = parent.document.getElementById("main-content-container") as HTMLDivElement | null
     if (mainContentContainer) {
+        // スクロールイベント用
         const scrollEvent = () => {
-            const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
+            const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null // イベント用エレメント取得
             if (journalsEle)
                 updateJournalList(journalsEle, tocContentEle, versionMd) // 表示処理
             else
@@ -48,7 +52,9 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
     //list-style
     ulEle.style.listStyle = "disc"
     ulEle.style.marginLeft = "3em"
+
     const journalTitles = journalsEle.querySelectorAll(versionMd === true ? "a.journal-title" : "div.ls-page-title span.block-title-wrap,div#journals div.is-journals h1.page-title>span") as NodeListOf<HTMLAnchorElement>
+
     journalTitles.forEach((journalTitle) => {
         const title = journalTitle.textContent
         if (title) {
