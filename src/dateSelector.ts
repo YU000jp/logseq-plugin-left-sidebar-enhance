@@ -7,9 +7,11 @@ import { booleanLogseqVersionMd } from "."
 export const loadDateSelector = () => {
     const versionMd = booleanLogseqVersionMd()
     if (versionMd === false) {
-        logseq.updateSettings({ booleanDateSelector: false })
-        // 日付セレクター機能はLogseq dbバージョンでは対応していません。というメッセージを通知
-        logseq.UI.showMsg(t("The date selector function is not supported in the Logseq db version. Changed to off."), "warning", { timeout: 3000 })
+        if (logseq.settings!.booleanDateSelector === true) {
+            logseq.updateSettings({ booleanDateSelector: false })
+            // 日付セレクター機能はLogseq dbバージョンでは対応していません。というメッセージを通知
+            logseq.UI.showMsg(t("The date selector function is not supported in the Logseq db version. Changed to off."), "warning", { timeout: 3000 })
+        }
     } else {
         //プラグイン設定変更時
         logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
@@ -95,44 +97,87 @@ const main = () => {
     }, 500)
 }
 
-const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HTMLDivElement) => {
-    const selectorLabel: HTMLLabelElement = document.createElement("label")
-    const pElement: HTMLParagraphElement = document.createElement("p")
-    const p2Element: HTMLParagraphElement = document.createElement("p")
-    //type: date
-    pElement.title = t("Date (Single journal)")
-    const selectorInput: HTMLInputElement = document.createElement("input")
-    selectorInput.type = "date"
-    selectorInput.id = "lse-dataSelector-date"
-    selectorInput.value = new Date().toISOString().slice(0, 10)
-    //OKボタン
-    const okButton: HTMLButtonElement = document.createElement("button")
-    okButton.textContent = "OK"
-    pElement.append(selectorInput, okButton)
-    //日付をもとにページを開くイベント
-    okButton.addEventListener("click", async ({ shiftKey }) => {
-        const date = parent.document.getElementById("lse-dataSelector-date") as HTMLInputElement | null
-        if (!date) return
-        await pageOpen(format(new Date(date.value), preferredDateFormat), shiftKey, false)
+const createElement = <T extends HTMLElement>(
+    tagName: string,
+    attributes: { [key: string]: string | boolean } = {},
+    innerText?: string
+): T => {
+    const element = document.createElement(tagName) as T
+    Object.entries(attributes).forEach(([key, value]) => {
+        if (typeof value === "boolean") {
+            if (value) element.setAttribute(key, "")
+        } else {
+            element.setAttribute(key, value)
+        }
     })
-    //type: month
-    p2Element.title = t("Month (yyyy/MM)")
-    const selectorInputMonth: HTMLInputElement = document.createElement("input")
-    selectorInputMonth.type = "month"
-    selectorInputMonth.id = "lse-dataSelector-month"
-    selectorInputMonth.value = new Date().toISOString().slice(0, 7)
-    //OKボタン
-    const okButton2: HTMLButtonElement = document.createElement("button")
-    okButton2.textContent = "OK"
-    p2Element.append(selectorInputMonth, okButton2)
-    //日付をもとにページを開くイベント(年/月)
-    okButton2.addEventListener("click", async ({ shiftKey }) => {
-        const date = parent.document.getElementById("lse-dataSelector-month") as HTMLInputElement | null
-        if (!date) return
-        await pageOpen(format(new Date(date.value), "yyyy/MM"), shiftKey, false)
-    })
-    selectorLabel.append(pElement)
-    selectorLabel.append(p2Element)
-    dateSelectorHereElement.appendChild(selectorLabel)
+    if (innerText) element.innerText = innerText
+    return element
 }
+
+const createInputWithButton = ({
+    type,
+    id,
+    value,
+    title,
+    formatString,
+    onClick,
+}: {
+    type: string
+    id: string
+    value: string
+    title: string
+    formatString: string
+    onClick: (formattedDate: string, shiftKey: boolean) => Promise<void>
+}) => {
+    const pElement = createElement<HTMLParagraphElement>("p", { title: t(title) })
+
+    const inputElement = createElement<HTMLInputElement>("input", {
+        type,
+        id,
+        value,
+    })
+
+    const buttonElement = createElement<HTMLButtonElement>("button", {}, "OK")
+
+    buttonElement.addEventListener("click", async ({ shiftKey }) => {
+        const date = parent.document.getElementById(id) as HTMLInputElement | null
+        if (!date) return
+        const formattedDate = format(new Date(date.value), formatString)
+        await onClick(formattedDate, shiftKey)
+    })
+
+    pElement.append(inputElement, buttonElement)
+    return pElement
+}
+
+const createSelector = (preferredDateFormat: string, dateSelectorHereElement: HTMLDivElement) => {
+    const selectorLabel = createElement<HTMLLabelElement>("label")
+
+    // 日付セレクター (type: date)
+    const dateInput = createInputWithButton({
+        type: "date",
+        id: "lse-dataSelector-date",
+        value: new Date().toISOString().slice(0, 10),
+        title: "Date (Single journal)",
+        formatString: preferredDateFormat,
+        onClick: async (formattedDate, shiftKey) => {
+            await pageOpen(formattedDate, shiftKey, false)
+        },
+    })
+
+    // 月セレクター (type: month)
+    const monthInput = createInputWithButton({
+        type: "month",
+        id: "lse-dataSelector-month",
+        value: new Date().toISOString().slice(0, 7),
+        title: "Month (yyyy/MM)",
+        formatString: "yyyy/MM",
+        onClick: async (formattedDate, shiftKey) => {
+            await pageOpen(formattedDate, shiftKey, false)
+        },
+    })
+
+    selectorLabel.append(dateInput, monthInput)
+    dateSelectorHereElement.appendChild(selectorLabel)
+};
 
