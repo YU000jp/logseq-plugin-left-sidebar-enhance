@@ -1,5 +1,5 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
-import { TocBlock } from "./headerList"
+import { TocBlock } from "./pageHeaders"
 import { loadEmbedContents } from "./loadEmbedContents"
 import { generateHeaderElement, processText } from "./regex"
 import { selectBlock } from "./selectBlock"

@@ -1,6 +1,6 @@
 import { t } from "logseq-l10n"
 import { createElementWithAttributes } from "../util/domUtils"
-import { displayToc, keyToggleTableId, keyToggleH, keyToolbarHeaderSpace } from "./headerList"
+import { refreshPageHeaders, keyToggleTableId, keyToggleH, keyToolbarHeaderSpace } from "./pageHeaders"
 import { getCurrentPageOriginalName } from ".."
 import { pageOpen } from "../util/lib"
 
@@ -40,7 +40,7 @@ export const additionalButtons = (thisPageName: string) => {
   elementUpdate.addEventListener("click", () => {
     elementUpdate.style.visibility = "hidden"
     setTimeout(() => (elementUpdate.style.visibility = "visible"), 2000)
-    displayToc(thisPageName)
+    refreshPageHeaders(thisPageName)
   })
   elementButtons.append(elementUpdate)
 

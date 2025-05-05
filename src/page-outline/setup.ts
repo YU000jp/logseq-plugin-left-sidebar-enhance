@@ -4,7 +4,7 @@ import { booleanLogseqVersionMd, getCurrentPageOriginalName } from ".."
 import { headerCommand } from "../headerCommand"
 import { createElementWithAttributes } from "../util/domUtils"
 import { removeContainer } from "../util/lib"
-import { displayToc } from "./headerList"
+import { refreshPageHeaders } from "./pageHeaders"
 import { routeCheck } from "./routeCheck"
 import tocCSS from "./toc.css?inline"
 
@@ -25,7 +25,7 @@ export const setupTOCHandlers = (versionMd: boolean) => {
             }
             if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
                 || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
-                await displayToc(getCurrentPageOriginalName()) //更新
+                await refreshPageHeaders(getCurrentPageOriginalName()) //更新
 
         })
         logseq.App.onCurrentGraphChanged(async () => {

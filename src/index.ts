@@ -4,15 +4,15 @@ import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/l
 import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
-import { setupTOCHandlers } from './page-outline/toc'
-import { displayToc } from './page-outline/headerList'
+import { refreshPageHeaders } from './page-outline/pageHeaders'
+import { setupTOCHandlers } from './page-outline/setup'
 import { settingsTemplate } from './settings'
 import ja from "./translations/ja.json"
 import { removeContainer } from './util/lib'
 
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
-let currentPageUuid: PageEntity["uuid"] = ""
+// let currentPageUuid: PageEntity["uuid"] = ""
 let logseqVersion: string = ""//バージョンチェック用
 let logseqVersionMd: boolean = false//バージョンチェック用
 
@@ -21,7 +21,7 @@ export const booleanLogseqVersionMd = () => logseqVersionMd //バージョンチ
 
 export const updateCurrentPage = async (pageName: string, pageUuid: PageEntity["uuid"]) => {
   currentPageOriginalName = pageName
-  currentPageUuid = pageUuid
+  // currentPageUuid = pageUuid
 }
 
 export const getCurrentPageOriginalName = () => currentPageOriginalName // 現在のページ名を取得
@@ -69,7 +69,7 @@ const main = async () => {
   logseq.App.onCurrentGraphChanged(async () => {
     //グラフが変更されたときに実行されるコールバック
     currentPageOriginalName = ""
-    currentPageUuid = ""
+    // currentPageUuid = ""
     logseqVersionMd = await checkLogseqVersion()
 
   })
@@ -114,7 +114,7 @@ const updateToc = () => {
     return
   processingBlockChanged = true //index.tsの値を書き換える
   setTimeout(() => {
-    displayToc(currentPageOriginalName) //toc更新
+    refreshPageHeaders(currentPageOriginalName) //toc更新
     processingBlockChanged = false
   }, 300)
 }
@@ -136,7 +136,7 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
   setTimeout(async () => {
     // console.log("onPageChangedCallback")
     if (logseq.settings!.booleanLeftTOC === true)
-      await displayToc(pageName, flag ? flag : undefined)
+      await refreshPageHeaders(pageName, flag ? flag : undefined)
   }, 50)
 
 }

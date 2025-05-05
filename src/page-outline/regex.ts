@@ -1,6 +1,6 @@
 import removeMd from "remove-markdown"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, replaceOverCharacters } from "../util/markdown"
-import { TocBlock } from "./headerList"
+import { TocBlock } from "./pageHeaders"
 
 
 export const processText = (content: string): string => {

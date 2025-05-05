@@ -1,5 +1,5 @@
 import { isHeader } from "./regex"
-import { Child, TocBlock } from "./headerList"
+import { Child, TocBlock } from "./pageHeaders"
 
 
 // md系統のバージョン用
