@@ -15,7 +15,7 @@
 
 This plugin provides three main features:
 
-1. Page Outline (:Table of contents :Auto-generated)
+1. Page Outline (=Table of contents :Auto-generated)
 2. Auto-hide/show Left Sidebar
 3. Date Access (Daily & Monthly)
 
