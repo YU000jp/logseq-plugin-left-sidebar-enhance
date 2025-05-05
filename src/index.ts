@@ -3,17 +3,20 @@ import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
-import { removeContainer } from './lib'
 import { loadShowByMouseOver } from './mouseover'
+import { loadTOC } from './page-outline/toc'
+import { displayToc } from './page-outline/tocProcess'
 import { settingsTemplate } from './settings'
-import { loadTOC } from './toc'
-import { displayToc } from './tocProcess'
 import ja from "./translations/ja.json"
+import { removeContainer } from './util/lib'
+
+
 let currentPageOriginalName: PageEntity["originalName"] = ""
 let currentPageUuid: PageEntity["uuid"] = ""
 let logseqVersion: string = ""//バージョンチェック用
 let logseqVersionMd: boolean = false//バージョンチェック用
-export const getLogseqVersion = () => logseqVersion //バージョンチェック用
+
+// export const getLogseqVersion = () => logseqVersion //バージョンチェック用
 export const booleanLogseqVersionMd = () => logseqVersionMd //バージョンチェック用
 
 export const updateCurrentPage = async (pageName: string, pageUuid: PageEntity["uuid"]) => {
@@ -21,8 +24,9 @@ export const updateCurrentPage = async (pageName: string, pageUuid: PageEntity["
   currentPageUuid = pageUuid
 }
 
-export const getCurrentPageOriginalName = () => currentPageOriginalName; // 現在のページ名を取得
-export const getCurrentPageUuid = () => currentPageUuid; // 現在のページUUIDを取得
+export const getCurrentPageOriginalName = () => currentPageOriginalName // 現在のページ名を取得
+// export const getCurrentPageUuid = () => currentPageUuid // 現在のページUUIDを取得
+
 
 
 /* main */
@@ -42,7 +46,6 @@ const main = async () => {
 
   // バージョンチェック
   logseqVersionMd = await checkLogseqVersion()
-
 
   //TOC
   loadTOC(logseqVersionMd)
@@ -69,13 +72,10 @@ const main = async () => {
     currentPageUuid = ""
     logseqVersionMd = await checkLogseqVersion()
 
-    // TOCの初期化
-    const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
-    if (element)
-      element.innerHTML = "" //elementが存在する場合は中身を削除する
   })
 
 }/* end_main */
+
 
 
 
@@ -102,7 +102,7 @@ export const onBlockChanged = () => {
     setTimeout(() => {
       //ブロック更新のコールバックを登録する
       if (uuid)
-        logseq.DB.onBlockChanged(uuid, async () => updateToc())
+        logseq.DB.onBlockChanged(uuid, () => updateToc())
     }, 200)
 
   })
@@ -113,11 +113,12 @@ const updateToc = () => {
   if (processingBlockChanged === true)
     return
   processingBlockChanged = true //index.tsの値を書き換える
-  setTimeout(async () => {
-    await displayToc(currentPageOriginalName) //toc更新
+  setTimeout(() => {
+    displayToc(currentPageOriginalName) //toc更新
     processingBlockChanged = false
   }, 300)
 }
+
 
 
 let processingOnPageChanged: boolean = false //処理中
@@ -140,8 +141,6 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
 
 }
 
-logseq.ready(main).catch(console.error)
-
 
 
 const checkLogseqVersion = async (): Promise<boolean> => {
@@ -163,3 +162,6 @@ const checkLogseqVersion = async (): Promise<boolean> => {
     logseqVersion = "0.0.0"
   return false
 }
+
+
+logseq.ready(main).catch(console.error)

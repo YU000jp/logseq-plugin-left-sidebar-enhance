@@ -1,5 +1,5 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
-import { removeProvideStyle } from "./lib"
+import { removeProvideStyle } from "./util/lib"
 const key = "lse-FavAndRecent"
 let processing = false
 

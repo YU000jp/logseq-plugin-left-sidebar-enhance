@@ -24,10 +24,3 @@ export const removeContainer = (elementById: string) => {
     if (ele) ele.remove()
 }
 
-export const scrollToWithOffset = (element: HTMLElement) => {
-    element.scrollIntoView({
-        block: 'center',
-        inline: 'nearest',
-        behavior: 'smooth'
-    })
-}

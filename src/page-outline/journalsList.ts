@@ -1,5 +1,6 @@
-import { pageOpen, scrollToWithOffset } from "./lib"
+import { pageOpen } from "../util/lib"
 import { clearTOC } from "./toc"
+import { scrollToWithOffset } from "../util/domUtils"
 
 let processing = false
 
@@ -87,7 +88,7 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
 
                         const journalEle = parent.document.getElementById(title) as HTMLAnchorElement | null
                         if (journalEle) {
-                            scrollToWithOffset(journalEle); // 共通関数を利用
+                            scrollToWithOffset(journalEle) // 共通関数を利用
                             //スクロールしたら、タイトルを表示する
                             journalEle.style.backgroundColor = "var(--ls-selection-background-color)"
                             setTimeout(() => journalEle.style.backgroundColor = "", 1200)

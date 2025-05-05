@@ -1,12 +1,14 @@
 import { BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
-import { booleanLogseqVersionMd, getCurrentPageOriginalName, onPageChangedCallback, updateCurrentPage } from "."
-import { headerCommand } from "./headerCommand"
-import { removeContainer } from "./lib"
-import { CurrentCheckPageOrZoom, getCurrentPageForMd, getCurrentZoomForMd, zoomBlockWhenDb } from "./query/advancedQuery"
+import { booleanLogseqVersionMd, getCurrentPageOriginalName, onPageChangedCallback, updateCurrentPage } from ".."
+import { headerCommand } from "../headerCommand"
+import { removeContainer } from "../util/lib"
+import { CurrentCheckPageOrZoom, getCurrentPageForMd, getCurrentZoomForMd, zoomBlockWhenDb } from "../util/query/advancedQuery"
 import tocCSS from "./toc.css?inline"
-import { whenOpenJournals } from "./tocJournals"
+import { whenOpenJournals } from "./journalsList"
 import { displayToc } from "./tocProcess"
+import { createElementWithAttributes } from "../util/domUtils"
+import { clearCachedHeaders } from "../cache/tocCache"
 
 
 // プラグイン起動後、5秒間はロックをかける
@@ -67,9 +69,10 @@ const main = () => {
         const navEle = parent.document.querySelector(versionMd === true ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
         if (navEle === null) return //nullの場合はキャンセル
 
-        const divAsItemEle: HTMLDivElement = document.createElement("div")
-        divAsItemEle.className = "nav-content-item mt-3 is-expand flex-shrink-0"
-        divAsItemEle.id = "lse-toc-container"
+        const divAsItemEle: HTMLElement = createElementWithAttributes("div", {
+            class: "nav-content-item mt-3 is-expand flex-shrink-0",
+            id: "lse-toc-container",
+        })
         const detailsEle: HTMLDetailsElement = document.createElement("details")
         detailsEle.className = "nav-content-item-inner"
         detailsEle.open = true
@@ -209,6 +212,7 @@ const routeCheck = async (versionMd: boolean) => {
 
 //"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
 export const clearTOC = () => {
+    clearCachedHeaders()
     const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
     if (element)
         element.innerHTML = t("No headers found")

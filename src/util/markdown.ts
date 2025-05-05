@@ -1,4 +1,3 @@
-import { TocBlock } from "./tocProcess"
 
 const PATTERNS = {
   WIKI_LINK: /\[\[|\]\]/g,
