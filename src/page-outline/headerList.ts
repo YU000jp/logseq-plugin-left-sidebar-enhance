@@ -1,13 +1,13 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { booleanLogseqVersionMd, onBlockChanged, onBlockChangedOnce } from ".."
 import { isHeadersCacheEqual, setCachedHeaders } from "../cache/tocCache"
-import { generatePageButton } from "./DOM"
-import { getTocBlocks, getTocBlocksForDb } from "./findHeaders"
-import { getHeaderLevel, isHeader } from "./regex"
 import { clearTOC } from "./DOM"
+import { generatePageButton } from "./toggleHeader"
+import { getTocBlocks, getTocBlocksForDb } from "./findHeaders"
+import { createHeaderElement } from "./headerItem"
+import { getHeaderLevel, isHeader } from "./regex"
 import { additionalButtons } from "./toggleHeader"
 import { clearZoomMarks, updateZoomMark } from "./zoom"
-import { createHeaderElement } from "./headerItem"
 
 
 export const keyToolbarHeaderSpace = "lse-toc-header-space"
@@ -48,6 +48,7 @@ const headersList = async (
     return // DOM更新をスキップ
   }
 
+  // キャッシュを更新
   setCachedHeaders(tocBlocks)
 
   // DOMをクリア

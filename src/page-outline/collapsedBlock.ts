@@ -13,6 +13,7 @@ const scrollToAndSelectBlock = async (blockUuid: string) => {
   return false
 }
 
+
 export const expandAndScrollToBlock = async (blockUuid: BlockEntity["uuid"], isInitialCall = false): Promise<void> => {
   if (!isInitialCall)
     await logseq.Editor.setBlockCollapsed(blockUuid, false)

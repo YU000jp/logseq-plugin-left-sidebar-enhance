@@ -1,11 +1,13 @@
 import { t } from "logseq-l10n"
-import { createElementWithAttributes } from "./DOM"
-import { displayToc, keyToggleTableId, keyToggleH } from "./headerList"
+import { createElementWithAttributes } from "../util/domUtils"
+import { displayToc, keyToggleTableId, keyToggleH, keyToolbarHeaderSpace } from "./headerList"
+import { getCurrentPageOriginalName } from ".."
+import { pageOpen } from "../util/lib"
 
 
 let processingButton = false
 
-export const hideHeaderFromList = (headerName: string) => {
+const hideHeaderFromList = (headerName: string) => {
   if (processingButton) return
   processingButton = true
   setTimeout(() => processingButton = false, 300)
@@ -20,7 +22,7 @@ export const hideHeaderFromList = (headerName: string) => {
       : "red"
 }
 
-export const toggleHeaderVisibility = (headerName: string) => {
+const toggleHeaderVisibility = (headerName: string) => {
   for (const element of (parent.document.querySelectorAll(`#lse-toc-content ${headerName}`) as NodeListOf<HTMLElement>))
     element.style.display = element.style.display === "none" ?
       "block"
@@ -84,5 +86,35 @@ export const additionalButtons = (thisPageName: string) => {
   elementButtons.append(elementForHideHeader)
 
   return elementButtons
+}
+
+
+export const generatePageButton = (element: HTMLElement) => {
+  const currentPageOriginalName = getCurrentPageOriginalName()
+  if (currentPageOriginalName === "") return
+
+  let headerSpace = parent.document.getElementById(keyToolbarHeaderSpace) as HTMLElement | null
+  if (!headerSpace) {
+    headerSpace = createElementWithAttributes("div", {
+      id: keyToolbarHeaderSpace,
+      class: "flex items-center",
+    })
+    element.insertAdjacentElement("beforebegin", headerSpace)
+  }
+
+  if (headerSpace) {
+    // headerSpace.innerHTML = "" // リフレッシュ
+    const openButton = createElementWithAttributes(
+      "button",
+      {
+        title: currentPageOriginalName,
+        class: "button",
+        style: "white-space: nowrap",
+      },
+      currentPageOriginalName
+    )
+    openButton.addEventListener("click", ({ shiftKey }) => pageOpen(currentPageOriginalName, shiftKey, false))
+    headerSpace.appendChild(openButton)
+  }
 }
 

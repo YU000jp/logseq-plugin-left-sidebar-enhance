@@ -1,8 +1,8 @@
 import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin"
 import { onPageChangedCallback, updateCurrentPage } from ".."
 import { CurrentCheckPageOrZoom, getCurrentPageForMd, getCurrentZoomForMd, zoomBlockWhenDb } from "../util/query/advancedQuery"
-import { whenOpenJournals } from "./journalsList"
 import { clearTOC } from "./DOM"
+import { whenOpenJournals } from "./journalsList"
 
 
 let processingRoot = false

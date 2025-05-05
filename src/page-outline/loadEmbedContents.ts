@@ -2,6 +2,7 @@ import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
 import { getContentFromUuid } from "../util/query/advancedQuery"
 import { processText } from "./regex"
 
+
 export const loadEmbedContents = (content: string, uuid: BlockEntity["uuid"]) => {
   if (content.includes("((") && content.includes("))")) {
     setTimeout(async () => {

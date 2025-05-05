@@ -4,7 +4,7 @@ import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/l
 import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
-import { loadTOC } from './page-outline/toc'
+import { setupTOCHandlers } from './page-outline/toc'
 import { displayToc } from './page-outline/headerList'
 import { settingsTemplate } from './settings'
 import ja from "./translations/ja.json"
@@ -48,7 +48,7 @@ const main = async () => {
   logseqVersionMd = await checkLogseqVersion()
 
   //TOC
-  loadTOC(logseqVersionMd)
+  setupTOCHandlers(logseqVersionMd)
 
   //日付セレクター
   loadDateSelector()

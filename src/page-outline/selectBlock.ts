@@ -1,6 +1,7 @@
 import { scrollToWithOffset } from "../util/domUtils"
-import { expandAndScrollToBlock } from "./collapsed-block"
+import { expandAndScrollToBlock } from "./collapsedBlock"
 import { whenZoom } from "./zoom"
+
 
 export const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
   await logseq.Editor.setBlockCollapsed(blockUuid, false)
@@ -25,6 +26,6 @@ export const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName:
       await expandAndScrollToBlock(blockUuid, true)
       return
     }
-    await whenZoom(pageName, blockUuid)
+    whenZoom(pageName, blockUuid)
   }
 }

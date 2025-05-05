@@ -1,5 +1,6 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
-import { expandAndScrollToBlock } from "./collapsed-block"
+import { expandAndScrollToBlock } from "./collapsedBlock"
+
 
 /**
  * Clears all zoom marks from the table of contents.
@@ -11,6 +12,7 @@ export const clearZoomMarks = () => {
     if (markElement) markElement.style.display = "none" // マークを非表示
   })
 }
+
 
 export const updateZoomMark = (zoom: { zoomIn: boolean; zoomInUuid: BlockEntity["uuid"] } | undefined, targetElement: HTMLElement) => {
   if (zoom) {
@@ -30,12 +32,12 @@ export const updateZoomMark = (zoom: { zoomIn: boolean; zoomInUuid: BlockEntity[
   }
 }
 
-export const whenZoom = async (pageName: string, blockUuid: string) => {
+
+export const whenZoom = (pageName: string, blockUuid: string) => {
   const zoomPageElement = parent.document.querySelector("#main-content-container div.page div.breadcrumb") as HTMLElement | null
   if (zoomPageElement) {
-    await logseq.Editor.scrollToBlockInPage(pageName, blockUuid, { replaceState: true })
+    logseq.Editor.scrollToBlockInPage(pageName, blockUuid, { replaceState: true })
   } else {
-    await expandAndScrollToBlock(blockUuid, true)
+    expandAndScrollToBlock(blockUuid, true)
   }
 }
-

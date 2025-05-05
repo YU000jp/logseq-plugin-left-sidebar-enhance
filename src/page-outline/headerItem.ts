@@ -3,6 +3,7 @@ import { TocBlock } from "./headerList"
 import { loadEmbedContents } from "./loadEmbedContents"
 import { generateHeaderElement, processText } from "./regex"
 import { selectBlock } from "./selectBlock"
+import { createElementWithAttributes } from "../util/domUtils"
 
 
 
@@ -14,7 +15,7 @@ export const createHeaderElement = (
   tocBlock: TocBlock,
   versionMd: boolean,
   thisPageName: string,
-  zoom?: { zoomIn: boolean; zoomInUuid: BlockEntity["uuid"]} 
+  zoom?: { zoomIn: boolean; zoomInUuid: BlockEntity["uuid"] }
 ): HTMLElement => {
 
   let element: HTMLElement
@@ -36,16 +37,15 @@ export const createHeaderElement = (
   const headerText = processText(content.includes("\n") ? content.split("\n")[0] : content)
 
   // Add zoom mark
-  const markElement = document.createElement("span")
-  markElement.className = "zoom-mark"
-  markElement.textContent = "🔍"
-  markElement.style.display = zoom && zoom.zoomIn && zoom.zoomInUuid === tocBlock.uuid ? "inline" : "none"
-  element.appendChild(markElement)
-
-  element.innerHTML += headerText
+  const markElement = createElementWithAttributes("span", {
+    class: "zoom-mark",
+    style: `display: ${zoom && zoom.zoomIn && zoom.zoomInUuid === tocBlock.uuid ? "inline" : "none"}`,
+  }, "🔍")
   element.title = headerText
-  element.addEventListener("click", ({ shiftKey, ctrlKey }) => selectBlock(shiftKey, ctrlKey, thisPageName, tocBlock.uuid)
-  )
+
+  element.appendChild(markElement)
+  element.innerHTML += headerText
+  element.addEventListener("click", ({ shiftKey, ctrlKey }) => selectBlock(shiftKey, ctrlKey, thisPageName, tocBlock.uuid))
 
   headerItemLink([tocBlock], 0, element)
 

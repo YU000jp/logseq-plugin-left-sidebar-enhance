@@ -4,14 +4,14 @@ import { booleanLogseqVersionMd, getCurrentPageOriginalName } from ".."
 import { headerCommand } from "../headerCommand"
 import { createElementWithAttributes } from "../util/domUtils"
 import { removeContainer } from "../util/lib"
-import tocCSS from "./toc.css?inline"
 import { displayToc } from "./headerList"
 import { routeCheck } from "./routeCheck"
+import tocCSS from "./toc.css?inline"
 
 
 // プラグイン起動後、5秒間はロックをかける
 let processing = true
-export const loadTOC = (versionMd: boolean) => {
+export const setupTOCHandlers = (versionMd: boolean) => {
 
     setTimeout(() => {
         //プラグイン設定変更時
@@ -19,7 +19,7 @@ export const loadTOC = (versionMd: boolean) => {
             if (processing) return
             if (oldSet.booleanLeftTOC !== newSet.booleanLeftTOC) {
                 if (newSet.booleanLeftTOC === true)
-                    main()//表示する
+                    renderTOCContainer()//表示する
                 else
                     removeContainer("lse-toc-container")//消す
             }
@@ -34,7 +34,7 @@ export const loadTOC = (versionMd: boolean) => {
     }, 5000)
 
     if (logseq.settings!.booleanLeftTOC === true)
-        main()
+        renderTOCContainer()
 
     logseq.provideStyle(tocCSS)
 
@@ -47,9 +47,6 @@ export const loadTOC = (versionMd: boolean) => {
     logseq.App.onRouteChanged(async () => {
         await routeCheck(versionMd)
     })
-    // logseq.App.onPageHeadActionsSlotted(async () => {//動作保証のため、2つとも必要
-    //     await routeCheck()
-    // })
 
     //ヘッダー挿入コマンド
     headerCommand()
@@ -58,7 +55,7 @@ export const loadTOC = (versionMd: boolean) => {
 
 
 
-const main = () => {
+const renderTOCContainer = () => {
     const versionMd = booleanLogseqVersionMd()
     if (parent.document.getElementById("lse-toc-container"))
         removeContainer("lse-toc-container")//すでに存在する場合は削除する
@@ -68,22 +65,25 @@ const main = () => {
         const navEle = parent.document.querySelector(versionMd === true ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
         if (navEle === null) return //nullの場合はキャンセル
 
-        const divAsItemEle: HTMLElement = createElementWithAttributes("div", {
+        const divAsItemEle = createElementWithAttributes("div", {
             class: "nav-content-item mt-3 is-expand flex-shrink-0",
             id: "lse-toc-container",
         })
-        const detailsEle: HTMLDetailsElement = document.createElement("details")
-        detailsEle.className = "nav-content-item-inner"
-        detailsEle.open = true
-        const summaryEle: HTMLElement = document.createElement("summary")
-        summaryEle.className = "header items-center"
-        summaryEle.style.cursor = "row-resize"
-        summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
-        summaryEle.innerText = t("Table of Contents")// タイトルを入れる
-        summaryEle.title = "Left Sidebar Enhance " + t("plugin")//プラグイン名を入れる
-        const containerEle: HTMLDivElement = document.createElement("div")
-        containerEle.className = "bd"
-        containerEle.id = "lse-toc-inner"
+        const detailsEle = createElementWithAttributes("details", {
+            class: "nav-content-item-inner",
+            open: "true",
+        })
+        const summaryEle = createElementWithAttributes("summary", {
+            class: "header items-center",
+            style: "cursor: row-resize; background-color: var(--ls-tertiary-background-color);",
+            title: "Left Sidebar Enhance " + t("plugin"),
+        })
+        summaryEle.innerText = t("Table of Contents")
+        const containerEle = createElementWithAttributes("div", {
+            class: "bd",
+            id: "lse-toc-inner",
+        })
+
         detailsEle.appendChild(summaryEle)
         detailsEle.appendChild(containerEle)
         divAsItemEle.appendChild(detailsEle)
@@ -94,8 +94,9 @@ const main = () => {
             const containerEle: HTMLDivElement | null = parent.document.getElementById("lse-toc-inner") as HTMLDivElement | null
             if (containerEle === null) return //nullの場合はキャンセル
             if (containerEle.dataset.flag !== "true") {//すでに存在する場合はキャンセル
-                const divEle = document.createElement("div")
-                divEle.id = "lse-toc-content"
+                const divEle = createElementWithAttributes("div", {
+                    id: "lse-toc-content",
+                })
                 containerEle.appendChild(divEle)
             }
             containerEle.dataset.flag = "true" //フラグを立てる
