@@ -82,15 +82,15 @@ Install from Logseq Marketplace
    - Enable/disable date selector feature in left sidebar
    > Not supported in Logseq db version
 
-4. Page Outline (TOC) Feature
-   - Enable/disable TOC feature
+4. Page Outline (Table of contents) Feature
+   - Enable/disable Page Outline feature
    - Open as zoom page by default
      > If disabled, Ctrl+Click for zoom page view
    - Mouse over highlight feature
      - Highlight corresponding block when hovering over header
      - Highlight corresponding header when hovering over block
    - Show date list in journal pages
-   - List of words to exclude from TOC (line-separated)
+   - List of words to exclude from the header list (line-separated)
 
 ---
 
