@@ -1,9 +1,9 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
 import removeMd from "remove-markdown"
-import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onBlockChangedOnce } from "."
-import { scrollToWithOffset, pageOpen } from "./lib"
-import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, removeProperties, replaceOverCharacters } from "./markdown"
+import { booleanLogseqVersionMd, getCurrentPageOriginalName, onBlockChanged, onBlockChangedOnce, updateCurrentPage } from "."
+import { pageOpen, scrollToWithOffset } from "./lib"
+import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, replaceOverCharacters } from "./markdown"
 import { getContentFromUuid, getParentFromUuid } from "./query/advancedQuery"
 import { clearTOC } from "./toc"
 
@@ -182,7 +182,10 @@ export const headersList = async (
       element.classList.add("left-toc-" + element.tagName.toLowerCase(), "cursor")
       element.setAttribute("data-uuid", tocBlocks[i].uuid) // UUIDをデータ属性として設定
 
-      const headerText = await processHeaderContent(content, tocBlocks, i, versionMd)
+      // embedのコンテンツを非同期で取得してDOMに反映
+      loadEmbedContents(content, versionMd, tocBlocks[i].uuid)
+
+      const headerText = processText(content.includes("\n") ? content.split("\n")[0] : content)
 
       // マーク用エレメントを追加
       const markElement = document.createElement("span")
@@ -506,45 +509,6 @@ const headerItemLink = (tocBlocks: TocBlock[], i: number, element: HTMLElement) 
   }
 }
 
-/**
- * Processes the content of a header block by applying various transformations and returns the processed header text.
- */
-const processHeaderContent = async (content: string, tocBlocks: TocBlock[], index: number, versionMd: boolean): Promise<string> => {
-  if (content.includes("((") && content.includes("))")) {
-    const blockIdArray = /\(([^(())]+)\)/.exec(content)
-    if (blockIdArray) {
-      for (const blockId of blockIdArray) {
-        const blockContent = await getContentFromUuid(blockId) as BlockEntity["content"] | null
-        if (blockContent) {
-          content = content.replace(`((${blockId}))`, blockContent.substring(0, blockContent.indexOf("id::")))
-        }
-      }
-    }
-  }
-
-  content = await removeProperties(tocBlocks, index, content)
-
-  if (versionMd === true && content.includes("id:: ")) {
-    content = content.substring(0, content.indexOf("id:: "))
-  }
-
-  content = removeMarkdownLink(content)
-  content = removeMarkdownAliasLink(content)
-  content = replaceOverCharacters(content)
-  content = removeMarkdownImage(content)
-
-  if (logseq.settings!.tocRemoveWordList as string !== "") {
-    content = removeListWords(content, logseq.settings!.tocRemoveWordList as string)
-  }
-
-  const headerText = versionMd === true
-    ? removeMd(
-      `${(content.includes("collapsed:: true") && content.substring(2, content.length - 16)) || content.substring(2)}`
-    )
-    : removeMd(content)
-
-  return headerText
-}
 
 /**
  * Determines if a given content or block qualifies as a header.
@@ -575,3 +539,39 @@ const isHeader = (content: string, tocBlock: TocBlock, versionMd: boolean): bool
   }
 }
 
+const loadEmbedContents = (content: string, versionMd: boolean, uuid: BlockEntity["uuid"]) => {
+  if (content.includes("((") && content.includes("))")) {
+    setTimeout(async () => {
+      const blockIdArray = /\(([^(())]+)\)/.exec(content)
+      if (blockIdArray) {
+        for (let blockId of blockIdArray) {
+          blockId = blockId.substring(1, blockId.length - 1)
+          const blockContent = await getContentFromUuid(blockId) as BlockEntity["content"] | null
+          if (blockContent) {
+            // Replace the selected code with:
+            const updatedContent = blockContent.includes("\n") ?
+              processText(blockContent.split("\n")[0])
+              : processText(blockContent)
+            const targetElement = parent.document.querySelector(`#lse-toc-content [data-uuid="${uuid}"]`) as HTMLElement | null
+            if (targetElement) {
+              targetElement.innerHTML = targetElement.innerHTML.replace(`((${blockId}))`, updatedContent)
+              targetElement.title = updatedContent
+            }
+          }
+        }
+      }
+    }, 10)
+  }
+}
+
+// Add this shared function near the top of the file
+const processText = (content: string): string => {
+  let processed = removeMarkdownLink(content)
+  processed = removeMarkdownAliasLink(processed)
+  processed = replaceOverCharacters(processed)
+  processed = removeMarkdownImage(processed)
+  if (logseq.settings!.tocRemoveWordList as string !== "") {
+    processed = removeListWords(processed, logseq.settings!.tocRemoveWordList as string)
+  }
+  return removeMd(processed)
+}

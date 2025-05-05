@@ -23,21 +23,21 @@ export const replaceOverCharacters = (blockContent: string) =>
 
 export const removeMarkdownImage = (blockContent: string) => removePattern(blockContent, PATTERNS.MARKDOWN_IMAGE)
 
-export const removeProperties = async (tocBlocks: TocBlock[], i: number, blockContent: string): Promise<string> => {
-  const properties = tocBlocks[i].properties
-  if (!properties) return blockContent
-  const keys = Object.keys(properties)
-  for (let j = 0; j < keys.length; j++) {
-    let key = keys[j]
-    const values = properties[key]
-    //backgroundColorをbackground-colorにする
-    //キーの途中で一文字大文字になっている場合は小文字にしてその前にハイフンを追加する
-    key = key.replace(/([A-Z])/g, "-$1").toLowerCase()
-    blockContent = blockContent.replace(`${key}:: ${values}`, "")
-    blockContent = blockContent.replace(`${key}::`, "")
-  }
-  return blockContent
-}
+// export const removeProperties = async (tocBlocks: TocBlock[], i: number, blockContent: string): Promise<string> => {
+//   const properties = tocBlocks[i].properties
+//   if (!properties) return blockContent
+//   const keys = Object.keys(properties)
+//   for (let j = 0; j < keys.length; j++) {
+//     let key = keys[j]
+//     const values = properties[key]
+//     //backgroundColorをbackground-colorにする
+//     //キーの途中で一文字大文字になっている場合は小文字にしてその前にハイフンを追加する
+//     key = key.replace(/([A-Z])/g, "-$1").toLowerCase()
+//     blockContent = blockContent.replace(`${key}:: ${values}`, "")
+//     blockContent = blockContent.replace(`${key}::`, "")
+//   }
+//   return blockContent
+// }
 
 export const removeListWords = (blockContent: string, wordList: string): string =>
   wordList

@@ -31,7 +31,7 @@ export const getContentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<Blo
      [(str ?uuid) ?str]
      [(= ?str "${uuid}")]]
      ` )
-  return result?.content ?? null
+  return result?.[0]?.content ?? null
 }
 
 export const getParentFromUuid = async (uuid: BlockEntity["uuid"]): Promise<BlockEntity["uuid"] | null> => {
