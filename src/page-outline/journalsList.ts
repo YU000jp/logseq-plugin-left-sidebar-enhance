@@ -1,5 +1,5 @@
 import { pageOpen } from "../util/lib"
-import { clearTOC } from "./toc"
+import { clearTOC } from "./DOM"
 import { scrollToWithOffset } from "../util/domUtils"
 
 let processing = false
@@ -22,6 +22,7 @@ export const whenOpenJournals = (journalsEle: HTMLDivElement, versionMd: boolean
     }
 }
 
+
 const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, versionMd: boolean) => {
     // 表示処理
     updateJournalList(journalsEle, tocContentEle, versionMd)
@@ -39,6 +40,7 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
         mainContentContainer.addEventListener("scroll", scrollEvent)
     }
 }
+
 
 const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, versionMd: boolean) => {
     tocContentEle.innerHTML = ""
@@ -100,4 +102,3 @@ const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEl
     })
     tocContentEle.appendChild(ulEle)
 }
-

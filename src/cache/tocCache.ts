@@ -1,4 +1,4 @@
-import type { TocBlock } from "../page-outline/tocProcess"
+import type { TocBlock } from "../page-outline/headerList"
 
 let cachedHeaders: TocBlock[] | null = null
 

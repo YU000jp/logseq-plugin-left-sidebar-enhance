@@ -1,6 +1,6 @@
 import { t } from "logseq-l10n"
 import { createElementWithAttributes } from "./DOM"
-import { displayToc, keyToggleTableId, keyToggleH } from "./tocProcess"
+import { displayToc, keyToggleTableId, keyToggleH } from "./headerList"
 
 
 let processingButton = false

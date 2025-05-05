@@ -1,6 +1,8 @@
+import { t } from "logseq-l10n"
 import { getCurrentPageOriginalName } from ".."
+import { clearCachedHeaders } from "../cache/tocCache"
 import { pageOpen } from "../util/lib"
-import { keyToolbarHeaderSpace } from "./tocProcess"
+import { keyToolbarHeaderSpace } from "./headerList"
 
 
 /**
@@ -12,6 +14,7 @@ export const createElementWithAttributes = (tag: string, attributes: { [key: str
   if (textContent) element.textContent = textContent
   return element
 }
+
 
 export const generatePageButton = (element: HTMLElement) => {
   const currentPageOriginalName = getCurrentPageOriginalName()
@@ -40,4 +43,14 @@ export const generatePageButton = (element: HTMLElement) => {
     openButton.addEventListener("click", ({ shiftKey }) => pageOpen(currentPageOriginalName, shiftKey, false))
     headerSpace.appendChild(openButton)
   }
+}//"lse-toc-content"に代わりのメッセージを入れる(クリアも兼ねている)
+
+
+
+export const clearTOC = () => {
+    clearCachedHeaders()
+    const element = parent.document.getElementById("lse-toc-content") as HTMLDivElement | null
+    if (element)
+        element.innerHTML = t("No headers found")
 }
+

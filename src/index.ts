@@ -5,7 +5,7 @@ import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
 import { loadTOC } from './page-outline/toc'
-import { displayToc } from './page-outline/tocProcess'
+import { displayToc } from './page-outline/headerList'
 import { settingsTemplate } from './settings'
 import ja from "./translations/ja.json"
 import { removeContainer } from './util/lib'
