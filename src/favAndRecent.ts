@@ -9,19 +9,19 @@ export const loadFavAndRecent = () => {
     logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
         if (oldSet.booleanFavAndRecent !== newSet.booleanFavAndRecent)
             if (newSet.booleanFavAndRecent === true)
-                main()
+                filterRecentItems()
             else
                 removeProvideStyle(key)//非表示にする
     })
 
     // 初回実行
     if (logseq.settings!.booleanFavAndRecent === true)
-        main()
+        filterRecentItems()
 }
 
 
 
-const main = async () => {
+const filterRecentItems = async () => {
 
     if (processing) return
     processing = true
@@ -29,30 +29,23 @@ const main = async () => {
 
 
     const favoriteArray = await logseq.App.getCurrentGraphFavorites() as Array<string> | null
-    const RecentArray = await logseq.App.getCurrentGraphRecent() as Array<string> | null
-
-    if (favoriteArray
-        && RecentArray) {
-        //favoriteArrayとRecentArrayと重複しているものをCSSで取り除きたい
-        const matchArray = favoriteArray.filter(value => RecentArray.includes(value))
-        if (matchArray.length > 0) {
-            logseq.provideStyle({
-                key,
-                style: `
+    if (favoriteArray && favoriteArray.length > 0) {
+        logseq.provideStyle({
+            key,
+            style: `
                     #left-sidebar div.nav-content-item.recent li[title].recent-item {
-                        ${matchArray.map((value) => `&:has(span.page-title[data-orig-text="${value}"])`).join(", ")} {
+                        ${favoriteArray.map((value) => `&[data-ref="${value}"],\n&:has(span.page-title[data-orig-text="${value}"])`).join(", ")} {
                         display: none;
                         }
                     }
                     `})
-            console.log("Hide duplicate favorites and history")
-        }
+        // console.log("Hide duplicate favorites and history")
     }
 
     // 10分毎に再実行
     setTimeout(() => {
         if (logseq.settings!.booleanFavAndRecent === true)
-            main()
+            filterRecentItems()
     }, 600000)
 
 }
