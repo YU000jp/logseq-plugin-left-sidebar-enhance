@@ -15,14 +15,14 @@
 
 This plugin provides three main features:
 
-1. Table of Contents (Auto-generated)
+1. Page Outline (:Table of contents :Auto-generated)
 2. Auto-hide/show Left Sidebar
 3. Date Access (Daily & Monthly)
 
 ---
 
 1. **Page Outline Feature**
-   - Automatically displays a table of contents in the left menu, generated from headers in the opened page's content
+   - Automatically displays a Page Outline in the left menu, generated from headers in the opened page's content
    > (Markdown headers: `#`,`##`,`###`,`####`,`#####`,`######`)
    
    Quick Actions:
@@ -53,7 +53,7 @@ Install from Logseq Marketplace
 
 ### Usage
 
-- Table of Contents: When opening any page, the TOC automatically appears in the left sidebar menu.
+- Page Outline: When opening any page, the TOC automatically appears in the left sidebar menu.
    - How it works:
       > Automatically detects both Markdown (#) and Logseq DB format headers
       - Updates automatically when content changes
