@@ -10,6 +10,15 @@
         padding-top: 1em;
         user-select: none;
 
+
+        & .zoom-mark {
+            margin-left: 0.5em;
+            color: var(--ls-active-secondary-color);
+            font-size: 0.9em;
+            display: none;
+            /* 初期状態は非表示 */
+        }
+
         & #thfpc--toggleHeader th {
             padding: 0.3em;
             white-space: nowrap;
