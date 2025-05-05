@@ -77,7 +77,7 @@ const renderTOCContainer = () => {
             class: "header items-center",
             title: "Left Sidebar Enhance " + t("plugin"),
         })
-        summaryEle.innerText = t("Table of Contents")
+        summaryEle.innerText = t("Page Outline")
         const containerEle = createElementWithAttributes("div", {
             class: "bd",
             id: "lse-toc-inner",

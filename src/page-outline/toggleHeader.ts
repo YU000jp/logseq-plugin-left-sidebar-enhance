@@ -37,7 +37,7 @@ export const additionalButtons = (thisPageName: string) => {
     class: "flex items-center",
   })
 
-  const elementUpdate = createElementWithAttributes("span", { class: "cursor", title: t("Update Table of Contents") }, "🔄")
+  const elementUpdate = createElementWithAttributes("span", { class: "cursor", title: t("Update the header list") }, "🔄")
   elementUpdate.addEventListener("click", () => {
     elementUpdate.style.visibility = "hidden"
     setTimeout(() => (elementUpdate.style.visibility = "visible"), 2000)

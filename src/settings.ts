@@ -1,91 +1,87 @@
 import { SettingSchemaDesc } from '@logseq/libs/dist/LSPlugin.user'
 import { t } from 'logseq-l10n'
 
-/* user setting */
+/* ユーザー設定 */
 // https://logseq.github.io/plugins/types/SettingSchemaDesc.html
 export const settingsTemplate = (): SettingSchemaDesc[] => [
 
-    {// お気に入りと履歴の重複を非表示
+    {// お気に入りと履歴の重複項目を自動的に非表示
         key: "booleanFavAndRecent",
-        title: t("Enable: Hide duplicate favorites and history"),
+        title: t("Hide duplicate items in Favorites and History"),
         type: "boolean",
         default: true,
-        // プラグイン実行時と、10分ごとに重複チェックを行う
-        description: t("Duplicate checks are performed at plugin runtime and every 10 minutes."),
+        description: t("Automatically removes duplicates in Favorites and History when the plugin starts and every 10 minutes."),
     },
-
-
-    {//Left TOC
+    {// マウスオーバーで左サイドバーを表示
+        key: "loadShowByMouseOver",
+        type: "boolean",
+        title: t("Show left sidebar on mouse hover"),
+        description: t("Choose between three modes: show on hover, always show, or hide."),
+        default: false,
+    },
+    {// マウスオーバーの動作タイプを選択
+        key: "showByMouseOverType",
+        type: "enum",
+        title: t("Mouse hover behavior type"),
+        enumChoices: ["Type A", "Type B"],
+        default: "Type B",
+        description: "Type A: Inspired by 'mæn', Type B: Inspired by 'sethyuan'.",
+    },
+    {// 左サイドバーに日付セレクターを表示
+        key: "booleanDateSelector",
+        title: t("Enable date selector in the left sidebar"),
+        type: "boolean",
+        default: false,
+        description: t("Not compatible with the Logseq db version."),
+    },
+    {// ページアウトライン(目次)機能の設定
+        key: "heading00Toc",
+        title: t("Page outline function"),
+        type: "heading",
+        default: null,
+        description: "(Table of Contents)",
+    },
+    {// 左サイドバーに目次を表示
         key: "booleanLeftTOC",
-        title: t("Enable: Table Of Contents in left sidebar"),
+        title: "",
         type: "boolean",
         default: true,
-        description: "",
+        description: t("Enable"),
     },
-    {//Table of Contents、削除する単語リスト 改行区切り
+    {// ページを開く時にズーム表示をデフォルトに
+        key: "booleanAsZoomPage",
+        title: t("Open pages as zoomed by default") + "🆕",
+        type: "boolean",
+        default: true,
+        description: t("If disabled, hold the `Ctrl` key and click to open as a zoomed block."),
+    },
+    {// ヘッダーにマウスオーバーした時に対応するブロックをハイライト
+        key: "highlightBlockOnHover",
+        title: t("Highlight blocks when hovering over headers"),
+        type: "boolean",
+        default: true,
+        description: t("Highlights the corresponding block when hovering over a header in the header list."),
+    },
+    {// ブロックにマウスオーバーした時に対応するヘッダーをハイライト
+        key: "highlightHeaderOnHover",
+        title: t("Highlight headers when hovering over blocks"),
+        type: "boolean",
+        default: true,
+        description: t("Highlights the corresponding header in the header list when hovering over a block in the page."),
+    },
+    {// ジャーナルページで日付リストを表示
+        key: "enableJournalsList",
+        title: t("Show date list in journals"),
+        type: "boolean",
+        default: true,
+        description: t("Toggle to display or hide the date list in journals."),
+    },
+    {// 目次から除外する単語のリスト（改行区切り）
         key: "tocRemoveWordList",
-        title: t("Remove words from table of contents"),
+        title: t("Words to exclude from the header list"),
         type: "string",
         inputAs: "textarea",
         default: "",
-        description: t("Separate with line breaks"),
+        description: t("Enter words to exclude, separated by line breaks."),
     },
-    {//標準でズームページとして開く
-        key: "booleanAsZoomPage",
-        title: t("Enable: Open as zoom page by default") + "🆕",
-        type: "boolean",
-        default: true,
-        // これが無効の場合は、Ctrlキーを同時押しでクリックすることでズームページになる
-        description: t("If disabled, hold down the `Ctrl` key and click to open as a zoom page."),
-    },
-    {// ヘッダーリストにカーソルを合わせた時に、該当するブロックをハイライトする
-        key: "highlightBlockOnHover",
-        title: t("Enable: Highlight block on hover"),
-        type: "boolean",
-        default: true,
-        // ヘッダーリストのヘッダー項目にカーソルを合わせた時に、該当するブロックをハイライトする
-        description: t("Highlight the corresponding block when hovering over the header item in the header list."),
-    },
-    {// ページ内のヘッダーにカーソルを合わせた時に、ヘッダーリストの該当する項目をハイライトする
-        key: "highlightHeaderOnHover",
-        title: t("Enable: Highlight header on hover"),
-        type: "boolean",
-        default: true,
-        // ページ内のヘッダーにカーソルを合わせた時に、ヘッダーリストの該当する項目をハイライトする 
-        description: t("Highlight the corresponding item in the header list when hovering over the header in the page."),
-    },
-    {// ジャーナルのときに、日付リストを表示するかどうか
-        key: "enableJournalsList",
-        title: t("In journals, display the date list"),
-        type: "boolean",
-        default: true,
-        description: "",
-    },
-    {//Switch loadShowByMouseOver
-        key: "loadShowByMouseOver",
-        type: "boolean",
-        //左サイドバーをマウスオーバーで表示する
-        title: t("Enable: Mouse over to show left sidebar"),
-        //マウスオーバーで表示する場合と、通常表示と、表示しない場合の3パターン
-        description: t("Toggle 3 pattern: mouse over, normal, and hide."),
-        default: false,
-    },
-    {//Type AかType Bか
-        key: "showByMouseOverType",
-        type: "enum",
-        title: t("Select mouse over type"),
-        enumChoices: ["type A", "type B"],
-        default: "type B",
-        description: t("type A: credit by mæn, type B: credit by sethyuan"),
-    },
-
-
-    {//date selector
-        key: "booleanDateSelector",
-        title: t("Enable: Date selector in left sidebar"),
-        type: "boolean",
-        default: false,
-        description: "",
-    },
-
 ]
