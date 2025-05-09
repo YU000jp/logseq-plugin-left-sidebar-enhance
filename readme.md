@@ -40,8 +40,7 @@ This plugin provides three main features:
 
    ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
 
-   - Date selector: Access to date pages
-   - Month selector: Access to monthly journals (like `yyyy/MM`)
+   - Access to a journal-day or a monthly journal (like `yyyy/MM` `yyyy-MM`)
 
 ---
 
