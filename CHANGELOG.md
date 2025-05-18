@@ -1,3 +1,10 @@
+## [1.15.2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.15.1...v1.15.2) (2025-05-18)
+
+
+### Bug Fixes
+
+* **bug:** Scrolling causes the screen to shift. (Compatibility for db version) [#16](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/16) ([a2b20d5](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/a2b20d5ceb465da9891285837ecae1dea4d53291))
+
 ## [1.15.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.15.0...v1.15.1) (2025-05-18)
 
 
