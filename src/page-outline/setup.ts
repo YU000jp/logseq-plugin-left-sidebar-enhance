@@ -40,6 +40,10 @@ export const setupTOCHandlers = (versionMd: boolean) => {
     #main-content-container div.ls-page-blocks { 
         overflow: visible;
     }
+    #left-container {
+        display: unset;
+        position: static;
+    }
         `: ""))
 
     //プラグイン起動時
