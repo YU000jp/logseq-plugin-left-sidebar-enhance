@@ -44,7 +44,6 @@ const main = async () => {
     setTimeout(() =>
       logseq.showSettingsUI(), 300)
 
-  // バージョンチェック
   logseqVersionMd = await checkLogseqVersion()
 
   //TOC
@@ -142,7 +141,7 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
 }
 
 
-
+// バージョンチェック
 const checkLogseqVersion = async (): Promise<boolean> => {
   const logseqInfo = await logseq.App.getInfo("version") as AppInfo | any
   //  0.11.0もしくは0.11.0-alpha+nightly.20250427のような形式なので、先頭の3つの数値(1桁、2桁、2桁)を正規表現で取得する
@@ -152,7 +151,7 @@ const checkLogseqVersion = async (): Promise<boolean> => {
     // console.log("logseq version: ", logseqVersion)
 
     // もし バージョンが0.10.*系やそれ以下ならば、logseqVersionMdをtrueにする
-    if (logseqVersion.match(/0\.10\.\d+/) || logseqVersion.match(/0\.9\.\d+/)) {
+    if (logseqVersion.match(/0\.([0-9]|10)\.\d+/)) {
       logseqVersionMd = true
       // console.log("logseq version is 0.10.* or lower")
       return true

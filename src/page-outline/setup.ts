@@ -36,7 +36,11 @@ export const setupTOCHandlers = (versionMd: boolean) => {
     if (logseq.settings!.booleanLeftTOC === true)
         renderTOCContainer()
 
-    logseq.provideStyle(tocCSS)
+    logseq.provideStyle(tocCSS + (versionMd === false ? `
+    #main-content-container div.ls-page-blocks { 
+        overflow: visible;
+    }
+        `: ""))
 
     //プラグイン起動時
     setTimeout(() => {
