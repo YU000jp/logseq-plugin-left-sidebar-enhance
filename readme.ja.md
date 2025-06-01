@@ -31,19 +31,17 @@
    - Shiftクリック：右サイドバーで開く
    - ショートカットキー（MDバージョンのみ）：`Alt+1`から`Alt+6`でヘッダーを挿入
 
-   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
-
+   ![image](https://github.com/user-attachments/assets/f25fff05-1ae4-4be7-aff6-8cb8ca277155)
 
 
 2. マウスオーバーで、左メニューを自動で隠す (デフォルト: **無効**)
    > 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを使ってください。
 
 3. 日誌(ジャーナル)の日付へのアクセス (デフォルト: **無効**)  dbバージョン ✖
-
-   ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
-
    - 日付セレクタ：日付ページへのアクセス
    - 月のセレクタ：(`yyyy/MM`) のような月次ジャーナルへのアクセス
+  
+   ![image](https://github.com/user-attachments/assets/51f9ba8f-2374-43e5-8e78-44cd053e818a)
 
 ---
 
