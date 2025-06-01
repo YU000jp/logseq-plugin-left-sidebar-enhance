@@ -97,8 +97,10 @@ Install from Logseq Marketplace
 
 > Head to the [Discussion](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) tab to ask and find this kind of things.
 
-- Recommended
-  1. [sethyuan / Favorite Tree Plugin](https://github.com/sethyuan/logseq-plugin-favorite-tree)
+### Related plugins
+
+- [Logging Search plugin](https://github.com/YU000jp/logseq-plugin-logging-search)
+  > Query-based search plugin that displays fully rendered results. Add a search box in left menu.
 
 ## Prior Art & Credit
 
