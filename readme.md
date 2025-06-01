@@ -101,6 +101,8 @@ Install from Logseq Marketplace
 
 - [Logging Search plugin](https://github.com/YU000jp/logseq-plugin-logging-search)
   > Query-based search plugin that displays fully rendered results. Add a search box in left menu.
+  
+    ![image](https://github.com/user-attachments/assets/ac903fd7-5cd3-4b0a-97fb-df3a43fc0967)
 
 ## Prior Art & Credit
 
