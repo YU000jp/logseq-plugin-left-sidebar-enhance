@@ -99,8 +99,10 @@ Logseq マーケットプレースからインストール
 
 > この種のことを尋ねたり見つけたりするために、[ディスカッション](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/discussions) タブに移動してください。
 
-- おすすめ
-  1. [sethyuan / Favorite Tree プラグイン](https://github.com/sethyuan/logseq-plugin-favorite-tree)
+### 関連プラグイン
+
+- [ログ検索プラグイン](https://github.com/YU000jp/logseq-plugin-logging-search)
+  > 完全にレンダリングされた結果を表示するクエリベースの検索プラグイン。左メニューに検索ボックスを追加。
 
 ## 先行技術とクレジット
 
