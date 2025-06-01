@@ -31,16 +31,15 @@ This plugin provides three main features:
    - Shift+Click: Open in right sidebar
    - Shortcut keys (MD version only): `Alt+1` to `Alt+6` to insert headers
 
-   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/d5da0ec4-41cc-4c17-ae1b-9853fd040661)
+   ![image](https://github.com/user-attachments/assets/f25fff05-1ae4-4be7-aff6-8cb8ca277155)
 
 2. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
    > Use the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
 
 3. Journal Date Access (Default: **Disabled**) db version ✖
-
-   ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/ec42967a-4c66-4d02-9765-782772dbb18e)
-
    - Access to a journal-day or a monthly journal (like `yyyy/MM` `yyyy-MM`)
+
+   ![image](https://github.com/user-attachments/assets/51f9ba8f-2374-43e5-8e78-44cd053e818a)
 
 ---
 
