@@ -103,6 +103,7 @@ Logseq マーケットプレースからインストール
 
 - [ログ検索プラグイン](https://github.com/YU000jp/logseq-plugin-logging-search)
   > 完全にレンダリングされた結果を表示するクエリベースの検索プラグイン。左メニューに検索ボックスを追加。
+
     ![image](https://github.com/user-attachments/assets/ac903fd7-5cd3-4b0a-97fb-df3a43fc0967)
 
 ## 先行技術とクレジット
