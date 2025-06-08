@@ -103,6 +103,12 @@ Install from Logseq Marketplace
   
     ![image](https://github.com/user-attachments/assets/ac903fd7-5cd3-4b0a-97fb-df3a43fc0967)
 
+- [Show Weekday and Week-number plugin](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number)
+  > Monthly Calendar
+
+    ![image](https://github.com/user-attachments/assets/8216c9b9-0c8e-4d06-93a1-630a49063211)
+
+
 ## Prior Art & Credit
 
 - CSS code (Show left sidebar on mouse over) >
