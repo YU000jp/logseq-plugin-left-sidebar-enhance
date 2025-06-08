@@ -104,6 +104,11 @@ Logseq マーケットプレースからインストール
 
     ![image](https://github.com/user-attachments/assets/ac903fd7-5cd3-4b0a-97fb-df3a43fc0967)
 
+- [Show Weekday and Week-number プラグイン](https://github.com/YU000jp/logseq-plugin-show-weekday-and-week-number)
+  > 月間カレンダー
+
+    ![image](https://github.com/user-attachments/assets/8216c9b9-0c8e-4d06-93a1-630a49063211)
+
 ## 先行技術とクレジット
 
 - CSSコード（マウスオーバーで左サイドバーを表示） >
