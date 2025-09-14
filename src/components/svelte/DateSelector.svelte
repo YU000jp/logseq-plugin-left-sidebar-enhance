@@ -1,31 +1,36 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import { loadDateSelector } from '../../dateSelector'
 
   let mounted = false
+  let cleanup: (() => void) | null = null
 
   onMount(() => {
     mounted = true
     // Initialize the date selector functionality
     loadDateSelector()
     
-    return () => {
-      // Cleanup if needed
+    // Setup cleanup function
+    cleanup = () => {
       const container = document.getElementById('lse-dataSelector-container')
       if (container) {
         container.remove()
       }
     }
   })
+
+  onDestroy(() => {
+    if (cleanup) {
+      cleanup()
+    }
+  })
 </script>
 
 {#if mounted}
-  <!-- Date selector container will be populated by the original dateSelector logic -->
-  <div id="lse-date-selector-root"></div>
+  <!-- Date selector will be injected into the DOM by the original logic -->
+  <!-- This component just serves as a mount point and lifecycle manager -->
 {/if}
 
 <style>
-  #lse-date-selector-root {
-    /* Styles for date selector root */
-  }
+  /* Styles are handled by the original dateSelector.ts logic */
 </style>

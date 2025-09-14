@@ -2,7 +2,16 @@
   <div id="logseq-plugin-left-sidebar-enhance">
     <!-- Main plugin container -->
     <div v-if="settings.booleanDateSelector" id="date-selector-mount"></div>
-    <div v-if="settings.booleanTableOfContents" id="toc-mount"></div>
+    <div v-if="settings.booleanLeftTOC" id="toc-mount"></div>
+    
+    <!-- Settings panel (example of Vue UI integration) -->
+    <Settings 
+      :show-settings="showSettings"
+      :settings="settings"
+      @close="showSettings = false"
+      @update-settings="updateSettings"
+    />
+    
     <!-- Mouse over functionality is handled globally -->
   </div>
 </template>
@@ -10,6 +19,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import type { PageEntity } from '@logseq/libs/dist/LSPlugin'
+import Settings from './Settings.vue'
 
 // Import Svelte components - we'll mount them manually
 import DateSelector from '../svelte/DateSelector.svelte'
@@ -18,10 +28,16 @@ import TableOfContents from '../svelte/TableOfContents.svelte'
 // Reactive state
 const currentPage = ref<PageEntity["originalName"]>("")
 const logseqVersionMd = ref<boolean>(false)
+const showSettings = ref<boolean>(false)
 const settings = reactive({
-  booleanDateSelector: true,
+  booleanDateSelector: false,
   booleanTableOfContents: true,
-  booleanLeftTOC: true
+  booleanLeftTOC: true,
+  booleanFavAndRecent: true,
+  loadShowByMouseOver: false,
+  highlightBlockOnHover: true,
+  highlightHeaderOnHover: true,
+  enableJournalsList: true
 })
 
 // Svelte component instances
@@ -85,7 +101,7 @@ watch(() => settings.booleanDateSelector, (newVal) => {
   }
 })
 
-watch(() => settings.booleanTableOfContents, (newVal) => {
+watch(() => settings.booleanLeftTOC, (newVal) => {
   if (newVal) {
     mountTableOfContents()
   } else if (tocInstance) {
@@ -105,9 +121,24 @@ onMounted(() => {
   if (settings.booleanDateSelector) {
     mountDateSelector()
   }
-  if (settings.booleanTableOfContents) {
+  if (settings.booleanLeftTOC) {
     mountTableOfContents()
   }
+
+  // Setup global keyboard shortcut for settings (example)
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+      e.preventDefault()
+      showSettings.value = !showSettings.value
+    }
+  }
+  
+  document.addEventListener('keydown', handleKeydown)
+  
+  // Cleanup event listener
+  onUnmounted(() => {
+    document.removeEventListener('keydown', handleKeydown)
+  })
 })
 
 onUnmounted(() => {

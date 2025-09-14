@@ -1,6 +1,6 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
 import { t } from "logseq-l10n"
-import { booleanLogseqVersionMd } from "."
+import { booleanLogseqVersionMd } from "./main"
 
 type HeaderLevel = 1 | 2 | 3 | 4 | 5 | 6
 

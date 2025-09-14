@@ -1,6 +1,6 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
-import { booleanLogseqVersionMd, getCurrentPageOriginalName } from ".."
+import { booleanLogseqVersionMd, getCurrentPageOriginalName } from "../main"
 import { headerCommand } from "../headerCommand"
 import { createElementWithAttributes } from "../util/domUtils"
 import { removeContainer } from "../util/lib"

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import { setupTOCHandlers } from '../../page-outline/setup'
   import { refreshPageHeaders } from '../../page-outline/pageHeaders'
 
@@ -7,34 +7,56 @@
   export let logseqVersionMd: boolean = false
 
   let mounted = false
+  let cleanup: (() => void) | null = null
+  let previousPage = ""
 
   onMount(() => {
     mounted = true
     // Initialize TOC handlers
     setupTOCHandlers(logseqVersionMd)
     
-    return () => {
-      // Cleanup TOC container
+    // Setup cleanup function
+    cleanup = () => {
       const container = document.getElementById('lse-toc-container')
       if (container) {
         container.remove()
       }
     }
+
+    // Initial load if there's a current page
+    if (currentPage) {
+      refreshPageHeaders(currentPage)
+      previousPage = currentPage
+    }
   })
 
-  // Reactive statement to update TOC when currentPage changes
-  $: if (mounted && currentPage) {
+  onDestroy(() => {
+    if (cleanup) {
+      cleanup()
+    }
+  })
+
+  // Watch for changes to currentPage
+  $: if (mounted && currentPage && currentPage !== previousPage) {
     refreshPageHeaders(currentPage)
+    previousPage = currentPage
+  }
+
+  // Watch for changes to logseqVersionMd
+  $: if (mounted && logseqVersionMd !== undefined) {
+    // Re-setup TOC handlers if version changes
+    setupTOCHandlers(logseqVersionMd)
+    if (currentPage) {
+      refreshPageHeaders(currentPage)
+    }
   }
 </script>
 
-{#if mounted}
-  <!-- Table of Contents container will be populated by the original TOC logic -->
-  <div id="lse-toc-root"></div>
+{#if mounted}  
+  <!-- TOC will be injected into the DOM by the original logic -->
+  <!-- This component just serves as a mount point and lifecycle manager -->
 {/if}
 
 <style>
-  #lse-toc-root {
-    /* Styles for TOC root */
-  }
+  /* Styles are handled by the original page-outline CSS and logic */
 </style>

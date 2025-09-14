@@ -1,5 +1,5 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { booleanLogseqVersionMd, onBlockChanged, onBlockChangedOnce } from ".."
+import { booleanLogseqVersionMd, onBlockChanged, onBlockChangedOnce } from "../main"
 import { isHeadersCacheEqual, setCachedHeaders } from "./cache"
 import { clearTOC } from "./DOM"
 import { getTocBlocks, getTocBlocksForDb } from "./findHeaders"

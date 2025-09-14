@@ -5,6 +5,7 @@ import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { loadShowByMouseOver } from './mouseover'
 import { loadFavAndRecent } from './favAndRecent'
+import { refreshPageHeaders } from './page-outline/pageHeaders'
 import { settingsTemplate } from './settings'
 import ja from "./translations/ja.json"
 import { removeContainer } from './util/lib'
@@ -53,6 +54,9 @@ const main = async () => {
       appInstance.updateSettings(logseq.settings || {})
     }
   }
+
+  // Initialize the block change handler for TOC updates
+  onBlockChanged()
 
   //マウスオーバー機能
   loadShowByMouseOver()
@@ -113,10 +117,8 @@ const updateToc = () => {
   processingBlockChanged = true
   
   setTimeout(() => {
-    // Trigger TOC update through Vue instance
-    if (appInstance && currentPageOriginalName) {
-      appInstance.updateCurrentPage(currentPageOriginalName, "")
-    }
+    // Update TOC through direct call to maintain compatibility
+    refreshPageHeaders(currentPageOriginalName)
     processingBlockChanged = false
   }, 300)
 }

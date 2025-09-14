@@ -1,7 +1,7 @@
 import { t } from "logseq-l10n"
 import { createElementWithAttributes } from "../util/domUtils"
 import { refreshPageHeaders, keyToggleTableId, keyToggleH, keyToolbarHeaderSpace } from "./pageHeaders"
-import { getCurrentPageOriginalName } from ".."
+import { getCurrentPageOriginalName } from "../main"
 import { pageOpen } from "../util/lib"
 import { clearCachedHeaders } from "./cache"
 

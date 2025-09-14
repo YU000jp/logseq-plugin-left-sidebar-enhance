@@ -1,5 +1,5 @@
 import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin"
-import { onPageChangedCallback, updateCurrentPage } from ".."
+import { onPageChangedCallback, updateCurrentPage } from "../main"
 import { CurrentCheckPageOrZoom, getCurrentPageForMd, getCurrentZoomForMd, zoomBlockWhenDb } from "../util/query/advancedQuery"
 import { clearTOC } from "./DOM"
 import { whenOpenJournals } from "./journalsList"
