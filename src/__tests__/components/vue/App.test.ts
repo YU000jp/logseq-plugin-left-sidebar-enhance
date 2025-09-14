@@ -8,17 +8,25 @@ import App from '../../../components/vue/App.vue'
 
 // Svelteコンポーネントのモック
 jest.mock('../../../components/svelte/DateSelector.svelte', () => {
-  return jest.fn().mockImplementation(() => ({
-    $destroy: jest.fn(),
-    $set: jest.fn()
-  }))
+  function MockedDateSelector(options: any) {
+    this.$destroy = jest.fn()
+    this.$set = jest.fn()
+    this.target = options?.target
+    this.props = options?.props
+    return this
+  }
+  return { default: MockedDateSelector }
 })
 
 jest.mock('../../../components/svelte/TableOfContents.svelte', () => {
-  return jest.fn().mockImplementation(() => ({
-    $destroy: jest.fn(),
-    $set: jest.fn()
-  }))
+  function MockedTableOfContents(options: any) {
+    this.$destroy = jest.fn()
+    this.$set = jest.fn()
+    this.target = options?.target
+    this.props = options?.props
+    return this
+  }
+  return { default: MockedTableOfContents }
 })
 
 describe('App.vue - Vueメインコンポーネント', () => {

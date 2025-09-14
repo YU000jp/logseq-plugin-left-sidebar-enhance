@@ -1,4 +1,5 @@
 // Jest setup file for testing environment
+require('@testing-library/jest-dom')
 
 // Mock @logseq/libs
 jest.mock('@logseq/libs', () => ({
@@ -21,7 +22,10 @@ jest.mock('@logseq/libs', () => ({
 
 // Mock logseq global object
 global.logseq = {
-  ready: jest.fn((fn) => Promise.resolve(fn())),
+  ready: jest.fn((fn) => {
+    const result = fn && fn()
+    return Promise.resolve(result)
+  }),
   useSettingsSchema: jest.fn(),
   settings: {
     booleanDateSelector: true,

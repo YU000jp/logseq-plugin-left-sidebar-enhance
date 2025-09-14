@@ -6,6 +6,29 @@ import { mount } from '@vue/test-utils'
 import { jest } from '@jest/globals'
 import App from '../../components/vue/App.vue'
 
+// Svelteコンポーネントのモック
+jest.mock('../../components/svelte/DateSelector.svelte', () => {
+  function MockedDateSelector(options: any) {
+    this.$destroy = jest.fn()
+    this.$set = jest.fn()
+    this.target = options?.target
+    this.props = options?.props
+    return this
+  }
+  return { default: MockedDateSelector }
+})
+
+jest.mock('../../components/svelte/TableOfContents.svelte', () => {
+  function MockedTableOfContents(options: any) {
+    this.$destroy = jest.fn()
+    this.$set = jest.fn()
+    this.target = options?.target
+    this.props = options?.props
+    return this
+  }
+  return { default: MockedTableOfContents }
+})
+
 // 統合テスト用のモック
 jest.mock('../../dateSelector', () => ({
   loadDateSelector: jest.fn()
@@ -66,7 +89,28 @@ describe('Vue + Svelteハイブリッドアーキテクチャ統合テスト', (
   })
 
   test('VueアプリがSvelteコンポーネントを適切に統合することを確認', async () => {
-    wrapper = mount(App)
+    // 初期設定でAppコンポーネントをマウント
+    wrapper = mount(App, {
+      global: {
+        provide: {
+          // 必要に応じてprovideを設定
+        }
+      }
+    })
+    
+    // コンポーネントが初期化されるまで待機
+    await wrapper.vm.$nextTick()
+    
+    // 初期設定を適用（デフォルト設定でマウントポイントが表示される）
+    wrapper.vm.updateSettings({
+      booleanDateSelector: true,
+      booleanLeftTOC: true,
+      booleanTableOfContents: true,
+      booleanFavAndRecent: true,
+      loadShowByMouseOver: true
+    })
+    
+    await wrapper.vm.$nextTick()
     
     // Vueコンポーネントの基本機能確認
     expect(wrapper.exists()).toBe(true)
