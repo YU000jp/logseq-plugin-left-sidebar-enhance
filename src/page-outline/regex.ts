@@ -1,5 +1,5 @@
 import removeMd from "remove-markdown"
-import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, replaceOverCharacters } from "../util/markdown"
+import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, replaceOverCharacters } from "../utils/markdown"
 import { TocBlock } from "./pageHeaders"
 
 

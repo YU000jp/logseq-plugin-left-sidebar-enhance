@@ -1,8 +1,8 @@
 import { t } from "logseq-l10n"
-import { createElementWithAttributes } from "../util/domUtils"
+import { createElementWithAttributes } from "../utils/domUtils"
 import { refreshPageHeaders, keyToggleTableId, keyToggleH, keyToolbarHeaderSpace } from "./pageHeaders"
 import { getCurrentPageOriginalName } from ".."
-import { pageOpen } from "../util/lib"
+import { pageOpen } from "../utils/lib"
 import { clearCachedHeaders } from "./cache"
 
 
@@ -101,7 +101,9 @@ export const generatePageButton = (element: HTMLElement) => {
       id: keyToolbarHeaderSpace,
       class: "flex items-center",
     })
-    element.insertAdjacentElement("beforebegin", headerSpace)
+    if (headerSpace) {
+      element.insertAdjacentElement("beforebegin", headerSpace)
+    }
   }
 
   if (headerSpace) {

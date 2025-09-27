@@ -1,4 +1,4 @@
-import { scrollToWithOffset } from "../util/domUtils"
+import { scrollToWithOffset } from "../utils/domUtils"
 import { expandAndScrollToBlock } from "./collapsedBlock"
 import { whenZoom } from "./zoom"
 

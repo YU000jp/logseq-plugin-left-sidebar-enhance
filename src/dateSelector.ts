@@ -1,7 +1,7 @@
 import { AppUserConfigs, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { format } from "date-fns/format"
 import { t } from "logseq-l10n"
-import { removeContainer, pageOpen } from "./util/lib"
+import { removeContainer, pageOpen } from "./utils/lib"
 import { booleanLogseqVersionMd } from "."
 
 export const loadDateSelector = () => {

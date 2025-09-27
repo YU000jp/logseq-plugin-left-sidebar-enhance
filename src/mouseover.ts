@@ -1,7 +1,7 @@
 import { ExternalCommandType, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin"
 import CSSTypeA from "./mouseoverA.css?inline"
 import CSSTypeB from "./mouseoverB.css?inline"
-import { removeProvideStyle } from "./util/lib"
+import { removeProvideStyle } from "./utils/lib"
 import { t } from "logseq-l10n"
 const keyShowByMouseOver = "showByMouseOver"
 let processingMouseOverButton = false
