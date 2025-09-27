@@ -15,7 +15,11 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build --mode=dev",
-        "prod": "vite build"
+        "prod": "vite build",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist",
+        "lint": "tsc --noEmit --pretty",
+        "watch": "tsc --watch --noEmit"
     },
     "dependencies": {
         "@logseq/libs": "^0.0.17",
