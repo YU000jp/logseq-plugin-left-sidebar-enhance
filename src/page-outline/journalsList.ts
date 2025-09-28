@@ -1,6 +1,6 @@
-import { pageOpen } from "../util/lib"
+import { pageOpen } from "../utils/lib"
 import { clearTOC } from "./DOM"
-import { scrollToWithOffset } from "../util/domUtils"
+import { scrollToWithOffset } from "../utils/domUtils"
 import { clearCachedHeaders } from "./cache"
 
 let processing = false

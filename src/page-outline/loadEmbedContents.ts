@@ -1,5 +1,5 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
-import { getContentFromUuid } from "../util/query/advancedQuery"
+import { getContentFromUuid } from "../utils/query/advancedQuery"
 import { processText } from "./regex"
 
 

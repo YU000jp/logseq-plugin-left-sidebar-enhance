@@ -3,7 +3,7 @@ import { TocBlock } from "./pageHeaders"
 import { loadEmbedContents } from "./loadEmbedContents"
 import { generateHeaderElement, processText } from "./regex"
 import { selectBlock } from "./selectBlock"
-import { createElementWithAttributes } from "../util/domUtils"
+import { createElementWithAttributes } from "../utils/domUtils"
 
 
 

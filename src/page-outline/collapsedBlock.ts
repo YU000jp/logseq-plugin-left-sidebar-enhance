@@ -1,6 +1,6 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
-import { scrollToWithOffset } from "../util/domUtils"
-import { getParentFromUuid } from "../util/query/advancedQuery"
+import { scrollToWithOffset } from "../utils/domUtils"
+import { getParentFromUuid } from "../utils/query/advancedQuery"
 
 
 const scrollToAndSelectBlock = async (blockUuid: string) => {
