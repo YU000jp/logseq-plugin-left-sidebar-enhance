@@ -10,17 +10,27 @@ export const ELEMENT_IDS = {
   DATE_SELECTOR_CONTAINER: 'lse-dataSelector-container'
 } as const
 
-// Timeouts and delays (in milliseconds)
+// Timeouts and delays (in milliseconds) - Optimized for performance
 export const TIMEOUTS = {
-  SETTINGS_UI_DELAY: 300,
-  PROCESSING_LOCK_DURATION: 5000,
-  ROUTE_CHECK_DELAY: 200,
-  TOC_UPDATE_DELAY: 300,
-  PAGE_CHANGE_PROCESSING_DELAY: 300,
-  PAGE_CHANGE_EXECUTION_DELAY: 50,
-  BLOCK_CHANGE_CALLBACK_DELAY: 200,
-  CONTAINER_SETUP_DELAY: 500,
-  CONTAINER_FLAG_DELAY: 1
+  SETTINGS_UI_DELAY: 100, // Reduced from 300
+  PROCESSING_LOCK_DURATION: 3000, // Reduced from 5000
+  ROUTE_CHECK_DELAY: 100, // Reduced from 200
+  TOC_UPDATE_DELAY: 150, // Reduced from 300
+  PAGE_CHANGE_PROCESSING_DELAY: 200, // Reduced from 300
+  PAGE_CHANGE_EXECUTION_DELAY: 16, // Optimized for 60fps (reduced from 50)
+  BLOCK_CHANGE_CALLBACK_DELAY: 100, // Reduced from 200
+  CONTAINER_SETUP_DELAY: 300, // Reduced from 500
+  CONTAINER_FLAG_DELAY: 1, // Kept minimal
+  DEBOUNCE_DELAY: 100, // New: for debounced operations
+  THROTTLE_DELAY: 50, // New: for throttled operations
+} as const
+
+// Performance optimization settings
+export const PERFORMANCE = {
+  MAX_CACHED_ELEMENTS: 50,
+  MAX_PERFORMANCE_SAMPLES: 100,
+  BATCH_SIZE: 10,
+  ANIMATION_FRAME_BUDGET: 16, // 60fps budget
 } as const
 
 // CSS Selectors
