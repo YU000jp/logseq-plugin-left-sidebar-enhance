@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.15.2...v1.16.0) (2025-12-07)
+
+
+### Features
+
+* **Remove:** Remove date selector feature ([e452e2e](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/e452e2e1f1d0cebe77c662ae58b1c01437e04b06))
+
 ## [1.15.2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.15.1...v1.15.2) (2025-05-18)
 
 
