@@ -1,3 +1,15 @@
+# [1.17.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.16.0...v1.17.0) (2025-12-31)
+
+
+### Features
+
+* **Add:** Add Visual Timer feature to left sidebar ([1169790](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/1169790eccd4adb6620708a4eb445448584f1170))
+
+
+### Reverts
+
+* Revert "feat(Remove): Remove date selector feature" ([45ab9b9](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/45ab9b918e61264b7d2c2814423851757f371937))
+
 # [1.16.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.15.2...v1.16.0) (2025-12-07)
 
 
