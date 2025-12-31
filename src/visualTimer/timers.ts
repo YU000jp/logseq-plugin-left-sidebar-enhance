@@ -1,35 +1,13 @@
 import { addDays, addHours, differenceInDays, differenceInHours, differenceInMinutes, endOfDay, startOfDay } from "date-fns"
 import { t } from "logseq-l10n"
 import { VisualTimerConfig, weekdayKeyToJsDay } from "./config"
+import { clamp, formatLargestUnit, formatRemaining } from "./shared"
 
 export type TimerData = {
   title: string
   percent: number
   centerText: string
   subText: string
-}
-
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
-
-const pad2 = (n: number) => String(n).padStart(2, "0")
-
-const formatRemaining = (ms: number): string => {
-  const totalMinutes = Math.max(0, Math.floor(ms / 60000))
-  const hours = Math.floor(totalMinutes / 60)
-  const minutes = totalMinutes % 60
-  return `${hours}:${pad2(minutes)}`
-}
-
-const formatLargestUnit = (ms: number): string => {
-  const totalMinutes = Math.max(0, Math.floor(ms / 60000))
-  const totalHours = Math.floor(totalMinutes / 60)
-  const minutes = totalMinutes % 60
-  const days = Math.floor(totalHours / 24)
-  const hours = totalHours % 24
-
-  if (days > 0) return `${days}${t("visualTimer.unit.dayShort")}`
-  if (hours > 0) return `${hours}${t("visualTimer.unit.hourShort")}`
-  return `${minutes}${t("visualTimer.unit.minuteShort")}`
 }
 
 export const computeDayWindowTimer = (now: Date, cfg: VisualTimerConfig): TimerData => {
@@ -128,16 +106,13 @@ export const computeTargetDateTimer = (now: Date, startRef: Date, cfg: VisualTim
   if (remainingDays > 0) {
     centerText = `${remainingDays}${t("visualTimer.unit.dayShort")}`
     subText = t("Days remaining")
+  } else if (remainingHours > 0) {
+    centerText = `${remainingHours}${t("visualTimer.unit.hourShort")}`
+    subText = t("Hours remaining")
+  } else {
+    centerText = `${remainingMinutes}${t("visualTimer.unit.minuteShort")}`
+    subText = t("Minutes remaining")
   }
-  else
-    if (remainingHours > 0) {
-      centerText = `${remainingHours}${t("visualTimer.unit.hourShort")}`
-      subText = t("Hours remaining")
-    }
-    else {
-      centerText = `${remainingMinutes}${t("visualTimer.unit.minuteShort")}`
-      subText = t("Minutes remaining")
-    }
 
   return {
     title: `${t("visualTimer.title.targetDate")} ${target.getFullYear()}/${String(target.getMonth() + 1).padStart(2, "0")}/${String(

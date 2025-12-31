@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 import { createRoot, Root } from "react-dom/client"
-import { getVisualTimerConfig } from "./config"
-import { computeDayWindowTimer, computeTargetDateTimer, computeWeekdaysTimer } from "./timers"
+import { buildTimerList } from "./controller"
 
 let reactRoot: Root | null = null
 
@@ -16,19 +15,7 @@ const VisualTimerPanel = () => {
     return () => window.clearInterval(id)
   }, [])
 
-  const timers = useMemo(() => {
-    const cfg = getVisualTimerConfig((logseq.settings ?? {}) as Record<string, unknown>)
-    const list = [] as ReturnType<typeof computeDayWindowTimer>[]
-
-    if (cfg.enableDayWindow) list.push(computeDayWindowTimer(now, cfg))
-    if (cfg.enableWeekdays) list.push(computeWeekdaysTimer(now, cfg))
-    if (cfg.enableTargetDate) {
-      const target = computeTargetDateTimer(now, mountTimeRef.current, cfg)
-      if (target) list.push(target)
-    }
-
-    return list
-  }, [now])
+  const timers = useMemo(() => buildTimerList(now, mountTimeRef.current), [now])
 
   return React.createElement(
     "div",
