@@ -7,6 +7,7 @@ import { removeContainer } from "../util/lib"
 import { refreshPageHeaders } from "./pageHeaders"
 import { routeCheck } from "./routeCheck"
 import tocCSS from "./toc.css?inline"
+import { settingKeys } from '../settings/keys'
 
 
 // プラグイン起動後、5秒間はロックをかける
@@ -14,26 +15,14 @@ let processing = true
 export const setupTOCHandlers = (versionMd: boolean) => {
 
     setTimeout(() => {
-        //プラグイン設定変更時
-        logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-            if (processing) return
-            if (oldSet.booleanLeftTOC !== newSet.booleanLeftTOC) {
-                if (newSet.booleanLeftTOC === true)
-                    renderTOCContainer()//表示する
-                else
-                    removeContainer("lse-toc-container")//消す
-            }
-            if ((oldSet.tocRemoveWordList !== newSet.tocRemoveWordList)
-                || (oldSet.booleanAsZoomPage !== newSet.booleanAsZoomPage))
-                await refreshPageHeaders(getCurrentPageOriginalName()) //更新
-
-        })
+        // 設定変更は中央ディスパッチャで処理するため、ここでは登録しない。
+        // Graph 変更は従来どおり登録する。
         logseq.App.onCurrentGraphChanged(async () => {
             routeCheck(versionMd)//グラフ変更時に実行
         })
     }, 5000)
 
-    if (logseq.settings!.booleanLeftTOC === true)
+    if (logseq.settings?.[settingKeys.toc.master] === true)
         renderTOCContainer()
 
     logseq.provideStyle(tocCSS + (versionMd === false ? `
@@ -58,6 +47,23 @@ export const setupTOCHandlers = (versionMd: boolean) => {
 
     //ヘッダー挿入コマンド
     headerCommand()
+
+}
+
+/**
+ * 設定変更時のハンドラ（中央ディスパッチャから呼び出される）
+ */
+export const handleTocSettingsChanged = async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']): Promise<void> => {
+    if (processing) return
+    if (oldSet[settingKeys.toc.master] !== newSet[settingKeys.toc.master]) {
+        if (newSet[settingKeys.toc.master] === true)
+            renderTOCContainer()//表示する
+        else
+            removeContainer("lse-toc-container")//消す
+    }
+    if ((oldSet[settingKeys.toc.tocRemoveWordList] !== newSet[settingKeys.toc.tocRemoveWordList])
+        || (oldSet[settingKeys.toc.booleanAsZoomPage] !== newSet[settingKeys.toc.booleanAsZoomPage]))
+        await refreshPageHeaders(getCurrentPageOriginalName()) //更新
 
 }
 

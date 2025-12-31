@@ -7,6 +7,7 @@ import { createHeaderElement } from "./headerItem"
 import { getHeaderLevel, isHeader } from "./regex"
 import { additionalButtons, generatePageButton } from "./toggleHeader"
 import { clearZoomMarks, updateZoomMark } from "./zoom"
+import { settingKeys } from '../settings/keys'
 
 
 export const keyToolbarHeaderSpace = "lse-toc-header-space"
@@ -33,7 +34,7 @@ export const refreshPageHeaders = async (pageName: string, zoom?: { zoomIn: bool
   if (element) {
     // element.innerHTML = "" //elementが存在する場合は中身を削除する
 
-    if (logseq.settings!.booleanAsZoomPage === true) //ページ名を表示
+    if (logseq.settings?.[settingKeys.toc.booleanAsZoomPage] === true) //ページ名を表示
       generatePageButton(element)
 
     const versionMd = booleanLogseqVersionMd()

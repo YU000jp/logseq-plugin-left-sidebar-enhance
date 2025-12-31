@@ -1,6 +1,7 @@
 import { scrollToWithOffset } from "../util/domUtils"
 import { expandAndScrollToBlock } from "./collapsedBlock"
 import { whenZoom } from "./zoom"
+import { settingKeys } from '../settings/keys'
 
 
 export const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName: string, blockUuid: string) => {
@@ -8,9 +9,9 @@ export const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName:
   if (shiftKey) {
     logseq.Editor.openInRightSidebar(blockUuid)
   }
-  else if (ctrlKey || logseq.settings!.booleanAsZoomPage === true) {
+  else if (ctrlKey || logseq.settings?.[settingKeys.toc.booleanAsZoomPage] === true) {
     logseq.App.pushState("page", { name: blockUuid }) // Uuidをページ名としてpushStateするとズームページが開く
-    if (logseq.settings!.booleanAsZoomPage === false)
+    if (logseq.settings?.[settingKeys.toc.booleanAsZoomPage] === false)
       logseq.UI.showMsg("Block Zoomed!", "info", { timeout: 1000 })
   } else {
 
@@ -22,7 +23,7 @@ export const selectBlock = async (shiftKey: boolean, ctrlKey: boolean, pageName:
       return
     }
 
-    if (logseq.settings!.booleanAsZoomPage === true) {
+    if (logseq.settings?.[settingKeys.toc.booleanAsZoomPage] === true) {
       await expandAndScrollToBlock(blockUuid, true)
       return
     }

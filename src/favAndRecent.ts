@@ -1,22 +1,27 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { removeProvideStyle } from "./util/lib"
+import { settingKeys } from './settings/keys'
 const key = "lse-FavAndRecent"
 let processing = false
 
 export const loadFavAndRecent = () => {
-
-    // プラグイン設定変更時
-    logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-        if (oldSet.booleanFavAndRecent !== newSet.booleanFavAndRecent)
-            if (newSet.booleanFavAndRecent === true)
-                filterRecentItems()
-            else
-                removeProvideStyle(key)//非表示にする
-    })
+    // 設定変更は中央ディスパッチャで処理するため、ここでは登録しない
 
     // 初回実行
-    if (logseq.settings!.booleanFavAndRecent === true)
+    if (logseq.settings?.[settingKeys.common.booleanFavAndRecent] === true)
         filterRecentItems()
+}
+
+/**
+ * 設定変更時のハンドラ（中央ディスパッチャから呼び出される）
+ * - `booleanFavAndRecent` が変更されたときにフィルタ処理を開始/停止する
+ */
+export const handleFavAndRecentSettingsChanged = async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']): Promise<void> => {
+    if (oldSet[settingKeys.common.booleanFavAndRecent] !== newSet[settingKeys.common.booleanFavAndRecent])
+        if (newSet[settingKeys.common.booleanFavAndRecent] === true)
+            filterRecentItems()
+        else
+            removeProvideStyle(key)//非表示にする
 }
 
 
@@ -44,7 +49,7 @@ const filterRecentItems = async () => {
 
     // 10分毎に再実行
     setTimeout(() => {
-        if (logseq.settings!.booleanFavAndRecent === true)
+        if (logseq.settings?.[settingKeys.common.booleanFavAndRecent] === true)
             filterRecentItems()
     }, 600000)
 

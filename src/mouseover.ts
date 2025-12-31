@@ -3,6 +3,7 @@ import CSSTypeA from "./mouseoverA.css?inline"
 import CSSTypeB from "./mouseoverB.css?inline"
 import { removeProvideStyle } from "./util/lib"
 import { t } from "logseq-l10n"
+import { settingKeys } from './settings/keys'
 const keyShowByMouseOver = "showByMouseOver"
 let processingMouseOverButton = false
 
@@ -14,38 +15,15 @@ export const loadShowByMouseOver = () => {
                 whenToggleEvent()
         })
 
-        //プラグイン設定変更時
-        logseq.onSettingsChanged(async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
-
-            // マウスオーバーの表示方法が変更された場合
-            if (oldSet.showByMouseOverType !== newSet.showByMouseOverType
-                && newSet.loadShowByMouseOver === true) {
-
-                removeProvideStyle(keyShowByMouseOver)
-                if (newSet.toggleShowByMouseOver === "mouseOver")
-                    selectShowByMouseOverType(newSet.showByMouseOverType as string)
-                logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
-            }
-
-            // プラグイン設定で無効が有効になった場合は、トグルも強制的に有効にする
-            if (oldSet.loadShowByMouseOver === false
-                && newSet.loadShowByMouseOver === true)
-                setTimeout(() =>
-                    logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
-                    , 10)
-            else
-                if (oldSet.loadShowByMouseOver === true
-                    && newSet.loadShowByMouseOver === false)
-                    removeProvideStyle(keyShowByMouseOver)
-        })
+        // 設定変更は中央ディスパッチャで処理するため、ここでは登録しない
     }, 1000)
 
 
-    if (logseq.settings!.loadShowByMouseOver === true) {
+    if (logseq.settings?.[settingKeys.common.loadShowByMouseOver] === true) {
 
         //前回のメモリーで、マウスオーバー表示の場合
-        if (logseq.settings!.toggleShowByMouseOver === "mouseOver") {
-            selectShowByMouseOverType(logseq.settings!.showByMouseOverType as string)
+        if (logseq.settings?.toggleShowByMouseOver === "mouseOver") {
+            selectShowByMouseOverType(logseq.settings?.[settingKeys.common.showByMouseOverType] as string)
             logseq.App.setLeftSidebarVisible(true)
         } else
             if (logseq.settings!.toggleShowByMouseOver === "normal") {
@@ -125,4 +103,31 @@ const whenToggleEvent = () => {
                     logseq.UI.showMsg(t("Left sidebar is now mouse over display."), "info", { timeout: 2200 })
                 }, 10)
             }
+}
+
+/**
+ * 設定変更時のハンドラ（中央ディスパッチャから呼び出される）
+ * - 表示方式・オンオフの変更を検知してスタイルやトグルを切り替える
+ */
+export const handleMouseoverSettingsChanged = async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']): Promise<void> => {
+    // マウスオーバーの表示方法が変更された場合
+    if (oldSet[settingKeys.common.showByMouseOverType] !== newSet[settingKeys.common.showByMouseOverType]
+        && newSet[settingKeys.common.loadShowByMouseOver] === true) {
+
+        removeProvideStyle(keyShowByMouseOver)
+        if (newSet.toggleShowByMouseOver === "mouseOver")
+            selectShowByMouseOverType(newSet.showByMouseOverType as string)
+        logseq.UI.showMsg(t("Select mouse over type") + ": " + newSet.showByMouseOverType, "info", { timeout: 2200 })
+    }
+
+    // プラグイン設定で無効が有効になった場合は、トグルも強制的に有効にする
+    if (oldSet[settingKeys.common.loadShowByMouseOver] === false
+        && newSet[settingKeys.common.loadShowByMouseOver] === true)
+        setTimeout(() =>
+            logseq.updateSettings({ toggleShowByMouseOver: "mouseOver" })
+            , 10)
+    else
+        if (oldSet[settingKeys.common.loadShowByMouseOver] === true
+            && newSet[settingKeys.common.loadShowByMouseOver] === false)
+            removeProvideStyle(keyShowByMouseOver)
 }

@@ -1,5 +1,6 @@
 import removeMd from "remove-markdown"
 import { removeListWords, removeMarkdownAliasLink, removeMarkdownImage, removeMarkdownLink, replaceOverCharacters } from "../util/markdown"
+import { settingKeys } from '../settings/keys'
 import { TocBlock } from "./pageHeaders"
 
 
@@ -8,8 +9,8 @@ export const processText = (content: string): string => {
   processed = removeMarkdownAliasLink(processed)
   processed = replaceOverCharacters(processed)
   processed = removeMarkdownImage(processed)
-  if (logseq.settings!.tocRemoveWordList as string !== "") {
-    processed = removeListWords(processed, logseq.settings!.tocRemoveWordList as string)
+  if (logseq.settings?.[settingKeys.toc.tocRemoveWordList] as string !== "") {
+    processed = removeListWords(processed, logseq.settings?.[settingKeys.toc.tocRemoveWordList] as string)
   }
   return removeMd(processed)
 }

@@ -7,6 +7,8 @@ import { loadShowByMouseOver } from './mouseover'
 import { refreshPageHeaders } from './page-outline/pageHeaders'
 import { setupTOCHandlers } from './page-outline/setup'
 import { settingsTemplate } from './settings'
+import { settingKeys } from './settings/keys'
+import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import jaCore from "./translations/ja.json"
 import visualTimerEn from "./visualTimer/translations/en.json"
 import visualTimerJa from "./visualTimer/translations/ja.json"
@@ -44,7 +46,37 @@ const main = async () => {
   })
 
   /* user settings */
-  logseq.useSettingsSchema(settingsTemplate())
+  // register settings schema based on current settings so dependent fields can be hidden
+  logseq.useSettingsSchema(settingsTemplate(logseq.settings ?? undefined))
+
+  // update schema when settings change so conditional fields can appear/disappear
+  // debounce repeated changes to avoid excessive re-registrations
+  let settingsSchemaTimer: number | undefined
+  const DEBOUNCE_MS = 250
+  logseq.onSettingsChanged((newSet, oldSet) => {
+    try {
+      if (typeof settingsSchemaTimer !== 'undefined') clearTimeout(settingsSchemaTimer)
+      // schedule re-registration
+      // @ts-ignore - NodeJS/Window timer union
+      settingsSchemaTimer = setTimeout(() => {
+        try {
+          logseq.useSettingsSchema(settingsTemplate(newSet ?? undefined))
+          setTimeout(() =>
+            logseq.showSettingsUI() // refresh settings UI to reflect schema changes
+            , 0)
+        } catch (e) {
+          console.error('Failed to refresh settings schema', e)
+        }
+      }, DEBOUNCE_MS) as unknown as number
+    } catch (e) {
+      console.error('Failed to schedule settings schema refresh', e)
+    }
+  })
+
+  // 中央設定ディスパッチャを初期化（各モジュールの設定ハンドラを一箇所で呼ぶ）
+  setTimeout(() =>
+    initSettingsDispatcher()
+    , 100)
 
   // First time settings
   if (!logseq.settings)
@@ -98,7 +130,7 @@ export const onBlockChanged = () => {
 
     if (processingBlockChanged === true
       || currentPageOriginalName === ""
-      || logseq.settings!.booleanTableOfContents === false)
+      || logseq.settings!.booleanLeftTOC === false)
       return
     //headingがあるブロックが更新されたら
     const findBlock = blocks.find((block) => block.properties?.heading) as { uuid: BlockEntity["uuid"] } | null //uuidを得るためsomeではなくfindをつかう
@@ -142,7 +174,7 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
 
   setTimeout(async () => {
     // console.log("onPageChangedCallback")
-    if (logseq.settings!.booleanLeftTOC === true)
+    if (logseq.settings?.[settingKeys.toc.master] === true)
       await refreshPageHeaders(pageName, flag ? flag : undefined)
   }, 50)
 

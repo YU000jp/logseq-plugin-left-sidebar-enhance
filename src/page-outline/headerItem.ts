@@ -1,4 +1,5 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin"
+import { settingKeys } from '../settings/keys'
 import { TocBlock } from "./pageHeaders"
 import { loadEmbedContents } from "./loadEmbedContents"
 import { generateHeaderElement, processText } from "./regex"
@@ -61,7 +62,7 @@ const headerItemLink = (tocBlocks: TocBlock[], i: number, element: HTMLElement) 
 
   const addHoverListeners = () => {
     const pageHeader = parent.document.querySelector(selector) as HTMLElement | null
-    if (logseq.settings!.highlightBlockOnHover === true && pageHeader) {
+    if (logseq.settings?.[settingKeys.toc.highlightBlockOnHover] === true && pageHeader) {
       element.addEventListener("mouseover", () => {
         pageHeader.style.outline = "6px solid var(--ls-block-highlight-color)"
         pageHeader.style.outlineOffset = "6px"
@@ -72,7 +73,7 @@ const headerItemLink = (tocBlocks: TocBlock[], i: number, element: HTMLElement) 
       })
     }
 
-    if (logseq.settings!.highlightHeaderOnHover === true) {
+    if (logseq.settings?.[settingKeys.toc.highlightHeaderOnHover] === true) {
       const headerItemElement = parent.document.querySelector(selector) as HTMLDivElement | null
       if (headerItemElement) {
         headerItemElement.addEventListener("mouseover", () => {

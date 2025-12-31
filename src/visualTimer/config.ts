@@ -75,19 +75,21 @@ const parseTargetDate = (raw: unknown): Date | null => {
   return null
 }
 
+import { settingKeys } from '../settings/keys'
+
 export const getVisualTimerConfig = (settings: Record<string, unknown> | undefined | null): VisualTimerConfig => {
   const cfg = settings ?? {}
 
-  const enableDayWindow = cfg.visualTimerEnableDayWindow !== false
-  const startHour = toNumber(cfg.visualTimerDayWindowStartHour) ?? 5
-  const endHour = toNumber(cfg.visualTimerDayWindowEndHour) ?? 24
+  const enableDayWindow = cfg[settingKeys.visualTimer.enableDayWindow] !== false
+  const startHour = toNumber(cfg[settingKeys.visualTimer.dayWindowStartHour]) ?? 5
+  const endHour = toNumber(cfg[settingKeys.visualTimer.dayWindowEndHour]) ?? 24
 
-  const enableWeekdays = cfg.visualTimerEnableWeekdays !== false
-  const weekdayStart = isWeekdayKey(cfg.visualTimerWeekdayStart) ? cfg.visualTimerWeekdayStart : ("Mon" as WeekdayKey)
-  const weekdayEnd = isWeekdayKey(cfg.visualTimerWeekdayEnd) ? cfg.visualTimerWeekdayEnd : ("Fri" as WeekdayKey)
+  const enableWeekdays = cfg[settingKeys.visualTimer.enableWeekdays] !== false
+  const weekdayStart = isWeekdayKey(cfg[settingKeys.visualTimer.weekdayStart]) ? (cfg[settingKeys.visualTimer.weekdayStart] as WeekdayKey) : ("Mon" as WeekdayKey)
+  const weekdayEnd = isWeekdayKey(cfg[settingKeys.visualTimer.weekdayEnd]) ? (cfg[settingKeys.visualTimer.weekdayEnd] as WeekdayKey) : ("Fri" as WeekdayKey)
 
-  const enableTargetDate = cfg.visualTimerEnableTargetDate !== false
-  const targetDate = parseTargetDate(cfg.visualTimerTargetDate)
+  const enableTargetDate = cfg[settingKeys.visualTimer.enableTargetDate] !== false
+  const targetDate = parseTargetDate(cfg[settingKeys.visualTimer.targetDate])
 
   return {
     enableDayWindow,
