@@ -1,7 +1,7 @@
 # Logseq Plugin: Left Sidebar Enhance
 
 > [!NOTE]
-> This plugin works on Logseq db model.
+> This plugin works on Logseq db version.
 
 <div align="right">
 
@@ -17,6 +17,8 @@ This plugin provides three main features:
 
 1. Page Outline (=Table of contents :Auto-generated)
 2. Auto-hide/show Left Sidebar
+3. Date Access (Daily & Monthly)
+
 ---
 
 1. **Page Outline Feature**
@@ -33,6 +35,11 @@ This plugin provides three main features:
 
 2. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
    > Use the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
+
+3. Journal Date Access (Default: **Disabled**) db version ✖
+   - Access to a journal-day or a monthly journal (like `yyyy/MM` `yyyy-MM`)
+
+   ![image](https://github.com/user-attachments/assets/51f9ba8f-2374-43e5-8e78-44cd053e818a)
 
 ---
 
@@ -69,7 +76,11 @@ Install from Logseq Marketplace
          > ⚠️May cause issues with small windows
       1. Type B (Recommended): Opens when mouse is placed on the leftmost column
 
-3. Page Outline (Table of contents) Feature
+3. Date Selector
+   - Enable/disable date selector feature in left sidebar
+   > Not supported in Logseq db version
+
+4. Page Outline (Table of contents) Feature
    - Enable/disable Page Outline feature
    - Open as zoom page by default
      > If disabled, Ctrl+Click for zoom page view

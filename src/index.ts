@@ -1,6 +1,7 @@
 import '@logseq/libs' //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
+import { loadDateSelector } from './dateSelector'
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
 import { refreshPageHeaders } from './page-outline/pageHeaders'
@@ -47,6 +48,9 @@ const main = async () => {
 
   //TOC
   setupTOCHandlers(logseqVersionMd)
+
+  //日付セレクター
+  loadDateSelector()
 
   //マウスオーバー
   loadShowByMouseOver()
