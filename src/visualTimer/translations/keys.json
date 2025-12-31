@@ -1,6 +1,5 @@
 {
-  "visualTimer.title.dayWindow": "Day window remaining",
-  "visualTimer.title.weekdays": "Weekday range progress",
+  "visualTimer.title.dayWindow": "Until configured bedtime (0-24)",
   "visualTimer.title.targetDate": "Target date countdown:",
   "visualTimer.sub.untilNextStart": "Until next start",
 

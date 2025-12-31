@@ -44,41 +44,14 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                                        },
                                        {
                                                     key: settingKeys.visualTimer.dayWindowEndHour,
-                                                    title: t('Day window end hour'),
+                                                    title: t('Bedtime hour'),
                                                     type: 'number',
                                                     default: 24,
-                                                    description: t('End hour for the day window (1-24). 24 means midnight.'),
+                                                    description: t('Bedtime hour for the day window (1-24). 24 means midnight.'),
                                        })
              }
 
-             // Weekdays
-             list.push({
-                          key: settingKeys.visualTimer.enableWeekdays,
-                          title: t('Enable weekdays progress bar'),
-                          type: 'boolean',
-                          default: true,
-                          description: t('Show a progress bar for the configured weekday range.'),
-             })
-
-             if (cfg[settingKeys.visualTimer.enableWeekdays] === true) {
-                          list.push(
-                                       {
-                                                    key: settingKeys.visualTimer.weekdayStart,
-                                                    title: t('Weekday range start'),
-                                                    type: 'enum',
-                                                    enumChoices: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                                    default: 'Mon',
-                                                    description: t('Start day of the weekday range.'),
-                                       },
-                                       {
-                                                    key: settingKeys.visualTimer.weekdayEnd,
-                                                    title: t('Weekday range end'),
-                                                    type: 'enum',
-                                                    enumChoices: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                                    default: 'Fri',
-                                                    description: t('End day of the weekday range.'),
-                                       })
-             }
+             // Weekday-range progress bar removed
 
              // Target date
              list.push({
@@ -96,7 +69,7 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                                        type: 'string',
                                        inputAs: 'date',
                                        default: '',
-                                       description: t('Pick the target date for the countdown.'),
+                                       description: t('Pick the target date for the countdown. Progress is measured to 00:00 (start of that day).'),
                           })
              }
 

@@ -5,9 +5,7 @@ export const settingKeys = {
                           enableDayWindow: 'visualTimerEnableDayWindow',
                           dayWindowStartHour: 'visualTimerDayWindowStartHour',
                           dayWindowEndHour: 'visualTimerDayWindowEndHour',
-                          enableWeekdays: 'visualTimerEnableWeekdays',
-                          weekdayStart: 'visualTimerWeekdayStart',
-                          weekdayEnd: 'visualTimerWeekdayEnd',
+                          
                           enableTargetDate: 'visualTimerEnableTargetDate',
                           targetDate: 'visualTimerTargetDate',
              },

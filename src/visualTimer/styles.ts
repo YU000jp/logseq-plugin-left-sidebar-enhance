@@ -34,7 +34,7 @@ export const getVisualTimerCss = (innerId: string) => `
 
   #left-sidebar #${innerId} .lse-visualTimer-sub {
     margin-top: .3em;
-    font-size: .75em;
+    font-size: .65em;
     color: var(--ls-secondary-text-color);
     text-align: center;
   }
@@ -53,6 +53,6 @@ export const getVisualTimerCss = (innerId: string) => `
 
   #left-sidebar .lse-visualTimer-ring .CircularProgressbar-text {
     transform: translateX(-2em); /* shift left */
-    font-size: 0.8em; /* smaller text */
+    font-size: 0.7em; /* smaller text */
   }
 `

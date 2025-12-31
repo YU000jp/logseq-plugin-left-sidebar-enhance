@@ -6,6 +6,7 @@ import { getVisualTimerConfig } from "./config"
 import { CONTAINER_ID, INNER_ID } from "./constants"
 import { getVisualTimerCss } from "./styles"
 import { mountVisualTimer, unmountVisualTimer } from "./ui"
+import { createVisualTimerContainer } from "./shared"
 
 const hasVisualTimerSettingsChanged = (
              oldSet: LSPluginBaseInfo["settings"],
@@ -20,12 +21,7 @@ const hasVisualTimerSettingsChanged = (
                           if (oldCfg.dayWindowEndHour !== newCfg.dayWindowEndHour) return true
              }
 
-             // Weekdays: only compare range when enabled
-             if (oldCfg.enableWeekdays !== newCfg.enableWeekdays) return true
-             if (newCfg.enableWeekdays) {
-                          if (oldCfg.weekdayStart !== newCfg.weekdayStart) return true
-                          if (oldCfg.weekdayEnd !== newCfg.weekdayEnd) return true
-             }
+             // Weekday feature removed
 
              // Target date: only compare date when enabled; toggling enable always triggers
              if (oldCfg.enableTargetDate !== newCfg.enableTargetDate) return true
@@ -89,53 +85,23 @@ const main = () => {
 
                           if (navEle === null) return
 
-                          const divAsItemEle: HTMLDivElement = document.createElement("div")
-                          divAsItemEle.className = "nav-content-item mt-3 is-expand flex-shrink-0"
-                          divAsItemEle.id = CONTAINER_ID
-
-                          const detailsEle: HTMLDetailsElement = document.createElement("details")
-                          detailsEle.className = "nav-content-item-inner"
-                          detailsEle.open = true
-
-                          const summaryEle: HTMLElement = document.createElement("summary")
-                          summaryEle.className = "header items-center"
-                          summaryEle.style.cursor = "row-resize"
-                          summaryEle.style.backgroundColor = "var(--ls-tertiary-background-color)"
-                          summaryEle.innerText = t("Visual Timer")
-                          summaryEle.title = "Left Sidebar Enhance " + t("plugin")
-                          // settings button (opens plugin settings)
-                          const settingsBtn: HTMLButtonElement = document.createElement("button")
-                          settingsBtn.type = "button"
-                          settingsBtn.className = "lse-visualTimer-settings-btn"
-                          settingsBtn.title = t("Settings") || "Settings"
-                          settingsBtn.innerText = "⚙"
-                          // prevent toggling the details when clicking the button
-                          settingsBtn.addEventListener("click", (ev) => {
-                                       ev.stopPropagation()
-                                       ev.preventDefault()
-                                       try {
-                                                    // open plugin settings
-                                                    // @ts-ignore
-                                                    if (typeof logseq?.showSettingsUI === "function") logseq.showSettingsUI()
-                                       } catch (e) {
-                                                    // ignore
+                          const inner = createVisualTimerContainer(
+                                       navEle,
+                                       CONTAINER_ID,
+                                       INNER_ID,
+                                       t("Visual Timer"),
+                                       () => {
+                                                    try {
+                                                                 // @ts-ignore
+                                                                 if (typeof logseq?.showSettingsUI === "function") logseq.showSettingsUI()
+                                                    } catch (e) {
+                                                                 // ignore
+                                                    }
                                        }
-                          })
-                          summaryEle.appendChild(settingsBtn)
-
-                          const containerEle: HTMLDivElement = document.createElement("div")
-                          containerEle.className = "bg"
-                          containerEle.id = INNER_ID
-
-                          detailsEle.appendChild(summaryEle)
-                          detailsEle.appendChild(containerEle)
-                          divAsItemEle.appendChild(detailsEle)
-                          navEle.appendChild(divAsItemEle)
+                          )
 
                           setTimeout(() => {
-                                       const inner = parent.document.getElementById(INNER_ID) as HTMLDivElement | null
-                                       if (inner === null) return
-
+                                       if (!inner) return
                                        if (inner.dataset.flag !== "true") mountVisualTimer(inner)
                                        inner.dataset.flag = "true"
                           }, 1)

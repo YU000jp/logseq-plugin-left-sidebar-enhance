@@ -1,6 +1,5 @@
 {
-  "visualTimer.title.dayWindow": "Day window remaining",
-  "visualTimer.title.weekdays": "Weekday range progress",
+  "visualTimer.title.dayWindow": "Until configured bedtime",
   "visualTimer.title.targetDate": "Target date countdown:",
   "visualTimer.sub.untilNextStart": "Until next start",
   "Remaining (hh:mm)": "Remaining (hh:mm)",
@@ -10,4 +9,8 @@
   "visualTimer.unit.dayShort": "d",
   "visualTimer.unit.hourShort": "h",
   "visualTimer.unit.minuteShort": "m"
+  ,"visualTimer.expired": "Expired"
+  ,"visualTimer.sub.pastDate": "The target date has passed."
+  ,"visualTimer.clearedMessage": "Target date cleared."
+  
 }

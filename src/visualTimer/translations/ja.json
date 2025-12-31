@@ -1,6 +1,5 @@
 {
-  "visualTimer.title.dayWindow": "今日の残り(時間帯)",
-  "visualTimer.title.weekdays": "曜日範囲の進捗",
+  "visualTimer.title.dayWindow": "今日の寝る時刻まで",
   "visualTimer.title.targetDate": "指定日まで:",
   "visualTimer.sub.untilNextStart": "次の開始まで",
   "Remaining (hh:mm)": "残り (hh:mm)",
@@ -10,4 +9,8 @@
   "visualTimer.unit.dayShort": "日",
   "visualTimer.unit.hourShort": "時間",
   "visualTimer.unit.minuteShort": "分"
+  ,"visualTimer.expired": "期限が過ぎています"
+  ,"visualTimer.sub.pastDate": "指定日は既に過ぎています。"
+  ,"visualTimer.clearedMessage": "指定日をクリアしました。"
+  
 }

@@ -1,13 +1,9 @@
-export type WeekdayKey = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun"
+import { parse } from "date-fns"
 
 export type VisualTimerConfig = {
   enableDayWindow: boolean
   dayWindowStartHour: number
   dayWindowEndHour: number
-
-  enableWeekdays: boolean
-  weekdayStart: WeekdayKey
-  weekdayEnd: WeekdayKey
 
   enableTargetDate: boolean
   targetDate: Date | null
@@ -24,28 +20,7 @@ const toNumber = (value: unknown): number | null => {
   return null
 }
 
-const isWeekdayKey = (value: unknown): value is WeekdayKey => {
-  return value === "Mon" || value === "Tue" || value === "Wed" || value === "Thu" || value === "Fri" || value === "Sat" || value === "Sun"
-}
-
-export const weekdayKeyToJsDay = (key: WeekdayKey): number => {
-  switch (key) {
-    case "Sun":
-      return 0
-    case "Mon":
-      return 1
-    case "Tue":
-      return 2
-    case "Wed":
-      return 3
-    case "Thu":
-      return 4
-    case "Fri":
-      return 5
-    case "Sat":
-      return 6
-  }
-}
+// weekday feature removed
 
 const parseTargetDate = (raw: unknown): Date | null => {
   // falsy (except 0) => not set
@@ -62,7 +37,15 @@ const parseTargetDate = (raw: unknown): Date | null => {
 
   // ISO string or other string parseable by Date
   if (typeof raw === "string") {
-    const date = new Date(raw)
+    const s = raw.trim()
+    // If format is YYYY-MM-DD, parse as local date using date-fns.parse
+    const isoDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(s)
+    if (isoDateOnly) {
+      const date = parse(s, "yyyy-MM-dd", new Date())
+      return Number.isNaN(date.getTime()) ? null : date
+    }
+    // otherwise delegate to Date parsing (may include timezone)
+    const date = new Date(s)
     return Number.isNaN(date.getTime()) ? null : date
   }
 
@@ -97,9 +80,7 @@ export const getVisualTimerConfig = (settings: Record<string, unknown> | undefin
   const startHour = toNumber(cfg[settingKeys.visualTimer.dayWindowStartHour]) ?? 5
   const endHour = toNumber(cfg[settingKeys.visualTimer.dayWindowEndHour]) ?? 24
 
-  const enableWeekdays = cfg[settingKeys.visualTimer.enableWeekdays] !== false
-  const weekdayStart = isWeekdayKey(cfg[settingKeys.visualTimer.weekdayStart]) ? (cfg[settingKeys.visualTimer.weekdayStart] as WeekdayKey) : ("Mon" as WeekdayKey)
-  const weekdayEnd = isWeekdayKey(cfg[settingKeys.visualTimer.weekdayEnd]) ? (cfg[settingKeys.visualTimer.weekdayEnd] as WeekdayKey) : ("Fri" as WeekdayKey)
+  // weekday feature removed
 
   const enableTargetDate = cfg[settingKeys.visualTimer.enableTargetDate] !== false
   const targetDate = parseTargetDate(cfg[settingKeys.visualTimer.targetDate])
@@ -109,9 +90,7 @@ export const getVisualTimerConfig = (settings: Record<string, unknown> | undefin
     dayWindowStartHour: clampInt(startHour, 0, 23),
     dayWindowEndHour: clampInt(endHour, 1, 24),
 
-    enableWeekdays,
-    weekdayStart,
-    weekdayEnd,
+    
 
     enableTargetDate,
     targetDate,

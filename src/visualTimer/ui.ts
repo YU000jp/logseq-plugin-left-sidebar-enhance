@@ -1,7 +1,9 @@
+import { t } from "logseq-l10n"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar"
 import "react-circular-progressbar/dist/styles.css"
 import { createRoot, Root } from "react-dom/client"
+import { settingKeys } from "../settings/keys"
 import { buildTimerList } from "./controller"
 
 let reactRoot: Root | null = null
@@ -16,6 +18,32 @@ const VisualTimerPanel = () => {
   }, [])
 
   const timers = useMemo(() => buildTimerList(now, mountTimeRef.current), [now])
+
+  // detect expired target and clear it after 10s
+  useEffect(() => {
+    const expired = timers.find((x: any) => x.isTarget && x.isExpired)
+    if (!expired) return
+    const id = window.setTimeout(async () => {
+      try {
+        // clear targetDate setting so the progress bar disappears
+        // @ts-ignore
+        if (typeof (logseq as any)?.updateSettings === "function") {
+          await (logseq as any).updateSettings({ [settingKeys.visualTimer.targetDate]: "" })
+          // show toast to notify user
+          try {
+            // @ts-ignore
+            if (logseq?.UI && typeof logseq.UI.showMsg === "function") logseq.UI.showMsg(t("visualTimer.clearedMessage") || "Target date cleared.")
+          } catch (e) {
+            // ignore
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+    }, 10_000)
+
+    return () => window.clearTimeout(id)
+  }, [timers])
 
   return React.createElement(
     "div",
