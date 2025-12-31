@@ -30,7 +30,7 @@
         "@semantic-release/changelog": "^6.0.3",
         "@semantic-release/exec": "^7.1.0",
         "@semantic-release/git": "^10.0.1",
-        "@types/node": "^24.10.1",
+        "@types/node": "^24.10.4",
         "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
         "conventional-changelog-conventionalcommits": "^9.1.0",
@@ -40,7 +40,7 @@
         "rollup-plugin-string": "^3.0.0",
         "semantic-release": "^25.0.2",
         "typescript": "^5.9.3",
-        "vite": "^7.2.6",
+        "vite": "^7.3.0",
         "vite-plugin-logseq": "^1.1.2"
     },
     "config": {
