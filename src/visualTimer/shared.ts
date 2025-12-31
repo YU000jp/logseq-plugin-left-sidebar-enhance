@@ -19,9 +19,9 @@ export const formatLargestUnit = (ms: number, t?: (k: string) => string): string
              const hours = totalHours % 24
 
              const fn = t ?? _t
-             if (days > 0) return `${days}${fn("visualTimer.unit.dayShort")}`
-             if (hours > 0) return `${hours}${fn("visualTimer.unit.hourShort")}`
-             return `${minutes}${fn("visualTimer.unit.minuteShort")}`
+             if (days > 0) return `${days}${fn("d")}`
+             if (hours > 0) return `${hours}${fn("h")}`
+             return `${minutes}${fn("m")}`
 }
 
 export default {}

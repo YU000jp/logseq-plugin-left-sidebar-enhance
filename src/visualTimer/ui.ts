@@ -32,7 +32,7 @@ const VisualTimerPanel = () => {
           // show toast to notify user
           try {
             // @ts-ignore
-            if (logseq?.UI && typeof logseq.UI.showMsg === "function") logseq.UI.showMsg(t("visualTimer.clearedMessage") || "Target date cleared.")
+            if (logseq?.UI && typeof logseq.UI.showMsg === "function") logseq.UI.showMsg(t("Target date cleared.") || "Target date cleared.")
           } catch (e) {
             // ignore
           }
@@ -52,7 +52,14 @@ const VisualTimerPanel = () => {
       React.createElement(
         "div",
         { className: "lse-visualTimer-card", key: timer.title },
-        React.createElement("div", { className: "lse-visualTimer-title" }, timer.title),
+        React.createElement(
+          "div",
+          { className: "lse-visualTimer-title" },
+          // support newline in title: split into multiple lines
+          typeof timer.title === "string" && timer.title.includes("\n")
+            ? timer.title.split("\n").map((line: string, i: number) => React.createElement("div", { key: i }, line.trim()))
+            : timer.title
+        ),
         React.createElement(
           "div",
           { className: "lse-visualTimer-ring" },

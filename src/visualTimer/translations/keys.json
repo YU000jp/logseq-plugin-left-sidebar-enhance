@@ -1,16 +1,16 @@
 {
-  "visualTimer.title.dayWindow": "Until configured bedtime (0-24)",
-  "visualTimer.title.targetDate": "Target date countdown:",
-  "visualTimer.sub.untilNextStart": "Until next start",
+  "Until configured bedtime": "Until configured bedtime (0-24)",
+  "Target date countdown:": "Target date countdown:",
+  "Until next start": "Until next start",
 
   "Remaining (hh:mm)": "Remaining (hh:mm)",
   "Days remaining": "Days remaining",
   "Hours remaining": "Hours remaining",
   "Minutes remaining": "Minutes remaining",
 
-  "visualTimer.unit.dayShort": "d",
-  "visualTimer.unit.hourShort": "h",
-  "visualTimer.unit.minuteShort": "m",
+  "d": "d",
+  "h": "h",
+  "m": "m",
 
   "Visual Timer": "Visual Timer",
   "plugin": "plugin",

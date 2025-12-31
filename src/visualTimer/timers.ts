@@ -29,14 +29,12 @@ export const computeDayWindowTimer = (now: Date, cfg: VisualTimerConfig): TimerD
   const percent = total === 0 ? 0 : (elapsed / total) * 100
 
   return {
-    title: `${t("visualTimer.title.dayWindow")} (${cfg.dayWindowStartHour}-${cfg.dayWindowEndHour})`,
+    title: `${t("Until configured bedtime")} (${cfg.dayWindowStartHour}-${cfg.dayWindowEndHour})`,
     percent,
     centerText: formatRemaining(remaining),
     subText: t("Remaining (hh:mm)"),
   }
 }
-
-// Weekday range feature removed
 
 export const computeTargetDateTimer = (now: Date, cfg: VisualTimerConfig): TimerData | null => {
   if (!cfg.targetDate) return null
@@ -64,10 +62,10 @@ export const computeTargetDateTimer = (now: Date, cfg: VisualTimerConfig): Timer
   const todayStart = startOfDay(now)
   if (target.getTime() <= todayStart.getTime()) {
     return {
-      title: `${t("visualTimer.title.targetDate")} ${formatTargetDate(target)}`,
+      title: `${t("Target date countdown:")}\n${formatTargetDate(target)}`,
       percent: 100,
-      centerText: t("visualTimer.expired") || "Expired",
-      subText: t("visualTimer.sub.pastDate") || "The target date has passed.",
+      centerText: t("Expired") || "Expired",
+      subText: t("The target date has passed.") || "The target date has passed.",
       isTarget: true,
       isExpired: true,
     }
@@ -91,18 +89,18 @@ export const computeTargetDateTimer = (now: Date, cfg: VisualTimerConfig): Timer
 
   // Show days when 2 or more days remain; otherwise show hours (total hours)
   if (remainingDays >= 2) {
-    centerText = `${remainingDays}${t("visualTimer.unit.dayShort")}`
+    centerText = `${remainingDays}${t("d")}`
     subText = t("Days remaining")
   } else if (totalHoursRemaining > 0) {
-    centerText = `${totalHoursRemaining}${t("visualTimer.unit.hourShort")}`
+    centerText = `${totalHoursRemaining}${t("h")}`
     subText = t("Hours remaining")
   } else {
-    centerText = `${remainingMinutes}${t("visualTimer.unit.minuteShort")}`
+    centerText = `${remainingMinutes}${t("m")}`
     subText = t("Minutes remaining")
   }
 
   return {
-    title: `${t("visualTimer.title.targetDate")} ${formatTargetDate(target)}`,
+    title: `${t("Target date countdown:")}\n${formatTargetDate(target)}`,
     percent,
     centerText,
     subText,

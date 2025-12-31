@@ -52,17 +52,17 @@
   "Enter words to exclude, separated by line breaks.": "除外する単語を改行で区切って入力します。",
   "Page Outline": "ページアウトライン"
   ,
-  "visualTimer.title.dayWindow": "今日の寝る時刻まで",
-  "visualTimer.title.targetDate": "指定日まで:",
-  "visualTimer.sub.untilNextStart": "次の開始まで",
+  "Until configured bedtime": "今日の寝る時刻まで",
+  "Target date countdown:": "指定日まで:",
+  "Until next start": "次の開始まで",
   "Remaining (hh:mm)": "残り (hh:mm)",
   "Days remaining": "残り日数",
   "Hours remaining": "残り時間",
   "Minutes remaining": "残り分",
-  "visualTimer.unit.dayShort": "日",
-  "visualTimer.unit.hourShort": "時間",
-  "visualTimer.unit.minuteShort": "分",
-  "visualTimer.expired": "期限が過ぎています",
-  "visualTimer.sub.pastDate": "指定日は既に過ぎています。",
-  "visualTimer.clearedMessage": "指定日をクリアしました。"
+  "d": "日",
+  "h": "時間",
+  "m": "分",
+  "Expired": "期限が過ぎています",
+  "The target date has passed.": "指定日は既に過ぎています。",
+  "Target date cleared.": "指定日をクリアしました。"
 }

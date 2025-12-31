@@ -34,17 +34,17 @@
   "Enter words to exclude, separated by line breaks.": "Voer woorden in die u wilt uitsluiten, gescheiden door regeleinden.",
   "Page Outline": "Pagina overzicht"
   ,
-  "visualTimer.title.dayWindow": "Until configured bedtime",
-  "visualTimer.title.targetDate": "Target date countdown:",
-  "visualTimer.sub.untilNextStart": "Until next start",
+  "Until configured bedtime": "Until configured bedtime",
+  "Target date countdown:": "Target date countdown:",
+  "Until next start": "Until next start",
   "Remaining (hh:mm)": "Remaining (hh:mm)",
   "Days remaining": "Days remaining",
   "Hours remaining": "Hours remaining",
   "Minutes remaining": "Minutes remaining",
-  "visualTimer.unit.dayShort": "d",
-  "visualTimer.unit.hourShort": "h",
-  "visualTimer.unit.minuteShort": "m",
-  "visualTimer.expired": "Expired",
-  "visualTimer.sub.pastDate": "The target date has passed.",
-  "visualTimer.clearedMessage": "Target date cleared."
+  "d": "d",
+  "h": "h",
+  "m": "m",
+  "Expired": "Expired",
+  "The target date has passed.": "The target date has passed.",
+  "Target date cleared.": "Target date cleared."
 }
