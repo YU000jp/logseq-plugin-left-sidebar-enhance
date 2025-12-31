@@ -45,13 +45,26 @@ export const computeTargetDateTimer = (now: Date, cfg: VisualTimerConfig): Timer
   // Use startOfDay to fix the progress target to 00:00 of the target date
   const target = startOfDay(cfg.targetDate)
 
+  const formatTargetDate = (d: Date) => {
+    try {
+      if (typeof Intl !== "undefined" && typeof navigator !== "undefined") {
+        return new Intl.DateTimeFormat(navigator.language || undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }).format(d)
+      }
+    } catch (e) {
+      // fallthrough to fallback formatting
+    }
+    return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}`
+  }
+
   // If the target is today or in the past (relative to start of today), mark as expired
   const todayStart = startOfDay(now)
   if (target.getTime() <= todayStart.getTime()) {
     return {
-      title: `${t("visualTimer.title.targetDate")} ${target.getFullYear()}/${String(target.getMonth() + 1).padStart(2, "0")}/${String(
-        target.getDate()
-      ).padStart(2, "0")}`,
+      title: `${t("visualTimer.title.targetDate")} ${formatTargetDate(target)}`,
       percent: 100,
       centerText: t("visualTimer.expired") || "Expired",
       subText: t("visualTimer.sub.pastDate") || "The target date has passed.",
@@ -89,9 +102,7 @@ export const computeTargetDateTimer = (now: Date, cfg: VisualTimerConfig): Timer
   }
 
   return {
-    title: `${t("visualTimer.title.targetDate")} ${target.getFullYear()}/${String(target.getMonth() + 1).padStart(2, "0")}/${String(
-      target.getDate()
-    ).padStart(2, "0")}`,
+    title: `${t("visualTimer.title.targetDate")} ${formatTargetDate(target)}`,
     percent,
     centerText,
     subText,
