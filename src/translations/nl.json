@@ -33,4 +33,18 @@
   "Words to exclude from the header list": "Woorden die moeten worden uitgesloten van de koplijst",
   "Enter words to exclude, separated by line breaks.": "Voer woorden in die u wilt uitsluiten, gescheiden door regeleinden.",
   "Page Outline": "Pagina overzicht"
+  ,
+  "visualTimer.title.dayWindow": "Until configured bedtime",
+  "visualTimer.title.targetDate": "Target date countdown:",
+  "visualTimer.sub.untilNextStart": "Until next start",
+  "Remaining (hh:mm)": "Remaining (hh:mm)",
+  "Days remaining": "Days remaining",
+  "Hours remaining": "Hours remaining",
+  "Minutes remaining": "Minutes remaining",
+  "visualTimer.unit.dayShort": "d",
+  "visualTimer.unit.hourShort": "h",
+  "visualTimer.unit.minuteShort": "m",
+  "visualTimer.expired": "Expired",
+  "visualTimer.sub.pastDate": "The target date has passed.",
+  "visualTimer.clearedMessage": "Target date cleared."
 }

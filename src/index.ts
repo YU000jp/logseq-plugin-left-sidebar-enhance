@@ -1,6 +1,5 @@
-import '@logseq/libs'; //https://plugins-doc.logseq.com/
+import '@logseq/libs' //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
-import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
 import { refreshPageHeaders } from './page-outline/pageHeaders'
@@ -8,12 +7,9 @@ import { setupTOCHandlers } from './page-outline/setup'
 import { settingsTemplate } from './settings'
 import { settingKeys } from './settings/keys'
 import { initSettingsDispatcher } from './settings/onSettingsChanged'
-import jaCore from "./translations/ja.json"
 import { removeContainer } from './util/lib'
 import { loadVisualTimer } from './visualTimer'
-import visualTimerEn from "./visualTimer/translations/en.json"
-import visualTimerJa from "./visualTimer/translations/ja.json"
-
+import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
 // let currentPageUuid: PageEntity["uuid"] = ""
@@ -36,14 +32,9 @@ export const getCurrentPageOriginalName = () => currentPageOriginalName // 現�
 /* main */
 const main = async () => {
 
-
   //l10n
-  await l10nSetup({
-    builtinTranslations: {
-      en: { ...visualTimerEn },
-      ja: { ...jaCore, ...visualTimerJa },
-    },
-  })
+  // ユーザー設定言語を取得し、L10Nをセットアップ
+  const { preferredLanguage, preferredDateFormat } = await loadLogseqL10n()
 
   /* user settings */
   // register settings schema based on current settings so dependent fields can be hidden

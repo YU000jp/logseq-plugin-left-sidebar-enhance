@@ -33,4 +33,18 @@
   "Words to exclude from the header list": "Слова для виключення зі списку заголовків",
   "Enter words to exclude, separated by line breaks.": "Введіть слова для виключення, розділені розривами рядків.",
   "Page Outline": "Структура сторінки"
+  ,
+  "visualTimer.title.dayWindow": "Until configured bedtime",
+  "visualTimer.title.targetDate": "Target date countdown:",
+  "visualTimer.sub.untilNextStart": "Until next start",
+  "Remaining (hh:mm)": "Remaining (hh:mm)",
+  "Days remaining": "Days remaining",
+  "Hours remaining": "Hours remaining",
+  "Minutes remaining": "Minutes remaining",
+  "visualTimer.unit.dayShort": "d",
+  "visualTimer.unit.hourShort": "h",
+  "visualTimer.unit.minuteShort": "m",
+  "visualTimer.expired": "Expired",
+  "visualTimer.sub.pastDate": "The target date has passed.",
+  "visualTimer.clearedMessage": "Target date cleared."
 }

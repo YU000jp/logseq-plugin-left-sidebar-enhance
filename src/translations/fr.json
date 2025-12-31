@@ -32,5 +32,18 @@
   "Toggle to display or hide the date list in journals.": "Basculez pour afficher ou masquer la liste de dates dans les journaux.",
   "Words to exclude from the header list": "Mots à exclure de la liste d’en-tête",
   "Enter words to exclude, separated by line breaks.": "Entrez les mots à exclure, séparés par des sauts de ligne.",
-  "Page Outline": "Plan de la page"
+  "Page Outline": "Plan de la page",
+  "visualTimer.title.dayWindow": "Until configured bedtime",
+  "visualTimer.title.targetDate": "Target date countdown:",
+  "visualTimer.sub.untilNextStart": "Until next start",
+  "Remaining (hh:mm)": "Remaining (hh:mm)",
+  "Days remaining": "Days remaining",
+  "Hours remaining": "Hours remaining",
+  "Minutes remaining": "Minutes remaining",
+  "visualTimer.unit.dayShort": "d",
+  "visualTimer.unit.hourShort": "h",
+  "visualTimer.unit.minuteShort": "m",
+  "visualTimer.expired": "Expired",
+  "visualTimer.sub.pastDate": "The target date has passed.",
+  "visualTimer.clearedMessage": "Target date cleared."
 }

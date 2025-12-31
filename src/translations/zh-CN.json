@@ -33,4 +33,18 @@
   "Words to exclude from the header list": "要从标题列表中排除的单词",
   "Enter words to exclude, separated by line breaks.": "输入要排除的单词，用换行符分隔。",
   "Page Outline": "页面大纲"
+  ,
+  "visualTimer.title.dayWindow": "Until configured bedtime",
+  "visualTimer.title.targetDate": "Target date countdown:",
+  "visualTimer.sub.untilNextStart": "Until next start",
+  "Remaining (hh:mm)": "Remaining (hh:mm)",
+  "Days remaining": "Days remaining",
+  "Hours remaining": "Hours remaining",
+  "Minutes remaining": "Minutes remaining",
+  "visualTimer.unit.dayShort": "d",
+  "visualTimer.unit.hourShort": "h",
+  "visualTimer.unit.minuteShort": "m",
+  "visualTimer.expired": "Expired",
+  "visualTimer.sub.pastDate": "The target date has passed.",
+  "visualTimer.clearedMessage": "Target date cleared."
 }
