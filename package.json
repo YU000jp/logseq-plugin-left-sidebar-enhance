@@ -21,6 +21,9 @@
         "@logseq/libs": "^0.0.17",
         "date-fns": "^4.1.0",
         "logseq-l10n": "^0.2.0",
+        "react": "^19.2.3",
+        "react-circular-progressbar": "^2.2.0",
+        "react-dom": "^19.2.3",
         "remove-markdown": "^0.6.2"
     },
     "devDependencies": {
@@ -28,6 +31,8 @@
         "@semantic-release/exec": "^7.1.0",
         "@semantic-release/git": "^10.0.1",
         "@types/node": "^24.10.1",
+        "@types/react": "^19.2.7",
+        "@types/react-dom": "^19.2.3",
         "conventional-changelog-conventionalcommits": "^9.1.0",
         "cz-conventional-changelog": "^3.3.0",
         "jest": "^30.2.0",
@@ -52,5 +57,6 @@
         "hooks": {
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
-    }
+    },
+    "packageManager": "pnpm@10.2.1+sha512.398035c7bd696d0ba0b10a688ed558285329d27ea994804a52bad9167d8e3a72bcb993f9699585d3ca25779ac64949ef422757a6c31102c12ab932e5cbe5cc92"
 }

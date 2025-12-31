@@ -1,0 +1,13 @@
+{
+  "visualTimer.title.dayWindow": "Day window remaining",
+  "visualTimer.title.weekdays": "Weekday range progress",
+  "visualTimer.title.targetDate": "Target date countdown:",
+  "visualTimer.sub.untilNextStart": "Until next start",
+  "Remaining (hh:mm)": "Remaining (hh:mm)",
+  "Days remaining": "Days remaining",
+  "Hours remaining": "Hours remaining",
+  "Minutes remaining": "Minutes remaining",
+  "visualTimer.unit.dayShort": "d",
+  "visualTimer.unit.hourShort": "h",
+  "visualTimer.unit.minuteShort": "m"
+}

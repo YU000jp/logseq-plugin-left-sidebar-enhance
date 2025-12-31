@@ -1,13 +1,15 @@
 import '@logseq/libs' //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
-import { loadDateSelector } from './dateSelector'
+import { loadVisualTimer } from './visualTimer'
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
 import { refreshPageHeaders } from './page-outline/pageHeaders'
 import { setupTOCHandlers } from './page-outline/setup'
 import { settingsTemplate } from './settings'
-import ja from "./translations/ja.json"
+import jaCore from "./translations/ja.json"
+import visualTimerEn from "./visualTimer/translations/en.json"
+import visualTimerJa from "./visualTimer/translations/ja.json"
 import { removeContainer } from './util/lib'
 
 
@@ -34,7 +36,12 @@ const main = async () => {
 
 
   //l10n
-  await l10nSetup({ builtinTranslations: { ja } })
+  await l10nSetup({
+    builtinTranslations: {
+      en: { ...visualTimerEn },
+      ja: { ...jaCore, ...visualTimerJa },
+    },
+  })
 
   /* user settings */
   logseq.useSettingsSchema(settingsTemplate())
@@ -49,8 +56,8 @@ const main = async () => {
   //TOC
   setupTOCHandlers(logseqVersionMd)
 
-  //日付セレクター
-  loadDateSelector()
+  //残り時間可視化ビジュアル
+  loadVisualTimer()
 
   //マウスオーバー
   loadShowByMouseOver()
@@ -63,6 +70,7 @@ const main = async () => {
   logseq.beforeunload(async () => {
     removeContainer("lse-toc-container")
     removeContainer("lse-dataSelector-container")
+    removeContainer("lse-visualTimer-container")
   })
 
   logseq.App.onCurrentGraphChanged(async () => {

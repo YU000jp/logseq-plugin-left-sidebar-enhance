@@ -1,0 +1,13 @@
+{
+  "visualTimer.title.dayWindow": "今日の残り(時間帯)",
+  "visualTimer.title.weekdays": "曜日範囲の進捗",
+  "visualTimer.title.targetDate": "指定日まで:",
+  "visualTimer.sub.untilNextStart": "次の開始まで",
+  "Remaining (hh:mm)": "残り (hh:mm)",
+  "Days remaining": "残り日数",
+  "Hours remaining": "残り時間",
+  "Minutes remaining": "残り分",
+  "visualTimer.unit.dayShort": "日",
+  "visualTimer.unit.hourShort": "時間",
+  "visualTimer.unit.minuteShort": "分"
+}
