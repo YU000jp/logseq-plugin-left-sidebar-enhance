@@ -48,8 +48,19 @@ export const weekdayKeyToJsDay = (key: WeekdayKey): number => {
 }
 
 const parseTargetDate = (raw: unknown): Date | null => {
-  if (!raw) return null
+  // falsy (except 0) => not set
+  if (raw == null || raw === "") return null
 
+  // Date instance
+  if (raw instanceof Date) return Number.isNaN(raw.getTime()) ? null : raw
+
+  // Numeric timestamp
+  if (typeof raw === "number") {
+    const date = new Date(raw)
+    return Number.isNaN(date.getTime()) ? null : date
+  }
+
+  // ISO string or other string parseable by Date
   if (typeof raw === "string") {
     const date = new Date(raw)
     return Number.isNaN(date.getTime()) ? null : date
@@ -58,12 +69,14 @@ const parseTargetDate = (raw: unknown): Date | null => {
   if (typeof raw !== "object") return null
 
   const obj = raw as Record<string, unknown>
+  // handle nested string fields
   const dateLike = (obj.date ?? obj.value ?? obj.targetDate) as unknown
   if (typeof dateLike === "string") {
     const date = new Date(dateLike)
     return Number.isNaN(date.getTime()) ? null : date
   }
 
+  // accept numeric year/month/day objects
   const year = toNumber(obj.year)
   const month = toNumber(obj.month)
   const day = toNumber(obj.day)

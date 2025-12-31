@@ -6,7 +6,6 @@ import { getVisualTimerConfig } from "./config"
 import { CONTAINER_ID, INNER_ID } from "./constants"
 import { getVisualTimerCss } from "./styles"
 import { mountVisualTimer, unmountVisualTimer } from "./ui"
-import { settingsTemplate } from "../settings"
 
 const hasVisualTimerSettingsChanged = (
              oldSet: LSPluginBaseInfo["settings"],

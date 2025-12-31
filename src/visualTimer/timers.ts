@@ -110,6 +110,8 @@ export const computeWeekdaysTimer = (now: Date, cfg: VisualTimerConfig): TimerDa
 
 export const computeTargetDateTimer = (now: Date, startRef: Date, cfg: VisualTimerConfig): TimerData | null => {
   if (!cfg.targetDate) return null
+  //cfg.targetDateがDate型でない場合はnullを返す
+  if (!(cfg.targetDate instanceof Date)) return null
   const target = endOfDay(cfg.targetDate)
 
   const total = target.getTime() - startRef.getTime()
@@ -126,13 +128,16 @@ export const computeTargetDateTimer = (now: Date, startRef: Date, cfg: VisualTim
   if (remainingDays > 0) {
     centerText = `${remainingDays}${t("visualTimer.unit.dayShort")}`
     subText = t("Days remaining")
-  } else if (remainingHours > 0) {
-    centerText = `${remainingHours}${t("visualTimer.unit.hourShort")}`
-    subText = t("Hours remaining")
-  } else {
-    centerText = `${remainingMinutes}${t("visualTimer.unit.minuteShort")}`
-    subText = t("Minutes remaining")
   }
+  else
+    if (remainingHours > 0) {
+      centerText = `${remainingHours}${t("visualTimer.unit.hourShort")}`
+      subText = t("Hours remaining")
+    }
+    else {
+      centerText = `${remainingMinutes}${t("visualTimer.unit.minuteShort")}`
+      subText = t("Minutes remaining")
+    }
 
   return {
     title: `${t("visualTimer.title.targetDate")} ${target.getFullYear()}/${String(target.getMonth() + 1).padStart(2, "0")}/${String(
