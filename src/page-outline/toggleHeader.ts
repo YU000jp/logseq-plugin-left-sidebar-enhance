@@ -105,7 +105,7 @@ export const generatePageButton = (element: HTMLElement) => {
   }
 
   if (headerSpace) {
-    // headerSpace.innerHTML = "" // リフレッシュ
+    // 既存のボタンが残っていると重複するため、クリアしてから追加する
     const openButton = createElementWithAttributes(
       "button",
       {
@@ -116,7 +116,8 @@ export const generatePageButton = (element: HTMLElement) => {
       currentPageOriginalName
     )
     openButton.addEventListener("click", ({ shiftKey }) => pageOpen(currentPageOriginalName, shiftKey, false))
-    headerSpace.appendChild(openButton)
+    // replaceChildrenで既存の子要素を置き換え、一つのみになるようにする
+    headerSpace.replaceChildren(openButton)
   }
 }
 
