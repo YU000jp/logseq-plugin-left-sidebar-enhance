@@ -6,26 +6,23 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
              const cfg = currentSettings ?? {}
              const list: SettingSchemaDesc[] = []
 
-             // Heading
-             list.push({
-                          key: settingKeys.visualTimer.heading,
-                          title: t('Visual Timer settings'),
-                          type: 'heading',
-                          default: null,
-                          description: '',
-             })
+             list.push(
+                          {// Heading
+                                       key: settingKeys.visualTimer.heading,
+                                       title: t('Visual Timer settings'),
+                                       type: 'heading',
+                                       default: null,
+                                       description: '',
+                          },
+                          { // Master toggle
+                                       key: settingKeys.visualTimer.master,
+                                       title: t('Enable visual timer in the left sidebar'),
+                                       type: 'boolean',
+                                       default: false,
+                                       description: t('Show circular progress-bars for remaining time.'),
+                          })
 
-             // Master toggle
-             list.push({
-                          key: settingKeys.visualTimer.master,
-                          title: t('Enable visual timer in the left sidebar'),
-                          type: 'boolean',
-                          default: false,
-                          description: t('Show circular progress-bars for remaining time.'),
-             })
-
-             const showVisual = cfg.booleanVisualTimer === true
-             if (!showVisual) return list
+             if (cfg[settingKeys.visualTimer.master] === false) return list
 
              // Day window
              list.push({
@@ -36,23 +33,22 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                           description: t('Show a progress bar for the configured daily time window.'),
              })
 
-             const showDay = cfg.visualTimerEnableDayWindow === true
-             if (showDay) {
-                          list.push({
-                                       key: settingKeys.visualTimer.dayWindowStartHour,
-                                       title: t('Day window start hour'),
-                                       type: 'number',
-                                       default: 5,
-                                       description: t('Start hour for the day window (0-23).'),
-                          })
-
-                          list.push({
-                                       key: settingKeys.visualTimer.dayWindowEndHour,
-                                       title: t('Day window end hour'),
-                                       type: 'number',
-                                       default: 24,
-                                       description: t('End hour for the day window (1-24). 24 means midnight.'),
-                          })
+             if (cfg[settingKeys.visualTimer.enableDayWindow] === true) {
+                          list.push(
+                                       {
+                                                    key: settingKeys.visualTimer.dayWindowStartHour,
+                                                    title: t('Day window start hour'),
+                                                    type: 'number',
+                                                    default: 5,
+                                                    description: t('Start hour for the day window (0-23).'),
+                                       },
+                                       {
+                                                    key: settingKeys.visualTimer.dayWindowEndHour,
+                                                    title: t('Day window end hour'),
+                                                    type: 'number',
+                                                    default: 24,
+                                                    description: t('End hour for the day window (1-24). 24 means midnight.'),
+                                       })
              }
 
              // Weekdays
@@ -64,25 +60,24 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                           description: t('Show a progress bar for the configured weekday range.'),
              })
 
-             const showWeekdays = cfg.visualTimerEnableWeekdays === true
-             if (showWeekdays) {
-                          list.push({
-                                       key: settingKeys.visualTimer.weekdayStart,
-                                       title: t('Weekday range start'),
-                                       type: 'enum',
-                                       enumChoices: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                       default: 'Mon',
-                                       description: t('Start day of the weekday range.'),
-                          })
-
-                          list.push({
-                                       key: settingKeys.visualTimer.weekdayEnd,
-                                       title: t('Weekday range end'),
-                                       type: 'enum',
-                                       enumChoices: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                                       default: 'Fri',
-                                       description: t('End day of the weekday range.'),
-                          })
+             if (cfg[settingKeys.visualTimer.enableWeekdays] === true) {
+                          list.push(
+                                       {
+                                                    key: settingKeys.visualTimer.weekdayStart,
+                                                    title: t('Weekday range start'),
+                                                    type: 'enum',
+                                                    enumChoices: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                                    default: 'Mon',
+                                                    description: t('Start day of the weekday range.'),
+                                       },
+                                       {
+                                                    key: settingKeys.visualTimer.weekdayEnd,
+                                                    title: t('Weekday range end'),
+                                                    type: 'enum',
+                                                    enumChoices: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                                    default: 'Fri',
+                                                    description: t('End day of the weekday range.'),
+                                       })
              }
 
              // Target date
@@ -94,8 +89,7 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                           description: t('Show a progress bar counting down to a target date.'),
              })
 
-             const showTarget = cfg.visualTimerEnableTargetDate === true
-             if (showTarget) {
+             if (cfg[settingKeys.visualTimer.enableTargetDate] === true) {
                           list.push({
                                        key: settingKeys.visualTimer.targetDate,
                                        title: t('Target date'),

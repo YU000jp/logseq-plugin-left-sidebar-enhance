@@ -1,7 +1,6 @@
-import '@logseq/libs' //https://plugins-doc.logseq.com/
+import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
-import { setup as l10nSetup } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
-import { loadVisualTimer } from './visualTimer'
+import { setup as l10nSetup } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
 import { refreshPageHeaders } from './page-outline/pageHeaders'
@@ -10,9 +9,10 @@ import { settingsTemplate } from './settings'
 import { settingKeys } from './settings/keys'
 import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import jaCore from "./translations/ja.json"
+import { removeContainer } from './util/lib'
+import { loadVisualTimer } from './visualTimer'
 import visualTimerEn from "./visualTimer/translations/en.json"
 import visualTimerJa from "./visualTimer/translations/ja.json"
-import { removeContainer } from './util/lib'
 
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
@@ -48,30 +48,6 @@ const main = async () => {
   /* user settings */
   // register settings schema based on current settings so dependent fields can be hidden
   logseq.useSettingsSchema(settingsTemplate(logseq.settings ?? undefined))
-
-  // update schema when settings change so conditional fields can appear/disappear
-  // debounce repeated changes to avoid excessive re-registrations
-  let settingsSchemaTimer: number | undefined
-  const DEBOUNCE_MS = 250
-  logseq.onSettingsChanged((newSet, oldSet) => {
-    try {
-      if (typeof settingsSchemaTimer !== 'undefined') clearTimeout(settingsSchemaTimer)
-      // schedule re-registration
-      // @ts-ignore - NodeJS/Window timer union
-      settingsSchemaTimer = setTimeout(() => {
-        try {
-          logseq.useSettingsSchema(settingsTemplate(newSet ?? undefined))
-          setTimeout(() =>
-            logseq.showSettingsUI() // refresh settings UI to reflect schema changes
-            , 0)
-        } catch (e) {
-          console.error('Failed to refresh settings schema', e)
-        }
-      }, DEBOUNCE_MS) as unknown as number
-    } catch (e) {
-      console.error('Failed to schedule settings schema refresh', e)
-    }
-  })
 
   // 中央設定ディスパッチャを初期化（各モジュールの設定ハンドラを一箇所で呼ぶ）
   setTimeout(() =>

@@ -20,6 +20,7 @@ export const setupTOCHandlers = (versionMd: boolean) => {
         logseq.App.onCurrentGraphChanged(async () => {
             routeCheck(versionMd)//グラフ変更時に実行
         })
+        processing = false
     }, 5000)
 
     if (logseq.settings?.[settingKeys.toc.master] === true)
@@ -53,18 +54,21 @@ export const setupTOCHandlers = (versionMd: boolean) => {
 /**
  * 設定変更時のハンドラ（中央ディスパッチャから呼び出される）
  */
-export const handleTocSettingsChanged = async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']): Promise<void> => {
-    if (processing) return
+export const handleTocSettingsChanged = async (newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']): Promise<boolean> => {
+    if (processing) return false
     if (oldSet[settingKeys.toc.master] !== newSet[settingKeys.toc.master]) {
         if (newSet[settingKeys.toc.master] === true)
             renderTOCContainer()//表示する
         else
             removeContainer("lse-toc-container")//消す
+        return true
     }
-    if ((oldSet[settingKeys.toc.tocRemoveWordList] !== newSet[settingKeys.toc.tocRemoveWordList])
-        || (oldSet[settingKeys.toc.booleanAsZoomPage] !== newSet[settingKeys.toc.booleanAsZoomPage]))
-        await refreshPageHeaders(getCurrentPageOriginalName()) //更新
 
+    if ((oldSet[settingKeys.toc.tocRemoveWordList] !== newSet[settingKeys.toc.tocRemoveWordList])
+        || (oldSet[settingKeys.toc.booleanAsZoomPage] !== newSet[settingKeys.toc.booleanAsZoomPage])) {
+        await refreshPageHeaders(getCurrentPageOriginalName()) //更新
+    }
+    return false
 }
 
 

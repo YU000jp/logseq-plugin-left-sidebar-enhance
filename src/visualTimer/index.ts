@@ -1,17 +1,42 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
+import { settingKeys } from "../settings/keys"
 import { removeContainer } from "../util/lib"
+import { getVisualTimerConfig } from "./config"
 import { CONTAINER_ID, INNER_ID } from "./constants"
 import { getVisualTimerCss } from "./styles"
 import { mountVisualTimer, unmountVisualTimer } from "./ui"
-import { settingKeys } from "../settings/keys"
+import { settingsTemplate } from "../settings"
 
 const hasVisualTimerSettingsChanged = (
              oldSet: LSPluginBaseInfo["settings"],
              newSet: LSPluginBaseInfo["settings"]
 ): boolean => {
-             const keys = Object.values(settingKeys.visualTimer)
-             return keys.some((key) => JSON.stringify(oldSet?.[key]) !== JSON.stringify(newSet?.[key]))
+             const oldCfg = getVisualTimerConfig(oldSet)
+             const newCfg = getVisualTimerConfig(newSet)
+             // Day-window: only compare hours when enabled; toggling enable always triggers
+             if (oldCfg.enableDayWindow !== newCfg.enableDayWindow) return true
+             if (newCfg.enableDayWindow) {
+                          if (oldCfg.dayWindowStartHour !== newCfg.dayWindowStartHour) return true
+                          if (oldCfg.dayWindowEndHour !== newCfg.dayWindowEndHour) return true
+             }
+
+             // Weekdays: only compare range when enabled
+             if (oldCfg.enableWeekdays !== newCfg.enableWeekdays) return true
+             if (newCfg.enableWeekdays) {
+                          if (oldCfg.weekdayStart !== newCfg.weekdayStart) return true
+                          if (oldCfg.weekdayEnd !== newCfg.weekdayEnd) return true
+             }
+
+             // Target date: only compare date when enabled; toggling enable always triggers
+             if (oldCfg.enableTargetDate !== newCfg.enableTargetDate) return true
+             if (newCfg.enableTargetDate) {
+                          const oldTime = oldCfg.targetDate ? oldCfg.targetDate.getTime() : null
+                          const newTime = newCfg.targetDate ? newCfg.targetDate.getTime() : null
+                          if (oldTime !== newTime) return true
+             }
+
+             return false
 }
 
 const refreshIfMounted = (): void => {
@@ -22,11 +47,11 @@ const refreshIfMounted = (): void => {
 }
 
 export const loadVisualTimer = () => {
-    // 初期起動時のマウント処理（設定が有効なら表示）
-    if (logseq.settings?.[settingKeys.visualTimer.master] === true) main()
+             // 初期起動時のマウント処理（設定が有効なら表示）
+             if (logseq.settings?.[settingKeys.visualTimer.master] === true) main()
 
-    // スタイル提供は常に行う
-    logseq.provideStyle(getVisualTimerCss(INNER_ID))
+             // スタイル提供は常に行う
+             logseq.provideStyle(getVisualTimerCss(INNER_ID))
 }
 
 /**
@@ -35,21 +60,23 @@ export const loadVisualTimer = () => {
  * - master が有効で、visualTimer 関連の設定が変わったら再描画する
  */
 export const handleVisualTimerSettingsChanged = async (
-    newSet: LSPluginBaseInfo["settings"],
-    oldSet: LSPluginBaseInfo["settings"]
-): Promise<void> => {
-    if (oldSet[settingKeys.visualTimer.master] !== newSet[settingKeys.visualTimer.master]) {
-        if (newSet[settingKeys.visualTimer.master] === true) main()
-        else {
-            unmountVisualTimer()
-            removeContainer(CONTAINER_ID)
-        }
-        return
-    }
+             newSet: LSPluginBaseInfo["settings"],
+             oldSet: LSPluginBaseInfo["settings"]
+): Promise<boolean> => {
+             if (oldSet[settingKeys.visualTimer.master] !== newSet[settingKeys.visualTimer.master]) {
+                          if (newSet[settingKeys.visualTimer.master] === true) main()
+                          else {
+                                       unmountVisualTimer()
+                                       removeContainer(CONTAINER_ID)
+                          }
+                          return true
+             }
 
-    if (newSet[settingKeys.visualTimer.master] === true && hasVisualTimerSettingsChanged(oldSet, newSet)) {
-        refreshIfMounted()
-    }
+             const changed = hasVisualTimerSettingsChanged(oldSet, newSet)
+             if (changed && newSet[settingKeys.visualTimer.master] === true)
+                          refreshIfMounted()
+
+             return changed
 }
 
 const main = () => {
