@@ -1,9 +1,9 @@
 import { ExternalCommandType, LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin"
+import { t } from "logseq-l10n"
 import CSSTypeA from "./mouseoverA.css?inline"
 import CSSTypeB from "./mouseoverB.css?inline"
-import { removeProvideStyle } from "./util/lib"
-import { t } from "logseq-l10n"
 import { settingKeys } from './settings/keys'
+import { removeProvideStyle } from "./util/lib"
 const keyShowByMouseOver = "showByMouseOver"
 let processingMouseOverButton = false
 
@@ -11,7 +11,7 @@ export const loadShowByMouseOver = () => {
 
     setTimeout(() => {
         logseq.App.onAfterCommandInvoked("logseq.ui/toggle-left-sidebar" as ExternalCommandType, () => {
-            if (logseq.settings!.loadShowByMouseOver === true)
+            if (logseq.settings?.[settingKeys.common.loadShowByMouseOver] === true)
                 whenToggleEvent()
         })
 
@@ -22,7 +22,7 @@ export const loadShowByMouseOver = () => {
     if (logseq.settings?.[settingKeys.common.loadShowByMouseOver] === true) {
 
         //前回のメモリーで、マウスオーバー表示の場合
-        if (logseq.settings?.toggleShowByMouseOver === "mouseOver") {
+        if (!logseq.settings?.toggleShowByMouseOver || logseq.settings?.toggleShowByMouseOver === "mouseOver") {
             selectShowByMouseOverType(logseq.settings?.[settingKeys.common.showByMouseOverType] as string)
             logseq.App.setLeftSidebarVisible(true)
         } else

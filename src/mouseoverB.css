@@ -1,6 +1,6 @@
-body>div#root>div>main {
+main {
     @media (min-width: 640px) {
-        & div#left-sidebar {
+        & #left-sidebar {
             transform-origin: center left;
             scale: 0.05 1;
             opacity: 0;
@@ -14,7 +14,7 @@ body>div#root>div>main {
             }
         }
 
-        & div#main-container.is-left-sidebar-open {
+        & #main-container.is-left-sidebar-open {
             padding-left: 0;
         }
 

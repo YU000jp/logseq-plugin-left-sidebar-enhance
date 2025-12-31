@@ -1,4 +1,4 @@
-body>div#root>div>main div#main-container.is-left-sidebar-open {
+#main-container.is-left-sidebar-open {
     @media (min-width: 640px) {
         padding-left: 3em;
 

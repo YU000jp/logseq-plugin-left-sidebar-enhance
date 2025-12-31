@@ -24,9 +24,9 @@ export const commonSettings = (currentSettings?: Record<string, unknown>): Setti
                                        key: settingKeys.common.showByMouseOverType,
                                        type: 'enum',
                                        title: t('Mouse hover behavior type'),
-                                       enumChoices: ['Type A', 'Type B'],
-                                       default: 'Type B',
-                                       description: "Type A: Inspired by 'mæn', Type B: Inspired by 'sethyuan'.",
+                                       enumChoices: ['type A', 'type B'],
+                                       default: 'type B',
+                                       description: "type A: Inspired by 'mæn', type B: Inspired by 'sethyuan'.",
                           })
              return list
 }
