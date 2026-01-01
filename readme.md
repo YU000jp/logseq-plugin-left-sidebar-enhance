@@ -17,7 +17,7 @@ This plugin provides three main features:
 
 1. Page Outline (=Table of contents :Auto-generated)
 2. Auto-hide/show Left Sidebar
-3. Date Access (Daily & Monthly)
+3. Visual Timer
 
 ---
 
@@ -33,13 +33,11 @@ This plugin provides three main features:
 
    ![image](https://github.com/user-attachments/assets/f25fff05-1ae4-4be7-aff6-8cb8ca277155)
 
-2. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
+1. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
    > Use the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
 
-3. Journal Date Access (Default: **Disabled**) db version ✖
-   - Access to a journal-day or a monthly journal (like `yyyy/MM` `yyyy-MM`)
-
-   ![image](https://github.com/user-attachments/assets/51f9ba8f-2374-43e5-8e78-44cd053e818a)
+1. Visual Timer Feature
+   > <img width="235" height="383" alt="image" src="https://github.com/user-attachments/assets/fb616a6a-6e8d-4d90-9e37-8d36f0feece9" />
 
 ---
 
@@ -68,7 +66,7 @@ Install from Logseq Marketplace
    - Automatically hides duplicates between favorites and recent items
    > Checks for duplicates on plugin startup and every 10 minutes
 
-2. Left Sidebar Mouse Over Feature
+1. Left Sidebar Mouse Over Feature
    - Enable/disable auto-show left sidebar on mouse over
    - Select display type: Type A (Corner Hover) or Type B (Edge Hover)
    - Mouse Over Types
@@ -76,11 +74,7 @@ Install from Logseq Marketplace
          > ⚠️May cause issues with small windows
       1. Type B (Recommended): Opens when mouse is placed on the leftmost column
 
-3. Date Selector
-   - Enable/disable date selector feature in left sidebar
-   > Not supported in Logseq db version
-
-4. Page Outline (Table of contents) Feature
+1. Page Outline (Table of contents) Feature
    - Enable/disable Page Outline feature
    - Open as zoom page by default
      > If disabled, Ctrl+Click for zoom page view
