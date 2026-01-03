@@ -103,6 +103,13 @@ export const tocSettings = (currentSettings?: Record<string, unknown>): SettingS
                                        type: 'string',
                                        default: '.',
                                        description: t('Old delimiter to detect and replace when recalculating heading numbers'),
+                          },
+                          {
+                                       key: settingKeys.toc.headingNumberCleanup,
+                                       title: t('Remove all heading numbers from files'),
+                                       type: 'boolean',
+                                       default: false,
+                                       description: t('⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete.'),
                           })
              }
 

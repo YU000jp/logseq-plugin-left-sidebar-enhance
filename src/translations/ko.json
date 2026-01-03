@@ -48,8 +48,7 @@
   "storeTrueOnly: Store only enabled pages. storeFalseOnly: Enable by default, store only disabled pages.": "storeTrueOnly: 활성화된 페이지만 저장합니다. storeFalseOnly: 기본적으로 활성화, 비활성화된 페이지만 저장합니다.",
   "Page activation states": "페이지 활성화 상태",
   "Internal storage for per-page activation states. Managed by toolbar icon.": "페이지별 활성화 상태의 내부 저장소입니다. 도구 모음 아이콘으로 관리됩니다.",
-  "Page Outline": "페이지 개요"
-  ,
+  "Page Outline": "페이지 개요",
   "Until configured bedtime": "Until configured bedtime",
   "Target date countdown:": "Target date countdown:",
   "Until next start": "Until next start",
@@ -62,5 +61,7 @@
   "m": "m",
   "Expired": "Expired",
   "The target date has passed.": "The target date has passed.",
-  "Target date cleared.": "Target date cleared."
+  "Target date cleared.": "Target date cleared.",
+  "Remove all heading numbers from files": "Remove all heading numbers from files",
+  "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete.": "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete."
 }

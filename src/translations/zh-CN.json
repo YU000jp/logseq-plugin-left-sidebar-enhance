@@ -48,8 +48,7 @@
   "storeTrueOnly: Store only enabled pages. storeFalseOnly: Enable by default, store only disabled pages.": "storeTrueOnly：仅存储已启用的页面。storeFalseOnly：默认启用，仅存储已禁用的页面。",
   "Page activation states": "页面激活状态",
   "Internal storage for per-page activation states. Managed by toolbar icon.": "每页激活状态的内部存储。由工具栏图标管理。",
-  "Page Outline": "页面大纲"
-  ,
+  "Page Outline": "页面大纲",
   "Until configured bedtime": "Until configured bedtime",
   "Target date countdown:": "Target date countdown:",
   "Until next start": "Until next start",
@@ -62,5 +61,7 @@
   "m": "m",
   "Expired": "Expired",
   "The target date has passed.": "The target date has passed.",
-  "Target date cleared.": "Target date cleared."
+  "Target date cleared.": "Target date cleared.",
+  "Remove all heading numbers from files": "Remove all heading numbers from files",
+  "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete.": "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete."
 }

@@ -24,6 +24,8 @@ export const settingKeys = {
                           headingNumberFileEnable: 'headingNumberFileEnable',
                           headingNumberDelimiterFile: 'headingNumberDelimiterFile',
                           headingNumberDelimiterFileOld: 'headingNumberDelimiterFileOld',
+                          // Cleanup
+                          headingNumberCleanup: 'headingNumberCleanup',
                           // Heading level markers
                           headingLevelMarkEnable: 'headingLevelMarkEnable',
                           // Per-page activation

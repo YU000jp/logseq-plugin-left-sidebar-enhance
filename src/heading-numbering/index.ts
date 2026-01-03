@@ -353,6 +353,12 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
         updateHeadingLevelMarks()
     }
     
+    // Cleanup mode - remove all heading numbers
+    if (oldSet[settingKeys.toc.headingNumberCleanup] !== newSet[settingKeys.toc.headingNumberCleanup] &&
+        newSet[settingKeys.toc.headingNumberCleanup] === true) {
+        await executeCleanup()
+    }
+    
     // File-update mode changes
     if (oldSet[settingKeys.toc.headingNumberFileEnable] !== newSet[settingKeys.toc.headingNumberFileEnable] ||
         oldSet[settingKeys.toc.headingNumberDelimiterFile] !== newSet[settingKeys.toc.headingNumberDelimiterFile] ||
@@ -365,6 +371,137 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
                 await applyHeadingNumbersToPage(pageName)
             }
         }
+    }
+}
+
+/**
+ * Execute cleanup - remove all heading numbers from all files
+ */
+const executeCleanup = async (): Promise<void> => {
+    try {
+        // Show user message
+        const confirmed = await logseq.UI.showMsg(
+            '⚠️ Starting cleanup: Removing all heading numbers from files. This may take a moment...',
+            'warning',
+            { timeout: 5000 }
+        )
+        
+        console.log('Starting heading number cleanup...')
+        
+        // Get delimiter settings to detect existing numbers
+        const oldDelimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterFileOld] as string) || '.'
+        
+        // Get all pages in the graph
+        const allPages = await logseq.Editor.getAllPages()
+        if (!allPages || allPages.length === 0) {
+            await logseq.UI.showMsg('No pages found to clean up', 'info')
+            await resetCleanupFlag()
+            return
+        }
+        
+        let totalCleaned = 0
+        let pagesProcessed = 0
+        
+        // Process each page
+        for (const page of allPages) {
+            try {
+                const pageName = page.originalName || page.name
+                if (!pageName) continue
+                
+                const cleaned = await cleanupPageHeadingNumbers(pageName, oldDelimiter)
+                totalCleaned += cleaned
+                pagesProcessed++
+                
+                // Show progress every 10 pages
+                if (pagesProcessed % 10 === 0) {
+                    console.log(`Cleanup progress: ${pagesProcessed}/${allPages.length} pages`)
+                }
+            } catch (error) {
+                console.error(`Error cleaning page ${page.name}:`, error)
+            }
+        }
+        
+        // Show completion message
+        await logseq.UI.showMsg(
+            `✓ Cleanup complete! Removed ${totalCleaned} heading numbers from ${pagesProcessed} pages.`,
+            'success',
+            { timeout: 5000 }
+        )
+        
+        console.log(`Cleanup complete: ${totalCleaned} numbers removed from ${pagesProcessed} pages`)
+        
+    } catch (error) {
+        console.error('Error during cleanup:', error)
+        await logseq.UI.showMsg(`Error during cleanup: ${error}`, 'error')
+    } finally {
+        // Always reset the cleanup flag
+        await resetCleanupFlag()
+    }
+}
+
+/**
+ * Reset the cleanup flag to false
+ */
+const resetCleanupFlag = async (): Promise<void> => {
+    await logseq.updateSettings({
+        [settingKeys.toc.headingNumberCleanup]: false
+    })
+}
+
+/**
+ * Clean up heading numbers from a single page
+ * Returns the number of blocks cleaned
+ */
+const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string): Promise<number> => {
+    try {
+        // Get all blocks from the page
+        const pageBlocks = await logseq.Editor.getPageBlocksTree(pageName)
+        if (!pageBlocks) return 0
+        
+        // Get hierarchical headers
+        const versionMd = booleanLogseqVersionMd()
+        const hierarchicalHeaders = versionMd 
+            ? getHierarchicalTocBlocks(pageBlocks as any)
+            : getHierarchicalTocBlocksForDb(pageBlocks as any)
+        
+        // Remove numbering from all headers
+        let cleanedCount = 0
+        const removeFromHeaders = async (headers: HierarchicalTocBlock[]) => {
+            for (const header of headers) {
+                // Extract old number if present
+                const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
+                
+                if (oldNumber) {
+                    // Has a number, remove it
+                    const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
+                    if (textOnly.trim()) {
+                        const level = header.level
+                        const hashTags = '#'.repeat(level)
+                        const newContent = `${hashTags} ${textOnly}`
+                        
+                        if (newContent !== header.content) {
+                            try {
+                                await logseq.Editor.updateBlock(header.uuid, newContent)
+                                cleanedCount++
+                            } catch (error) {
+                                console.error(`Failed to clean block ${header.uuid}:`, error)
+                            }
+                        }
+                    }
+                }
+                
+                // Recursively process children
+                if (header.children && header.children.length > 0) {
+                    await removeFromHeaders(header.children)
+                }
+            }
+        }
+        
+        await removeFromHeaders(hierarchicalHeaders)
+        return cleanedCount
+    } catch (error) {
+        console.error(`Error cleaning page ${pageName}:`, error)
+        return 0
     }
 }
 

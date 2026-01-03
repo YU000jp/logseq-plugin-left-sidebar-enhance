@@ -61,5 +61,7 @@
   "Page activation storage mode": "Page activation storage mode",
   "storeTrueOnly: Store only enabled pages. storeFalseOnly: Enable by default, store only disabled pages.": "storeTrueOnly: Store only enabled pages. storeFalseOnly: Enable by default, store only disabled pages.",
   "Page activation states": "Page activation states",
-  "Internal storage for per-page activation states. Managed by toolbar icon.": "Internal storage for per-page activation states. Managed by toolbar icon."
+  "Internal storage for per-page activation states. Managed by toolbar icon.": "Internal storage for per-page activation states. Managed by toolbar icon.",
+  "Remove all heading numbers from files": "Remove all heading numbers from files",
+  "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete.": "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete."
 }
