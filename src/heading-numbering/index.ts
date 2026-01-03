@@ -3,21 +3,16 @@
  * Provides hierarchical heading numbering with display-only and file-update modes
  */
 
-import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
-import { settingKeys } from '../settings/keys'
-import headingNumberingCSS from './headingNumbering.css?inline'
-import { getHeaderLevel } from '../page-outline/regex'
-import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
 import { booleanLogseqVersionMd } from '..'
+import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
+import { settingKeys } from '../settings/keys'
 
 let isFileBasedGraph = false
-let headingNumberingStyleElement: HTMLStyleElement | null = null
 
 // Top-level regular expressions and helpers
 const HEADING_HASHES_GENERIC = /^#+\s+/
 const HEADING_HASHES_PATTERN = /^#{1,6}\s+/
 const HEADING_HASHES_ONLY_PATTERN = /^#{1,6}/
-const GENERAL_NUMBER_PATTERN = /^#{1,6}\s+\d+[\d\.\-_\s→]+\s+/
 const MULTI_NUMBER_PATTERN = /^(#{1,6})\s+(?:\d+[\d\.\-_\s→]*)+\s+(.+)$/
 
 const escapeForRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -52,11 +47,7 @@ export const initHeadingNumbering = async () => {
     isFileBasedGraph = await detectFileBasedGraph()
 
     // Apply initial settings
-    updateHeadingNumberingDisplay()
-    updateHeadingLevelMarks()
-
-    // Apply base CSS
-    applyBaseStyles()
+    // display-only numbering and level marks removed
 }
 
 /**
@@ -73,99 +64,7 @@ const detectFileBasedGraph = async (): Promise<boolean> => {
     }
 }
 
-/**
- * Apply base CSS styles for heading numbering
- */
-const applyBaseStyles = () => {
-    logseq.provideStyle(headingNumberingCSS)
-}
-
-/**
- * Update display-only heading numbering based on settings
- */
-export const updateHeadingNumberingDisplay = () => {
-    const enabled = logseq.settings?.[settingKeys.toc.headingNumberDisplayEnable] === true
-    const delimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterDisplay] as string) || '.'
-
-    const body = parent.document.body
-
-    if (enabled) {
-        body.classList.add('lse-heading-numbering-display')
-        updateHeadingNumberingCSS(delimiter)
-    } else {
-        body.classList.remove('lse-heading-numbering-display')
-        removeHeadingNumberingCSS()
-    }
-}
-
-/**
- * Update heading level markers based on settings
- */
-export const updateHeadingLevelMarks = () => {
-    const enabled = logseq.settings?.[settingKeys.toc.headingLevelMarkEnable] === true
-    const body = parent.document.body
-
-    if (enabled) {
-        body.classList.add('lse-heading-level-mark')
-    } else {
-        body.classList.remove('lse-heading-level-mark')
-    }
-}
-
-/**
- * Generate dynamic CSS for heading numbering with custom delimiter
- */
-const updateHeadingNumberingCSS = (delimiter: string) => {
-    // Remove old style element if exists
-    removeHeadingNumberingCSS()
-
-    // Create new style element
-    headingNumberingStyleElement = parent.document.createElement('style')
-    headingNumberingStyleElement.id = 'lse-heading-numbering-dynamic'
-
-    // Generate CSS with custom delimiter - targeting Logseq's block structure
-    const css = `
-body.lse-heading-numbering-display #main-content-container div.ls-block{
-    &[data-refs-self*="\\"heading\\" 1"] .block-content::before {
-        content: counter(h1) "${delimiter} ";
-        margin-right: 0.5em;
-    }
-    &[data-refs-self*="\\"heading\\" 2"] .block-content::before {
-        content: counter(h1) "${delimiter}" counter(h2) "${delimiter} ";
-        margin-right: 0.5em;
-    }
-    &[data-refs-self*="\\"heading\\" 3"] .block-content::before {
-        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter} ";
-        margin-right: 0.5em;
-    }
-    &[data-refs-self*="\\"heading\\" 4"] .block-content::before {
-        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter} ";
-        margin-right: 0.5em;
-    }
-    &[data-refs-self*="\\"heading\\" 5"] .block-content::before {
-        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter} ";
-        margin-right: 0.5em;
-    }
-    &[data-refs-self*="\\"heading\\" 6"] .block-content::before {
-        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter}" counter(h6) "${delimiter} ";
-        margin-right: 0.5em;
-    }
-}
-`
-
-    headingNumberingStyleElement.textContent = css
-    parent.document.head.appendChild(headingNumberingStyleElement)
-}
-
-/**
- * Remove dynamic heading numbering CSS
- */
-const removeHeadingNumberingCSS = () => {
-    if (headingNumberingStyleElement && headingNumberingStyleElement.parentNode) {
-        headingNumberingStyleElement.parentNode.removeChild(headingNumberingStyleElement)
-        headingNumberingStyleElement = null
-    }
-}
+// display-only numbering and related CSS removed
 
 /**
  * Check if page should have heading numbering features applied
@@ -247,13 +146,6 @@ const extractOldNumber = (content: string, oldDelimiter: string): { number: stri
     }
 }
 
-/**
- * Check if content already has a heading number (any delimiter pattern)
- * This helps prevent double-numbering
- */
-const hasExistingNumber = (content: string): boolean => {
-    return GENERAL_NUMBER_PATTERN.test(content)
-}
 
 /**
  * Apply heading numbers to page blocks (file-update mode)
@@ -296,6 +188,8 @@ export const applyHeadingNumbersToPage = async (pageName: string): Promise<void>
     }
 }
 
+// display-only DOM numbering removed
+
 
 /**
  * Recursively update hierarchical blocks with numbering
@@ -329,29 +223,34 @@ const updateHierarchicalBlocks = async (
 
             const expectedNumber = currentNumbers.join(newDelimiter)
 
-            // Extract old number if present (delimiter-specific)
-            let { number: oldNumber, textWithoutNumber } = extractOldNumber(node.content, oldDelimiter)
+            // Work only on the first line of the block (preserve properties in later lines)
+            const fullContent = node.content || ''
+            const lines = fullContent.split(/\r?\n/)
+            const firstLine = lines.length > 0 ? lines[0] : ''
 
-            // If delimiter-specific extract failed but there is some number-like prefix, try to extract generally
-            if (!oldNumber && hasExistingNumber(node.content)) {
-                const mm = node.content.match(MULTI_NUMBER_PATTERN)
+            // Extract old number from the first line if present (delimiter-specific)
+            let { number: oldNumber, textWithoutNumber } = extractOldNumber(firstLine, oldDelimiter)
+
+            // If delimiter-specific extract failed, always try to extract number-like prefixes from first line
+            if (!oldNumber) {
+                const mm = firstLine.match(MULTI_NUMBER_PATTERN)
                 if (mm) {
                     const hashTags = mm[1]
                     const restText = mm[2]
                     // Attempt to extract the numeric part between hashes and restText
-                    const numPartMatch = node.content.match(new RegExp(`^${escapeForRegex(hashTags)}\\s+([0-9\\.\\-\\_\\s→]+)\\s+`))
+                    const numPartMatch = firstLine.match(new RegExp(`^${escapeForRegex(hashTags)}\\s+([0-9\\.\\-\\_\\s→]+)\\s+`))
                     const numPart = numPartMatch ? numPartMatch[1].trim() : null
                     if (numPart) {
                         oldNumber = numPart
                         textWithoutNumber = `${hashTags} ${restText}`
                     }
                 }
-                // Fallback: try a simple extraction
+                // Fallback: try a simple extraction on first line
                 if (!oldNumber) {
-                    const gen = extractGeneralNumber(node.content)
+                    const gen = extractGeneralNumber(firstLine)
                     if (gen) {
                         oldNumber = gen
-                        textWithoutNumber = node.content.replace(new RegExp(`^(#{1,6})\\s+${escapeForRegex(gen)}\\s+`), '$1 ')
+                        textWithoutNumber = firstLine.replace(new RegExp(`^(#{1,6})\\s+${escapeForRegex(gen)}\\s+`), '$1 ')
                     }
                 }
             }
@@ -373,11 +272,13 @@ const updateHierarchicalBlocks = async (
                 const textOnly = textWithoutNumber.replace(HEADING_HASHES_GENERIC, '')
                 if (textOnly.trim()) {
                     const hashTags = '#'.repeat(level)
-                    const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
-                    if (newContent !== node.content) {
+                    const newFirstLine = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
+                    // Reconstruct full content: replace only first line, keep remaining lines (properties etc.)
+                    const newFullContent = [newFirstLine, ...lines.slice(1)].join('\n')
+                    if (newFullContent !== fullContent) {
                         try {
-                            await logseq.Editor.updateBlock(node.uuid, newContent)
-                            node.content = newContent
+                            await logseq.Editor.updateBlock(node.uuid, newFullContent)
+                            node.content = newFullContent
                         } catch (error) {
                             console.error(`Failed to update block ${node.uuid}:`, error)
                         }
@@ -397,17 +298,8 @@ const updateHierarchicalBlocks = async (
 /**
  * Handle settings changed
  */
-export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet: any): Promise<void> => {
-    // Display-only mode toggle
-    if (oldSet[settingKeys.toc.headingNumberDisplayEnable] !== newSet[settingKeys.toc.headingNumberDisplayEnable] ||
-        oldSet[settingKeys.toc.headingNumberDelimiterDisplay] !== newSet[settingKeys.toc.headingNumberDelimiterDisplay]) {
-        updateHeadingNumberingDisplay()
-    }
-
-    // Heading level markers toggle
-    if (oldSet[settingKeys.toc.headingLevelMarkEnable] !== newSet[settingKeys.toc.headingLevelMarkEnable]) {
-        updateHeadingLevelMarks()
-    }
+export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet: any): Promise<boolean> => {
+    // display-only numbering and heading level marks removed
 
     // Cleanup mode - remove all heading numbers
     if (oldSet[settingKeys.toc.headingNumberCleanup] !== newSet[settingKeys.toc.headingNumberCleanup] &&
@@ -419,7 +311,7 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
     if (oldSet[settingKeys.toc.headingNumberFileEnable] !== newSet[settingKeys.toc.headingNumberFileEnable] ||
         oldSet[settingKeys.toc.headingNumberDelimiterFile] !== newSet[settingKeys.toc.headingNumberDelimiterFile] ||
         oldSet[settingKeys.toc.headingNumberDelimiterFileOld] !== newSet[settingKeys.toc.headingNumberDelimiterFileOld]) {
-        // Re-apply numbering to current page if enabled
+        // Re-apply  numbering to current page if enabled
         const currentPage = await logseq.Editor.getCurrentPage()
         if (currentPage && newSet[settingKeys.toc.headingNumberFileEnable] === true) {
             const pageName = (currentPage.originalName || currentPage.name || '') as string
@@ -428,6 +320,9 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
             }
         }
     }
+    if (oldSet[settingKeys.toc.headingNumberFileEnable] !== newSet[settingKeys.toc.headingNumberFileEnable])
+        return true
+    return false
 }
 
 /**
@@ -523,54 +418,49 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
         let cleanedCount = 0
         const removeFromHeaders = async (headers: HierarchicalTocBlock[]) => {
             for (const header of headers) {
-                // Try to extract old number using delimiter
-                const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
+                    // Work on the first line only and preserve remaining lines
+                    const fullContent = header.content || ''
+                    const lines = fullContent.split(/\r?\n/)
+                    const firstLine = lines.length > 0 ? lines[0] : ''
 
-                // Also handle cases with multiple/duplicate numbers or corrupted numbering
-                // This regex matches heading patterns with any number-like prefix
-                // Handles cases like:
-                // - "# 1.1 1.1 Text" (duplicate numbers)
-                // - "## 1.2.3.4.5 Text" (excessive nesting)
-                // - "### 1 2 3 Text" (space-separated)
-                // - "### 3.3. 3.3. 3.3. M3" (repeated sequences)
-                // Pattern explanation:
-                // - (#{1,6}) captures heading markers
-                // - \s+ matches whitespace
-                // - (?:\d+[\d\.\-\_\s→]*)+\s+ matches one or more number sequences with delimiters/spaces
-                // - (.+) captures the actual text content
-                const multiMatch = header.content.match(MULTI_NUMBER_PATTERN)
+                    // Try to extract old number using delimiter from first line
+                    const { number: oldNumber, textWithoutNumber } = extractOldNumber(firstLine, oldDelimiter)
 
-                let shouldClean = false
-                let cleanedText = ''
-                let hashTags = ''
+                    // Also handle cases with multiple/duplicate numbers or corrupted numbering on first line
+                    const multiMatch = firstLine.match(MULTI_NUMBER_PATTERN)
 
-                if (oldNumber) {
-                    // Has a number detected by delimiter pattern
-                    shouldClean = true
-                    const textOnly = textWithoutNumber.replace(HEADING_HASHES_PATTERN, '')
-                    hashTags = textWithoutNumber.match(HEADING_HASHES_ONLY_PATTERN)?.[0] || ''
-                    cleanedText = textOnly
-                } else if (multiMatch) {
-                    // Has multiple/duplicate numbers or corrupted numbering
-                    shouldClean = true
-                    hashTags = multiMatch[1]
-                    cleanedText = multiMatch[2]
-                }
+                    let shouldClean = false
+                    let cleanedText = ''
+                    let hashTags = ''
 
-                if (shouldClean && cleanedText.trim()) {
-                    const level = header.level
-                    const newHashTags = hashTags || '#'.repeat(level)
-                    const newContent = `${newHashTags} ${cleanedText}`
+                    if (oldNumber) {
+                        // Has a number detected by delimiter pattern
+                        shouldClean = true
+                        const textOnly = textWithoutNumber.replace(HEADING_HASHES_PATTERN, '')
+                        hashTags = textWithoutNumber.match(HEADING_HASHES_ONLY_PATTERN)?.[0] || ''
+                        cleanedText = textOnly
+                    } else if (multiMatch) {
+                        // Has multiple/duplicate numbers or corrupted numbering
+                        shouldClean = true
+                        hashTags = multiMatch[1]
+                        cleanedText = multiMatch[2]
+                    }
 
-                    if (newContent !== header.content) {
-                        try {
-                            await logseq.Editor.updateBlock(header.uuid, newContent)
-                            cleanedCount++
-                        } catch (error) {
-                            console.error(`Failed to clean block ${header.uuid}:`, error)
+                    if (shouldClean && cleanedText.trim()) {
+                        const level = header.level
+                        const newHashTags = hashTags || '#'.repeat(level)
+                        const newFirstLine = `${newHashTags} ${cleanedText}`
+                        const newContent = [newFirstLine, ...lines.slice(1)].join('\n')
+
+                        if (newContent !== fullContent) {
+                            try {
+                                await logseq.Editor.updateBlock(header.uuid, newContent)
+                                cleanedCount++
+                            } catch (error) {
+                                console.error(`Failed to clean block ${header.uuid}:`, error)
+                            }
                         }
                     }
-                }
 
                 // Recursively process children
                 if (header.children && header.children.length > 0) {
@@ -591,8 +481,5 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
  * Cleanup function
  */
 export const cleanupHeadingNumbering = () => {
-    removeHeadingNumberingCSS()
-    const body = parent.document.body
-    body.classList.remove('lse-heading-numbering-display')
-    body.classList.remove('lse-heading-level-mark')
+    // display-only numbering removed — nothing to cleanup for DOM/CSS
 }

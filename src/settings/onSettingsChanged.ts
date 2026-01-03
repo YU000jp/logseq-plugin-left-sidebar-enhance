@@ -45,13 +45,14 @@ export const initSettingsDispatcher = () => {
                                        } catch (e) {
                                                     console.error('favAndRecent settings handler failed', e)
                                        }
-
-                          // Handle heading numbering settings
-                          try {
-                                       await handleHeadingNumberingSettingsChanged(newSet, oldSet)
-                          } catch (e) {
-                                       console.error('heading numbering settings handler failed', e)
-                          }
+                          if (shouldShowSettings === false)
+                                       // Handle heading numbering settings
+                                       try {
+                                                    const r = await handleHeadingNumberingSettingsChanged(newSet, oldSet)
+                                                    if (r === true) shouldShowSettings = true
+                                       } catch (e) {
+                                                    console.error('heading numbering settings handler failed', e)
+                                       }
 
                           // 各ハンドラが変更を報告した場合にのみ設定UIを再表示する
                           if (shouldShowSettings) {

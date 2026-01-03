@@ -17,17 +17,13 @@ export const settingKeys = {
                           highlightHeaderOnHover: 'highlightHeaderOnHover',
                           enableJournalsList: 'enableJournalsList',
                           tocRemoveWordList: 'tocRemoveWordList',
-                          // Heading numbering - display-only mode
-                          headingNumberDisplayEnable: 'headingNumberDisplayEnable',
-                          headingNumberDelimiterDisplay: 'headingNumberDelimiterDisplay',
                           // Heading numbering - file update mode
                           headingNumberFileEnable: 'headingNumberFileEnable',
                           headingNumberDelimiterFile: 'headingNumberDelimiterFile',
                           headingNumberDelimiterFileOld: 'headingNumberDelimiterFileOld',
                           // Cleanup
                           headingNumberCleanup: 'headingNumberCleanup',
-                          // Heading level markers
-                          headingLevelMarkEnable: 'headingLevelMarkEnable',
+                          // Heading level markers (removed)
                           // Per-page activation
                           pageStateStorageMode: 'pageStateStorageMode',
                           pageStates: 'pageStates',
