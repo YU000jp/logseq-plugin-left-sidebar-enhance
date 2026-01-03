@@ -32,8 +32,7 @@
   "Toggle to display or hide the date list in journals.": "Schalten Sie um, um die Datumsliste in Journalen ein- oder auszublenden.",
   "Words to exclude from the header list": "Wörter, die aus der Kopfliste ausgeschlossen werden sollen",
   "Enter words to exclude, separated by line breaks.": "Geben Sie die auszuschließenden Wörter ein, die durch Zeilenumbrüche getrennt sind.",
-  "Page Outline": "Seitengliederung"
-  ,
+  "Page Outline": "Seitengliederung",
   "Until configured bedtime": "Until configured bedtime",
   "Target date countdown:": "Target date countdown:",
   "Until next start": "Until next start",
@@ -46,5 +45,21 @@
   "m": "m",
   "Expired": "Expired",
   "The target date has passed.": "The target date has passed.",
-  "Target date cleared.": "Target date cleared."
+  "Target date cleared.": "Target date cleared.",
+  "Enable heading numbering (display-only mode)": "Enable heading numbering (display-only mode)",
+  "Display hierarchical numbers on headings without modifying files. Uses CSS for rendering.": "Display hierarchical numbers on headings without modifying files. Uses CSS for rendering.",
+  "Heading number delimiter (display-only)": "Heading number delimiter (display-only)",
+  "Delimiter for heading numbers in display mode (e.g., \".\", \"-\", \" → \", \"_\")": "Delimiter for heading numbers in display mode (e.g., \".\", \"-\", \" → \", \"_\")",
+  "Enable heading numbering (file-update mode, file-based graphs only)": "Enable heading numbering (file-update mode, file-based graphs only)",
+  "Automatically add hierarchical numbers to heading text in markdown files. Only works on local file-based graphs.": "Automatically add hierarchical numbers to heading text in markdown files. Only works on local file-based graphs.",
+  "Heading number delimiter (file-update mode, new)": "Heading number delimiter (file-update mode, new)",
+  "New delimiter for heading numbers when updating files": "New delimiter for heading numbers when updating files",
+  "Heading number delimiter (file-update mode, old)": "Heading number delimiter (file-update mode, old)",
+  "Old delimiter to detect and replace when recalculating heading numbers": "Old delimiter to detect and replace when recalculating heading numbers",
+  "Show heading level markers (H1, H2, etc.)": "Show heading level markers (H1, H2, etc.)",
+  "Display small heading level indicators next to headings": "Display small heading level indicators next to headings",
+  "Page activation storage mode": "Page activation storage mode",
+  "storeTrueOnly: Store only enabled pages. storeFalseOnly: Enable by default, store only disabled pages.": "storeTrueOnly: Store only enabled pages. storeFalseOnly: Enable by default, store only disabled pages.",
+  "Page activation states": "Page activation states",
+  "Internal storage for per-page activation states. Managed by toolbar icon.": "Internal storage for per-page activation states. Managed by toolbar icon."
 }
