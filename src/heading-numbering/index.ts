@@ -7,6 +7,8 @@ import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { settingKeys } from '../settings/keys'
 import headingNumberingCSS from './headingNumbering.css?inline'
 import { getHeaderLevel } from '../page-outline/regex'
+import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
+import { booleanLogseqVersionMd } from '..'
 
 let isFileBasedGraph = false
 let headingNumberingStyleElement: HTMLStyleElement | null = null
@@ -186,44 +188,6 @@ export const togglePageState = async (pageName: string): Promise<boolean> => {
 }
 
 /**
- * File-update mode: Calculate hierarchical heading numbers
- */
-interface HeadingBlock {
-    uuid: string
-    content: string
-    level: number
-}
-
-/**
- * Calculate heading numbers for all headings in a page
- */
-const calculateHeadingNumbers = (blocks: HeadingBlock[], delimiter: string): Map<string, string> => {
-    const numbering = new Map<string, string>()
-    const counters = [0, 0, 0, 0, 0, 0] // h1-h6 counters
-    
-    for (const block of blocks) {
-        const level = block.level
-        if (level < 1 || level > 6) continue
-        
-        // Increment current level counter
-        counters[level - 1]++
-        
-        // Reset all deeper level counters (levels after current)
-        for (let i = level; i < 6; i++) {
-            counters[i] = 0
-        }
-        
-        // Generate number string
-        const numbers = counters.slice(0, level).filter(n => n > 0)
-        const numberStr = numbers.join(delimiter)
-        
-        numbering.set(block.uuid, numberStr)
-    }
-    
-    return numbering
-}
-
-/**
  * Extract heading number from content using old delimiter
  */
 const extractOldNumber = (content: string, oldDelimiter: string): { number: string | null, textWithoutNumber: string } => {
@@ -276,51 +240,58 @@ export const applyHeadingNumbersToPage = async (pageName: string): Promise<void>
         const pageBlocks = await logseq.Editor.getPageBlocksTree(pageName)
         if (!pageBlocks) return
         
-        // Extract heading blocks
-        const headingBlocks: HeadingBlock[] = []
-        const extractHeadings = (blocks: any[]) => {
-            for (const block of blocks) {
-                const level = getHeaderLevel(block.content)
-                if (level > 0 && level <= 6) {
-                    headingBlocks.push({
-                        uuid: block.uuid,
-                        content: block.content,
-                        level
-                    })
-                }
-                if (block.children) {
-                    extractHeadings(block.children)
-                }
-            }
-        }
-        extractHeadings(pageBlocks)
+        // Get hierarchical headers
+        const versionMd = booleanLogseqVersionMd()
+        const hierarchicalHeaders = versionMd 
+            ? getHierarchicalTocBlocks(pageBlocks as any)
+            : getHierarchicalTocBlocksForDb(pageBlocks as any)
         
-        // Calculate new numbering
-        const numbering = calculateHeadingNumbers(headingBlocks, newDelimiter)
-        
-        // Update blocks that need changes
-        for (const block of headingBlocks) {
-            const expectedNumber = numbering.get(block.uuid)
-            if (!expectedNumber) continue
-            
-            // Extract old number if present
-            const { number: oldNumber, textWithoutNumber } = extractOldNumber(block.content, oldDelimiter)
-            
-            // Extract the actual heading text (without hash tags and number)
-            const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
-            
-            // Generate new content
-            const level = block.level
-            const hashTags = '#'.repeat(level)
-            const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
-            
-            // Only update if content changed
-            if (newContent !== block.content) {
-                await logseq.Editor.updateBlock(block.uuid, newContent)
-            }
-        }
+        // Calculate numbering and update blocks using hierarchy
+        await updateHierarchicalBlocks(hierarchicalHeaders, [], newDelimiter, oldDelimiter)
     } catch (error) {
         console.error('Error applying heading numbers:', error)
+    }
+}
+
+
+/**
+ * Recursively update hierarchical blocks with numbering
+ * @param headers Hierarchical headers to process
+ * @param parentNumbers Array of parent numbers (e.g., [1, 2] for "1.2")
+ * @param newDelimiter New delimiter to use
+ * @param oldDelimiter Old delimiter to detect
+ */
+const updateHierarchicalBlocks = async (
+    headers: HierarchicalTocBlock[],
+    parentNumbers: number[],
+    newDelimiter: string,
+    oldDelimiter: string
+): Promise<void> => {
+    for (let i = 0; i < headers.length; i++) {
+        const header = headers[i]
+        const currentNumbers = [...parentNumbers, i + 1]
+        const expectedNumber = currentNumbers.join(newDelimiter)
+        
+        // Extract old number if present
+        const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
+        
+        // Extract the actual heading text (without hash tags and number)
+        const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
+        
+        // Generate new content
+        const level = header.level
+        const hashTags = '#'.repeat(level)
+        const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
+        
+        // Only update if content changed
+        if (newContent !== header.content) {
+            await logseq.Editor.updateBlock(header.uuid, newContent)
+        }
+        
+        // Recursively process children
+        if (header.children && header.children.length > 0) {
+            await updateHierarchicalBlocks(header.children, currentNumbers, newDelimiter, oldDelimiter)
+        }
     }
 }
 
