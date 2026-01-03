@@ -13,11 +13,12 @@
 
 ### Main Features
 
-This plugin provides three main features:
+This plugin provides four main features:
 
 1. Page Outline (=Table of contents :Auto-generated)
-2. Auto-hide/show Left Sidebar
-3. Visual Timer
+2. Hierarchical Heading Numbering (File-Based Graphs Only)
+3. Auto-hide/show Left Sidebar
+4. Visual Timer
 
 ---
 
@@ -32,6 +33,16 @@ This plugin provides three main features:
    - Shortcut keys (MD version only): `Alt+1` to `Alt+6` to insert headers
 
    ![image](https://github.com/user-attachments/assets/f25fff05-1ae4-4be7-aff6-8cb8ca277155)
+
+1. **Hierarchical Heading Numbering** (File-Based Graphs Only)
+   - Automatically adds hierarchical numbers (1, 1.1, 1.1.1, etc.) to markdown headings
+   - **File-Update Mode**: Directly modifies markdown files to add numbers
+   - **Per-Page Activation**: Toggle numbering for individual pages using toolbar icon
+   - **Customizable Delimiters**: Configure number separators (e.g., ".", "-", "→")
+   - **Cleanup Function**: Remove all heading numbers from current page
+   - **Safe Operation**: Only works on file-based graphs (not cloud sync)
+   
+   ![image](https://github.com/user-attachments/assets/aa69d2b6-7670-42ef-9090-6a0e98184aff)
 
 1. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
    > Use the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
@@ -83,6 +94,15 @@ Install from Logseq Marketplace
      - Highlight corresponding header when hovering over block
    - Show date list in journal pages
    - List of words to exclude from the header list (line-separated)
+
+1. Hierarchical Heading Numbering Feature (File-Based Graphs Only)
+   - Enable/disable file-update mode for automatic heading numbering
+   - Configure number delimiter (new and old for detection/replacement)
+   - Per-page activation storage mode
+     - Store True Only: Save only enabled pages (default)
+     - Store False Only: Enable all pages by default, save only disabled
+   - Cleanup function: Remove heading numbers from current page
+     > Note: Only works on local file-based graphs for safety
 
 ---
 
