@@ -40,7 +40,7 @@ const normalizeNumberString = (num: string, delimiter: string) => {
 
 // Extract a general number sequence after hashes when delimiter-specific extract fails
 const extractGeneralNumber = (content: string): string | null => {
-    const m = content.match(/^(?:#{1,6})\s+([0-9][0-9\.\-\_\s→]*)/) 
+    const m = content.match(/^(?:#{1,6})\s+([0-9][0-9\.\-\_\s→]*)/)
     return m ? m[1].trim() : null
 }
 
@@ -50,11 +50,11 @@ const extractGeneralNumber = (content: string): string | null => {
 export const initHeadingNumbering = async () => {
     // Detect if current graph is file-based
     isFileBasedGraph = await detectFileBasedGraph()
-    
+
     // Apply initial settings
     updateHeadingNumberingDisplay()
     updateHeadingLevelMarks()
-    
+
     // Apply base CSS
     applyBaseStyles()
 }
@@ -86,9 +86,9 @@ const applyBaseStyles = () => {
 export const updateHeadingNumberingDisplay = () => {
     const enabled = logseq.settings?.[settingKeys.toc.headingNumberDisplayEnable] === true
     const delimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterDisplay] as string) || '.'
-    
+
     const body = parent.document.body
-    
+
     if (enabled) {
         body.classList.add('lse-heading-numbering-display')
         updateHeadingNumberingCSS(delimiter)
@@ -104,7 +104,7 @@ export const updateHeadingNumberingDisplay = () => {
 export const updateHeadingLevelMarks = () => {
     const enabled = logseq.settings?.[settingKeys.toc.headingLevelMarkEnable] === true
     const body = parent.document.body
-    
+
     if (enabled) {
         body.classList.add('lse-heading-level-mark')
     } else {
@@ -118,44 +118,41 @@ export const updateHeadingLevelMarks = () => {
 const updateHeadingNumberingCSS = (delimiter: string) => {
     // Remove old style element if exists
     removeHeadingNumberingCSS()
-    
+
     // Create new style element
     headingNumberingStyleElement = parent.document.createElement('style')
     headingNumberingStyleElement.id = 'lse-heading-numbering-dynamic'
-    
+
     // Generate CSS with custom delimiter - targeting Logseq's block structure
     const css = `
-body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 1"] .block-content::before {
-    content: counter(h1) "${delimiter} ";
-    margin-right: 0.5em;
-}
-
-body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 2"] .block-content::before {
-    content: counter(h1) "${delimiter}" counter(h2) "${delimiter} ";
-    margin-right: 0.5em;
-}
-
-body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 3"] .block-content::before {
-    content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter} ";
-    margin-right: 0.5em;
-}
-
-body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 4"] .block-content::before {
-    content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter} ";
-    margin-right: 0.5em;
-}
-
-body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 5"] .block-content::before {
-    content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter} ";
-    margin-right: 0.5em;
-}
-
-body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 6"] .block-content::before {
-    content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter}" counter(h6) "${delimiter} ";
-    margin-right: 0.5em;
+body.lse-heading-numbering-display #main-content-container div.ls-block{
+    &[data-refs-self*="\\"heading\\" 1"] .block-content::before {
+        content: counter(h1) "${delimiter} ";
+        margin-right: 0.5em;
+    }
+    &[data-refs-self*="\\"heading\\" 2"] .block-content::before {
+        content: counter(h1) "${delimiter}" counter(h2) "${delimiter} ";
+        margin-right: 0.5em;
+    }
+    &[data-refs-self*="\\"heading\\" 3"] .block-content::before {
+        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter} ";
+        margin-right: 0.5em;
+    }
+    &[data-refs-self*="\\"heading\\" 4"] .block-content::before {
+        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter} ";
+        margin-right: 0.5em;
+    }
+    &[data-refs-self*="\\"heading\\" 5"] .block-content::before {
+        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter} ";
+        margin-right: 0.5em;
+    }
+    &[data-refs-self*="\\"heading\\" 6"] .block-content::before {
+        content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter}" counter(h6) "${delimiter} ";
+        margin-right: 0.5em;
+    }
 }
 `
-    
+
     headingNumberingStyleElement.textContent = css
     parent.document.head.appendChild(headingNumberingStyleElement)
 }
@@ -176,7 +173,7 @@ const removeHeadingNumberingCSS = () => {
 export const isPageActive = (pageName: string): boolean => {
     const storageMode = logseq.settings?.[settingKeys.toc.pageStateStorageMode] as string || 'storeTrueOnly'
     const pageStates = logseq.settings?.[settingKeys.toc.pageStates] as Record<string, boolean> || {}
-    
+
     if (storageMode === 'storeTrueOnly') {
         // Only pages explicitly set to true are active
         return pageStates[pageName] === true
@@ -192,10 +189,10 @@ export const isPageActive = (pageName: string): boolean => {
 export const togglePageState = async (pageName: string): Promise<boolean> => {
     const storageMode = logseq.settings?.[settingKeys.toc.pageStateStorageMode] as string || 'storeTrueOnly'
     const pageStates = logseq.settings?.[settingKeys.toc.pageStates] as Record<string, boolean> || {}
-    
+
     const currentState = isPageActive(pageName)
     const newState = !currentState
-    
+
     if (storageMode === 'storeTrueOnly') {
         if (newState) {
             pageStates[pageName] = true
@@ -210,11 +207,11 @@ export const togglePageState = async (pageName: string): Promise<boolean> => {
             pageStates[pageName] = false
         }
     }
-    
+
     await logseq.updateSettings({
         [settingKeys.toc.pageStates]: pageStates
     })
-    
+
     return newState
 }
 
@@ -227,23 +224,23 @@ const extractOldNumber = (content: string, oldDelimiter: string): { number: stri
     // Use helper to create regex with escaped delimiter
     const pattern = createExtractOldNumberRegex(oldDelimiter)
     const match = content.match(pattern)
-    
+
     if (match) {
         const hashTags = match[1]
         let number = match[2]
         const text = match[3]
-        
+
         // Remove trailing delimiter if present
         if (number.endsWith(oldDelimiter)) {
             number = number.slice(0, -oldDelimiter.length)
         }
-        
+
         return {
             number,
             textWithoutNumber: `${hashTags} ${text}`
         }
     }
-    
+
     return {
         number: null,
         textWithoutNumber: content
@@ -267,31 +264,31 @@ export const applyHeadingNumbersToPage = async (pageName: string): Promise<void>
         console.warn('Heading numbering file-update mode is only available for file-based graphs')
         return
     }
-    
+
     // Check if file-update mode is enabled
     if (logseq.settings?.[settingKeys.toc.headingNumberFileEnable] !== true) {
         return
     }
-    
+
     // Check if page is active
     if (!isPageActive(pageName)) {
         return
     }
-    
+
     const newDelimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterFile] as string) || '.'
     const oldDelimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterFileOld] as string) || '.'
-    
+
     try {
         // Get all blocks from the page
         const pageBlocks = await logseq.Editor.getPageBlocksTree(pageName)
         if (!pageBlocks) return
-        
+
         // Get hierarchical headers
         const versionMd = booleanLogseqVersionMd()
-        const hierarchicalHeaders = versionMd 
+        const hierarchicalHeaders = versionMd
             ? getHierarchicalTocBlocks(pageBlocks as any)
             : getHierarchicalTocBlocksForDb(pageBlocks as any)
-        
+
         // Calculate numbering and update blocks using hierarchy
         await updateHierarchicalBlocks(hierarchicalHeaders, [], newDelimiter, oldDelimiter)
     } catch (error) {
@@ -406,18 +403,18 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
         oldSet[settingKeys.toc.headingNumberDelimiterDisplay] !== newSet[settingKeys.toc.headingNumberDelimiterDisplay]) {
         updateHeadingNumberingDisplay()
     }
-    
+
     // Heading level markers toggle
     if (oldSet[settingKeys.toc.headingLevelMarkEnable] !== newSet[settingKeys.toc.headingLevelMarkEnable]) {
         updateHeadingLevelMarks()
     }
-    
+
     // Cleanup mode - remove all heading numbers
     if (oldSet[settingKeys.toc.headingNumberCleanup] !== newSet[settingKeys.toc.headingNumberCleanup] &&
         newSet[settingKeys.toc.headingNumberCleanup] === true) {
         await executeCleanup()
     }
-    
+
     // File-update mode changes
     if (oldSet[settingKeys.toc.headingNumberFileEnable] !== newSet[settingKeys.toc.headingNumberFileEnable] ||
         oldSet[settingKeys.toc.headingNumberDelimiterFile] !== newSet[settingKeys.toc.headingNumberDelimiterFile] ||
@@ -445,32 +442,32 @@ const executeCleanup = async (): Promise<void> => {
             await resetCleanupFlag()
             return
         }
-        
+
         const currentPageName = currentPage.originalName || currentPage.name
         if (typeof currentPageName !== 'string' || !currentPageName) {
             await logseq.UI.showMsg('⚠️ Could not determine current page name', 'warning')
             await resetCleanupFlag()
             return
         }
-        
+
         const pageName = currentPageName
-        
+
         // Show user message
         await logseq.UI.showMsg(
             `⚠️ Starting cleanup: Removing heading numbers from "${pageName}"...`,
             'warning',
             { timeout: 3000 }
         )
-        
+
         console.log(`Starting heading number cleanup for page: ${pageName}`)
-        
+
         // Get delimiter settings to detect existing numbers
         const delimiterSetting = logseq.settings?.[settingKeys.toc.headingNumberDelimiterFileOld]
         const oldDelimiter: string = typeof delimiterSetting === 'string' ? delimiterSetting : '.'
-        
+
         // Clean the current page
         const totalCleaned = await cleanupPageHeadingNumbers(pageName, oldDelimiter)
-        
+
         // Show completion message
         if (totalCleaned > 0) {
             await logseq.UI.showMsg(
@@ -487,7 +484,7 @@ const executeCleanup = async (): Promise<void> => {
             )
             console.log(`No heading numbers found on "${pageName}"`)
         }
-        
+
     } catch (error) {
         console.error('Error during cleanup:', error)
         await logseq.UI.showMsg(`Error during cleanup: ${error}`, 'error')
@@ -515,20 +512,20 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
         // Get all blocks from the page
         const pageBlocks = await logseq.Editor.getPageBlocksTree(pageName)
         if (!pageBlocks) return 0
-        
+
         // Get hierarchical headers
         const versionMd = booleanLogseqVersionMd()
-        const hierarchicalHeaders = versionMd 
+        const hierarchicalHeaders = versionMd
             ? getHierarchicalTocBlocks(pageBlocks as any)
             : getHierarchicalTocBlocksForDb(pageBlocks as any)
-        
+
         // Remove numbering from all headers
         let cleanedCount = 0
         const removeFromHeaders = async (headers: HierarchicalTocBlock[]) => {
             for (const header of headers) {
                 // Try to extract old number using delimiter
                 const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
-                
+
                 // Also handle cases with multiple/duplicate numbers or corrupted numbering
                 // This regex matches heading patterns with any number-like prefix
                 // Handles cases like:
@@ -542,11 +539,11 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
                 // - (?:\d+[\d\.\-\_\s→]*)+\s+ matches one or more number sequences with delimiters/spaces
                 // - (.+) captures the actual text content
                 const multiMatch = header.content.match(MULTI_NUMBER_PATTERN)
-                
+
                 let shouldClean = false
                 let cleanedText = ''
                 let hashTags = ''
-                
+
                 if (oldNumber) {
                     // Has a number detected by delimiter pattern
                     shouldClean = true
@@ -559,12 +556,12 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
                     hashTags = multiMatch[1]
                     cleanedText = multiMatch[2]
                 }
-                
+
                 if (shouldClean && cleanedText.trim()) {
                     const level = header.level
                     const newHashTags = hashTags || '#'.repeat(level)
                     const newContent = `${newHashTags} ${cleanedText}`
-                    
+
                     if (newContent !== header.content) {
                         try {
                             await logseq.Editor.updateBlock(header.uuid, newContent)
@@ -574,14 +571,14 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
                         }
                     }
                 }
-                
+
                 // Recursively process children
                 if (header.children && header.children.length > 0) {
                     await removeFromHeaders(header.children)
                 }
             }
         }
-        
+
         await removeFromHeaders(hierarchicalHeaders)
         return cleanedCount
     } catch (error) {
