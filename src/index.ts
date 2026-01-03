@@ -10,6 +10,8 @@ import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import { removeContainer } from './util/lib'
 import { loadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
+import { initHeadingNumbering, applyHeadingNumbersToPage, cleanupHeadingNumbering } from './heading-numbering'
+import { createToolbarIcon, removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
 // let currentPageUuid: PageEntity["uuid"] = ""
@@ -64,12 +66,17 @@ const main = async () => {
   //お気に入りと履歴の重複を非表示
   loadFavAndRecent()
 
+  //階層的な見出し番号付け
+  await initHeadingNumbering()
+
 
   //プラグイン終了時
   logseq.beforeunload(async () => {
     removeContainer("lse-toc-container")
     removeContainer("lse-dataSelector-container")
     removeContainer("lse-visualTimer-container")
+    removeToolbarIcon()
+    cleanupHeadingNumbering()
   })
 
   logseq.App.onCurrentGraphChanged(async () => {
@@ -143,6 +150,14 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
     // console.log("onPageChangedCallback")
     if (logseq.settings?.[settingKeys.toc.master] === true)
       await refreshPageHeaders(pageName, flag ? flag : undefined)
+    
+    // Update toolbar icon for heading numbering
+    updateToolbarIcon(pageName)
+    
+    // Apply file-update mode if enabled and page is active
+    if (logseq.settings?.[settingKeys.toc.headingNumberFileEnable] === true) {
+      await applyHeadingNumbersToPage(pageName)
+    }
   }, 50)
 
 }

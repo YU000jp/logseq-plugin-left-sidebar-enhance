@@ -1,0 +1,71 @@
+/* Hierarchical heading numbering - Display-only mode */
+body.lse-heading-numbering-display {
+    counter-reset: h1;
+}
+
+body.lse-heading-numbering-display #main-content-container h1.uniline-block {
+    counter-increment: h1;
+    counter-reset: h2;
+}
+
+body.lse-heading-numbering-display #main-content-container h2.uniline-block {
+    counter-increment: h2;
+    counter-reset: h3;
+}
+
+body.lse-heading-numbering-display #main-content-container h3.uniline-block {
+    counter-increment: h3;
+    counter-reset: h4;
+}
+
+body.lse-heading-numbering-display #main-content-container h4.uniline-block {
+    counter-increment: h4;
+    counter-reset: h5;
+}
+
+body.lse-heading-numbering-display #main-content-container h5.uniline-block {
+    counter-increment: h5;
+    counter-reset: h6;
+}
+
+body.lse-heading-numbering-display #main-content-container h6.uniline-block {
+    counter-increment: h6;
+}
+
+/* Heading level markers (H1, H2, etc.) */
+body.lse-heading-level-mark #main-content-container h1.uniline-block::after,
+body.lse-heading-level-mark #main-content-container h2.uniline-block::after,
+body.lse-heading-level-mark #main-content-container h3.uniline-block::after,
+body.lse-heading-level-mark #main-content-container h4.uniline-block::after,
+body.lse-heading-level-mark #main-content-container h5.uniline-block::after,
+body.lse-heading-level-mark #main-content-container h6.uniline-block::after {
+    margin-left: 0.5em;
+    font-size: 0.65em;
+    opacity: 0.4;
+    font-weight: normal;
+    color: var(--ls-secondary-text-color);
+}
+
+body.lse-heading-level-mark #main-content-container h1.uniline-block::after {
+    content: "H1";
+}
+
+body.lse-heading-level-mark #main-content-container h2.uniline-block::after {
+    content: "H2";
+}
+
+body.lse-heading-level-mark #main-content-container h3.uniline-block::after {
+    content: "H3";
+}
+
+body.lse-heading-level-mark #main-content-container h4.uniline-block::after {
+    content: "H4";
+}
+
+body.lse-heading-level-mark #main-content-container h5.uniline-block::after {
+    content: "H5";
+}
+
+body.lse-heading-level-mark #main-content-container h6.uniline-block::after {
+    content: "H6";
+}

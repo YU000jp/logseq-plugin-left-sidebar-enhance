@@ -3,6 +3,7 @@ import { handleVisualTimerSettingsChanged } from '../visualTimer'
 import { handleTocSettingsChanged } from '../page-outline/setup'
 import { handleMouseoverSettingsChanged } from '../mouseover'
 import { handleFavAndRecentSettingsChanged } from '../favAndRecent'
+import { handleHeadingNumberingSettingsChanged } from '../heading-numbering'
 import { settingsTemplate } from '../settings'
 
 /**
@@ -44,6 +45,13 @@ export const initSettingsDispatcher = () => {
                                        } catch (e) {
                                                     console.error('favAndRecent settings handler failed', e)
                                        }
+
+                          // Handle heading numbering settings
+                          try {
+                                       await handleHeadingNumberingSettingsChanged(newSet, oldSet)
+                          } catch (e) {
+                                       console.error('heading numbering settings handler failed', e)
+                          }
 
                           // 各ハンドラが変更を報告した場合にのみ設定UIを再表示する
                           if (shouldShowSettings) {

@@ -17,6 +17,18 @@ export const settingKeys = {
                           highlightHeaderOnHover: 'highlightHeaderOnHover',
                           enableJournalsList: 'enableJournalsList',
                           tocRemoveWordList: 'tocRemoveWordList',
+                          // Heading numbering - display-only mode
+                          headingNumberDisplayEnable: 'headingNumberDisplayEnable',
+                          headingNumberDelimiterDisplay: 'headingNumberDelimiterDisplay',
+                          // Heading numbering - file update mode
+                          headingNumberFileEnable: 'headingNumberFileEnable',
+                          headingNumberDelimiterFile: 'headingNumberDelimiterFile',
+                          headingNumberDelimiterFileOld: 'headingNumberDelimiterFileOld',
+                          // Heading level markers
+                          headingLevelMarkEnable: 'headingLevelMarkEnable',
+                          // Per-page activation
+                          pageStateStorageMode: 'pageStateStorageMode',
+                          pageStates: 'pageStates',
              },
              common: {
                           booleanFavAndRecent: 'booleanFavAndRecent',
