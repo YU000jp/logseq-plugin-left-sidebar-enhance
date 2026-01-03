@@ -62,6 +62,6 @@
   "Expired": "Expired",
   "The target date has passed.": "The target date has passed.",
   "Target date cleared.": "Target date cleared.",
-  "Remove all heading numbers from files": "从当前页面删除标题编号",
-  "⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete.": "⚠️ 启用后，将从当前打开的页面删除所有标题编号。完成后自动重置为false。"
+  "Remove heading numbers from current page": "从当前页面删除标题编号",
+  "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.": "⚠️ 启用后，将从当前打开的页面删除所有标题编号。完成后自动重置为false。"
 }
