@@ -40,7 +40,7 @@ This plugin provides four main features:
    - **Per-Page Activation**: Toggle numbering for individual pages using toolbar icon
    - **Customizable Delimiters**: Configure number separators (e.g., ".", "-", "→")
    - **Cleanup Function**: Remove all heading numbers from current page
-   - **Safe Operation**: Only works on file-based graphs (not cloud sync)
+   - **Safe Operation**: Only works on file-based graphs (not DB model)
    
    ![image](https://github.com/user-attachments/assets/aa69d2b6-7670-42ef-9090-6a0e98184aff)
 
