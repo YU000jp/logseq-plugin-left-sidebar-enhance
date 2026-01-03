@@ -13,6 +13,37 @@ import { booleanLogseqVersionMd } from '..'
 let isFileBasedGraph = false
 let headingNumberingStyleElement: HTMLStyleElement | null = null
 
+// Top-level regular expressions and helpers
+const HEADING_HASHES_GENERIC = /^#+\s+/
+const HEADING_HASHES_PATTERN = /^#{1,6}\s+/
+const HEADING_HASHES_ONLY_PATTERN = /^#{1,6}/
+const GENERAL_NUMBER_PATTERN = /^#{1,6}\s+\d+[\d\.\-_\s→]+\s+/
+const MULTI_NUMBER_PATTERN = /^(#{1,6})\s+(?:\d+[\d\.\-_\s→]*)+\s+(.+)$/
+
+const escapeForRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+const createExtractOldNumberRegex = (oldDelimiter: string) => {
+    const escapedDelimiter = escapeForRegex(oldDelimiter)
+    return new RegExp(`^(#{1,6})\\s+(\\d+(?:${escapedDelimiter}\\d+)*${escapedDelimiter}?)\\s+(.+)$`)
+}
+
+// Normalize numeric string to use the given delimiter and collapse extras
+const normalizeNumberString = (num: string, delimiter: string) => {
+    if (!num) return ''
+    // Replace any non-digit sequence with the delimiter
+    const replaced = num.trim().replace(/[^0-9]+/g, delimiter)
+    // Collapse multiple delimiters
+    const collapse = replaced.replace(new RegExp(`${escapeForRegex(delimiter)}{2,}`, 'g'), delimiter)
+    // Remove leading/trailing delimiters
+    return collapse.replace(new RegExp(`^${escapeForRegex(delimiter)}|${escapeForRegex(delimiter)}$`, 'g'), '')
+}
+
+// Extract a general number sequence after hashes when delimiter-specific extract fails
+const extractGeneralNumber = (content: string): string | null => {
+    const m = content.match(/^(?:#{1,6})\s+([0-9][0-9\.\-\_\s→]*)/) 
+    return m ? m[1].trim() : null
+}
+
 /**
  * Initialize heading numbering features
  */
@@ -192,16 +223,9 @@ export const togglePageState = async (pageName: string): Promise<boolean> => {
  * This function detects if a heading already has numbering and extracts it
  */
 const extractOldNumber = (content: string, oldDelimiter: string): { number: string | null, textWithoutNumber: string } => {
-    // Escape the delimiter for use in regex
-    const escapedDelimiter = oldDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    
     // Pattern to match: "# 1.2.3 Text" or "## 1.2 Text" or "### 3.1 Text" etc.
-    // Updated to handle all heading levels (1-6 hashes)
-    // Group 1: hash marks (# to ######)
-    // Group 2: the number (e.g., "1.2.3")
-    // Group 3: remaining text
-    // The number must start with a digit and can contain delimiter+digit patterns
-    const pattern = new RegExp(`^(#{1,6})\\s+(\\d+(?:${escapedDelimiter}\\d+)*${escapedDelimiter}?)\\s+(.+)$`)
+    // Use helper to create regex with escaped delimiter
+    const pattern = createExtractOldNumberRegex(oldDelimiter)
     const match = content.match(pattern)
     
     if (match) {
@@ -231,10 +255,7 @@ const extractOldNumber = (content: string, oldDelimiter: string): { number: stri
  * This helps prevent double-numbering
  */
 const hasExistingNumber = (content: string): boolean => {
-    // Match patterns like "# 1.2.3" or "## 1-2" or "### 1.1.1.1"
-    // Updated to handle all heading levels (1-6 hashes)
-    const generalPattern = /^#{1,6}\s+\d+[\d\.\-_\s→]+\s+/
-    return generalPattern.test(content)
+    return GENERAL_NUMBER_PATTERN.test(content)
 }
 
 /**
@@ -292,51 +313,88 @@ const updateHierarchicalBlocks = async (
     newDelimiter: string,
     oldDelimiter: string
 ): Promise<void> => {
-    for (let i = 0; i < headers.length; i++) {
-        const header = headers[i]
-        const currentNumbers = [...parentNumbers, i + 1]
-        const expectedNumber = currentNumbers.join(newDelimiter)
-        
-        // Extract old number if present
-        const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
-        
-        // Check if update is needed
-        // Only update if:
-        // 1. No existing number, OR
-        // 2. Existing number doesn't match expected number
-        const needsUpdate = !oldNumber || oldNumber !== expectedNumber
-        
-        if (needsUpdate) {
-            // Extract the actual heading text (without hash tags)
-            const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
-            
-            // Skip if text is empty (avoid creating invalid headings)
-            if (!textOnly.trim()) {
-                continue
+    // Use level-indexed counters to reliably number headers across siblings
+    const counters = new Array(7).fill(0) // 1..6
+
+    const traverse = async (nodes: HierarchicalTocBlock[]) => {
+        for (const node of nodes) {
+            const level = node.level || 1
+
+            // Increment counter for this level and reset deeper levels
+            counters[level] = (counters[level] || 0) + 1
+            for (let l = level + 1; l <= 6; l++) counters[l] = 0
+
+            // Build current numbers from counters (1..level)
+            const currentNumbers: number[] = []
+            for (let l = 1; l <= level; l++) {
+                if (counters[l] && counters[l] > 0) currentNumbers.push(counters[l])
             }
-            
-            // Generate new content
-            const level = header.level
-            const hashTags = '#'.repeat(level)
-            const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
-            
-            // Only update if content actually changed
-            if (newContent !== header.content) {
-                try {
-                    await logseq.Editor.updateBlock(header.uuid, newContent)
-                    // Update the header content in memory to prevent re-processing
-                    header.content = newContent
-                } catch (error) {
-                    console.error(`Failed to update block ${header.uuid}:`, error)
+
+            const expectedNumber = currentNumbers.join(newDelimiter)
+
+            // Extract old number if present (delimiter-specific)
+            let { number: oldNumber, textWithoutNumber } = extractOldNumber(node.content, oldDelimiter)
+
+            // If delimiter-specific extract failed but there is some number-like prefix, try to extract generally
+            if (!oldNumber && hasExistingNumber(node.content)) {
+                const mm = node.content.match(MULTI_NUMBER_PATTERN)
+                if (mm) {
+                    const hashTags = mm[1]
+                    const restText = mm[2]
+                    // Attempt to extract the numeric part between hashes and restText
+                    const numPartMatch = node.content.match(new RegExp(`^${escapeForRegex(hashTags)}\\s+([0-9\\.\\-\\_\\s→]+)\\s+`))
+                    const numPart = numPartMatch ? numPartMatch[1].trim() : null
+                    if (numPart) {
+                        oldNumber = numPart
+                        textWithoutNumber = `${hashTags} ${restText}`
+                    }
+                }
+                // Fallback: try a simple extraction
+                if (!oldNumber) {
+                    const gen = extractGeneralNumber(node.content)
+                    if (gen) {
+                        oldNumber = gen
+                        textWithoutNumber = node.content.replace(new RegExp(`^(#{1,6})\\s+${escapeForRegex(gen)}\\s+`), '$1 ')
+                    }
                 }
             }
-        }
-        
-        // Recursively process children
-        if (header.children && header.children.length > 0) {
-            await updateHierarchicalBlocks(header.children, currentNumbers, newDelimiter, oldDelimiter)
+
+            // Normalize numbers for comparison (handle different delimiters/spaces)
+            const normalizedExpected = normalizeNumberString(expectedNumber, newDelimiter)
+            const normalizedOld = oldNumber ? normalizeNumberString(oldNumber, newDelimiter) : null
+
+            let needsUpdate = false
+            if (!oldNumber) {
+                // No existing number -> needs numbering
+                needsUpdate = true
+            } else if (normalizedOld !== normalizedExpected) {
+                // Existing number present but differs when normalized -> update
+                needsUpdate = true
+            }
+
+            if (needsUpdate) {
+                const textOnly = textWithoutNumber.replace(HEADING_HASHES_GENERIC, '')
+                if (textOnly.trim()) {
+                    const hashTags = '#'.repeat(level)
+                    const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
+                    if (newContent !== node.content) {
+                        try {
+                            await logseq.Editor.updateBlock(node.uuid, newContent)
+                            node.content = newContent
+                        } catch (error) {
+                            console.error(`Failed to update block ${node.uuid}:`, error)
+                        }
+                    }
+                }
+            }
+
+            if (node.children && node.children.length > 0) {
+                await traverse(node.children)
+            }
         }
     }
+
+    await traverse(headers)
 }
 
 /**
@@ -481,10 +539,9 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
                 // Pattern explanation:
                 // - (#{1,6}) captures heading markers
                 // - \s+ matches whitespace
-                // - (?:\d+[\d\.\-_\s→]*)+\s+ matches one or more number sequences with delimiters/spaces
+                // - (?:\d+[\d\.\-\_\s→]*)+\s+ matches one or more number sequences with delimiters/spaces
                 // - (.+) captures the actual text content
-                const multiNumberPattern = /^(#{1,6})\s+(?:\d+[\d\.\-_\s→]*)+\s+(.+)$/
-                const multiMatch = header.content.match(multiNumberPattern)
+                const multiMatch = header.content.match(MULTI_NUMBER_PATTERN)
                 
                 let shouldClean = false
                 let cleanedText = ''
@@ -493,8 +550,8 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
                 if (oldNumber) {
                     // Has a number detected by delimiter pattern
                     shouldClean = true
-                    const textOnly = textWithoutNumber.replace(/^#{1,6}\s+/, '')
-                    hashTags = textWithoutNumber.match(/^#{1,6}/)?.[0] || ''
+                    const textOnly = textWithoutNumber.replace(HEADING_HASHES_PATTERN, '')
+                    hashTags = textWithoutNumber.match(HEADING_HASHES_ONLY_PATTERN)?.[0] || ''
                     cleanedText = textOnly
                 } else if (multiMatch) {
                     // Has multiple/duplicate numbers or corrupted numbering
