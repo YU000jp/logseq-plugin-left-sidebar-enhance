@@ -208,7 +208,7 @@ const calculateHeadingNumbers = (blocks: HeadingBlock[], delimiter: string): Map
         // Increment current level counter
         counters[level - 1]++
         
-        // Reset all deeper level counters
+        // Reset all deeper level counters (levels after current)
         for (let i = level; i < 6; i++) {
             counters[i] = 0
         }
@@ -229,7 +229,7 @@ const calculateHeadingNumbers = (blocks: HeadingBlock[], delimiter: string): Map
 const extractOldNumber = (content: string, oldDelimiter: string): { number: string | null, textWithoutNumber: string } => {
     // Match patterns like "1.2.3 Heading text" or "1-2-3 Heading text"
     const escapedDelimiter = oldDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const pattern = new RegExp(`^(#+)\\s+(\\d+(?:${escapedDelimiter}\\d+)*)${escapedDelimiter}?\\s+(.*)$`)
+    const pattern = new RegExp(`^(#+)\\s+(\\d+(?:${escapedDelimiter}\\d+)*)${escapedDelimiter}?\\s*(.*)$`)
     const match = content.match(pattern)
     
     if (match) {
@@ -306,10 +306,13 @@ export const applyHeadingNumbersToPage = async (pageName: string): Promise<void>
             // Extract old number if present
             const { number: oldNumber, textWithoutNumber } = extractOldNumber(block.content, oldDelimiter)
             
+            // Extract the actual heading text (without hash tags and number)
+            const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
+            
             // Generate new content
             const level = block.level
             const hashTags = '#'.repeat(level)
-            const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textWithoutNumber.replace(/^#+\s+/, '')}`
+            const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
             
             // Only update if content changed
             if (newContent !== block.content) {
@@ -343,8 +346,10 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
         // Re-apply numbering to current page if enabled
         const currentPage = await logseq.Editor.getCurrentPage()
         if (currentPage && newSet[settingKeys.toc.headingNumberFileEnable] === true) {
-            const pageName = (currentPage.originalName || currentPage.name) as string
-            await applyHeadingNumbersToPage(pageName)
+            const pageName = (currentPage.originalName || currentPage.name || '') as string
+            if (pageName) {
+                await applyHeadingNumbersToPage(pageName)
+            }
         }
     }
 }

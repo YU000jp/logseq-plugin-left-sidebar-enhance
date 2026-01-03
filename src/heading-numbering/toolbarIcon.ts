@@ -14,10 +14,14 @@ export const createToolbarIcon = (pageName: string) => {
     // Remove existing icon if present
     removeToolbarIcon()
     
-    // Find toolbar area
-    const toolbar = parent.document.querySelector('#head>.r') as HTMLElement
+    // Find toolbar area - try multiple selectors for robustness
+    let toolbar = parent.document.querySelector('#head>.r') as HTMLElement
     if (!toolbar) {
-        console.warn('Toolbar not found')
+        // Fallback to alternative selector
+        toolbar = parent.document.querySelector('.cp__header-right-menu') as HTMLElement
+    }
+    if (!toolbar) {
+        console.warn('Toolbar not found - heading numbering toggle icon could not be added')
         return
     }
     
