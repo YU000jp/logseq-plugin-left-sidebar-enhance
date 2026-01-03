@@ -5,6 +5,7 @@ import { handleMouseoverSettingsChanged } from '../mouseover'
 import { handleFavAndRecentSettingsChanged } from '../favAndRecent'
 import { handleHeadingNumberingSettingsChanged } from '../heading-numbering'
 import { settingsTemplate } from '../settings'
+import { booleanLogseqVersionMd } from '..'
 
 /**
  * 中央設定ディスパッチャ
@@ -56,7 +57,7 @@ export const initSettingsDispatcher = () => {
 
                           // 各ハンドラが変更を報告した場合にのみ設定UIを再表示する
                           if (shouldShowSettings) {
-                                       logseq.useSettingsSchema(settingsTemplate(newSet))
+                                       logseq.useSettingsSchema(settingsTemplate(booleanLogseqVersionMd(), newSet))
                                        logseq.hideSettingsUI()
                                        setTimeout(() =>
                                                     logseq.showSettingsUI()

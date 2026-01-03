@@ -11,7 +11,7 @@ import { removeContainer } from './util/lib'
 import { loadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
 import { initHeadingNumbering, applyHeadingNumbersToPage, cleanupHeadingNumbering } from './heading-numbering'
-import { createToolbarIcon, removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
+import { removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
 // let currentPageUuid: PageEntity["uuid"] = ""
@@ -38,15 +38,6 @@ const main = async () => {
   // ユーザー設定言語を取得し、L10Nをセットアップ
   const { preferredLanguage, preferredDateFormat } = await loadLogseqL10n()
 
-  /* user settings */
-  // register settings schema based on current settings so dependent fields can be hidden
-  logseq.useSettingsSchema(settingsTemplate(logseq.settings ?? undefined))
-
-  // 中央設定ディスパッチャを初期化（各モジュールの設定ハンドラを一箇所で呼ぶ）
-  setTimeout(() =>
-    initSettingsDispatcher()
-    , 100)
-
   // First time settings
   if (!logseq.settings)
     setTimeout(() =>
@@ -54,8 +45,20 @@ const main = async () => {
 
   logseqVersionMd = await checkLogseqVersion()
 
+  /* user settings */
+  // register settings schema based on current settings so dependent fields can be hidden
+  logseq.useSettingsSchema(settingsTemplate(logseqVersionMd, logseq.settings ?? undefined))
+
+
+  // 中央設定ディスパッチャを初期化（各モジュールの設定ハンドラを一箇所で呼ぶ）
+  setTimeout(() =>
+    initSettingsDispatcher()
+    , 500)
+
   //TOC
-  setupTOCHandlers(logseqVersionMd)
+  setTimeout(() =>
+    setupTOCHandlers(logseqVersionMd)
+    , 300)
 
   //残り時間可視化ビジュアル
   loadVisualTimer()
@@ -150,10 +153,10 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
     // console.log("onPageChangedCallback")
     if (logseq.settings?.[settingKeys.toc.master] === true)
       await refreshPageHeaders(pageName, flag ? flag : undefined)
-    
+
     // Update toolbar icon for heading numbering
-    updateToolbarIcon(pageName)
-    
+    if (logseqVersionMd === true) updateToolbarIcon(pageName)
+
     // Apply file-update mode if enabled and page is active
     if (logseq.settings?.[settingKeys.toc.headingNumberFileEnable] === true) {
       await applyHeadingNumbersToPage(pageName)
