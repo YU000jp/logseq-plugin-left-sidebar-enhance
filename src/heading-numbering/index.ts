@@ -195,12 +195,13 @@ const extractOldNumber = (content: string, oldDelimiter: string): { number: stri
     // Escape the delimiter for use in regex
     const escapedDelimiter = oldDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     
-    // Pattern to match: "# 1.2.3 Text" or "## 1.2 Text" etc.
-    // Group 1: hash marks (# or ## etc.)
+    // Pattern to match: "# 1.2.3 Text" or "## 1.2 Text" or "### 3.1 Text" etc.
+    // Updated to handle all heading levels (1-6 hashes)
+    // Group 1: hash marks (# to ######)
     // Group 2: the number (e.g., "1.2.3")
     // Group 3: remaining text
     // The number must start with a digit and can contain delimiter+digit patterns
-    const pattern = new RegExp(`^(#+)\\s+(\\d+(?:${escapedDelimiter}\\d+)*${escapedDelimiter}?)\\s+(.+)$`)
+    const pattern = new RegExp(`^(#{1,6})\\s+(\\d+(?:${escapedDelimiter}\\d+)*${escapedDelimiter}?)\\s+(.+)$`)
     const match = content.match(pattern)
     
     if (match) {
@@ -231,8 +232,8 @@ const extractOldNumber = (content: string, oldDelimiter: string): { number: stri
  */
 const hasExistingNumber = (content: string): boolean => {
     // Match patterns like "# 1.2.3" or "## 1-2" or "### 1.1.1.1"
-    // This is a more general check that doesn't require knowing the specific delimiter
-    const generalPattern = /^#+\s+\d+[\d\.\-_\s→]+\s+/
+    // Updated to handle all heading levels (1-6 hashes)
+    const generalPattern = /^#{1,6}\s+\d+[\d\.\-_\s→]+\s+/
     return generalPattern.test(content)
 }
 
@@ -468,24 +469,43 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
         let cleanedCount = 0
         const removeFromHeaders = async (headers: HierarchicalTocBlock[]) => {
             for (const header of headers) {
-                // Extract old number if present
+                // Try to extract old number using delimiter
                 const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
                 
+                // Also handle cases with multiple/duplicate numbers or corrupted numbering
+                // This regex matches heading patterns with any number-like prefix
+                // Handles cases like: "# 1.1 1.1 Text", "## 1.2.3.4.5 Text", "### 1 2 3 Text"
+                const multiNumberPattern = /^(#{1,6})\s+(?:\d+[\d\.\-_\s→]*)+\s+(.+)$/
+                const multiMatch = header.content.match(multiNumberPattern)
+                
+                let shouldClean = false
+                let cleanedText = ''
+                let hashTags = ''
+                
                 if (oldNumber) {
-                    // Has a number, remove it
-                    const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
-                    if (textOnly.trim()) {
-                        const level = header.level
-                        const hashTags = '#'.repeat(level)
-                        const newContent = `${hashTags} ${textOnly}`
-                        
-                        if (newContent !== header.content) {
-                            try {
-                                await logseq.Editor.updateBlock(header.uuid, newContent)
-                                cleanedCount++
-                            } catch (error) {
-                                console.error(`Failed to clean block ${header.uuid}:`, error)
-                            }
+                    // Has a number detected by delimiter pattern
+                    shouldClean = true
+                    const textOnly = textWithoutNumber.replace(/^#{1,6}\s+/, '')
+                    hashTags = textWithoutNumber.match(/^#{1,6}/)?.[0] || ''
+                    cleanedText = textOnly
+                } else if (multiMatch) {
+                    // Has multiple/duplicate numbers or corrupted numbering
+                    shouldClean = true
+                    hashTags = multiMatch[1]
+                    cleanedText = multiMatch[2]
+                }
+                
+                if (shouldClean && cleanedText.trim()) {
+                    const level = header.level
+                    const newHashTags = hashTags || '#'.repeat(level)
+                    const newContent = `${newHashTags} ${cleanedText}`
+                    
+                    if (newContent !== header.content) {
+                        try {
+                            await logseq.Editor.updateBlock(header.uuid, newContent)
+                            cleanedCount++
+                        } catch (error) {
+                            console.error(`Failed to clean block ${header.uuid}:`, error)
                         }
                     }
                 }
