@@ -106,10 +106,10 @@ export const tocSettings = (currentSettings?: Record<string, unknown>): SettingS
                           },
                           {
                                        key: settingKeys.toc.headingNumberCleanup,
-                                       title: t('Remove all heading numbers from files'),
+                                       title: t('Remove heading numbers from current page'),
                                        type: 'boolean',
                                        default: false,
-                                       description: t('⚠️ When enabled, removes all heading numbers from all pages. This will lock the plugin during cleanup. Setting will automatically reset to false when complete.'),
+                                       description: t('⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.'),
                           })
              }
 
