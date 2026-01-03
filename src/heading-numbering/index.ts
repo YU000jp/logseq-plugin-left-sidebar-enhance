@@ -92,34 +92,34 @@ const updateHeadingNumberingCSS = (delimiter: string) => {
     headingNumberingStyleElement = parent.document.createElement('style')
     headingNumberingStyleElement.id = 'lse-heading-numbering-dynamic'
     
-    // Generate CSS with custom delimiter
+    // Generate CSS with custom delimiter - targeting Logseq's block structure
     const css = `
-body.lse-heading-numbering-display #main-content-container h1.uniline-block::before {
+body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 1"] .block-content::before {
     content: counter(h1) "${delimiter} ";
     margin-right: 0.5em;
 }
 
-body.lse-heading-numbering-display #main-content-container h2.uniline-block::before {
+body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 2"] .block-content::before {
     content: counter(h1) "${delimiter}" counter(h2) "${delimiter} ";
     margin-right: 0.5em;
 }
 
-body.lse-heading-numbering-display #main-content-container h3.uniline-block::before {
+body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 3"] .block-content::before {
     content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter} ";
     margin-right: 0.5em;
 }
 
-body.lse-heading-numbering-display #main-content-container h4.uniline-block::before {
+body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 4"] .block-content::before {
     content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter} ";
     margin-right: 0.5em;
 }
 
-body.lse-heading-numbering-display #main-content-container h5.uniline-block::before {
+body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 5"] .block-content::before {
     content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter} ";
     margin-right: 0.5em;
 }
 
-body.lse-heading-numbering-display #main-content-container h6.uniline-block::before {
+body.lse-heading-numbering-display #main-content-container div.ls-block[data-refs-self*="\\"heading\\" 6"] .block-content::before {
     content: counter(h1) "${delimiter}" counter(h2) "${delimiter}" counter(h3) "${delimiter}" counter(h4) "${delimiter}" counter(h5) "${delimiter}" counter(h6) "${delimiter} ";
     margin-right: 0.5em;
 }
@@ -189,17 +189,30 @@ export const togglePageState = async (pageName: string): Promise<boolean> => {
 
 /**
  * Extract heading number from content using old delimiter
+ * This function detects if a heading already has numbering and extracts it
  */
 const extractOldNumber = (content: string, oldDelimiter: string): { number: string | null, textWithoutNumber: string } => {
-    // Match patterns like "1.2.3 Heading text" or "1-2-3 Heading text"
+    // Escape the delimiter for use in regex
     const escapedDelimiter = oldDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const pattern = new RegExp(`^(#+)\\s+(\\d+(?:${escapedDelimiter}\\d+)*)${escapedDelimiter}?\\s*(.*)$`)
+    
+    // Pattern to match: "# 1.2.3 Text" or "## 1.2 Text" etc.
+    // Group 1: hash marks (# or ## etc.)
+    // Group 2: the number (e.g., "1.2.3")
+    // Group 3: remaining text
+    // The number must start with a digit and can contain delimiter+digit patterns
+    const pattern = new RegExp(`^(#+)\\s+(\\d+(?:${escapedDelimiter}\\d+)*${escapedDelimiter}?)\\s+(.+)$`)
     const match = content.match(pattern)
     
     if (match) {
         const hashTags = match[1]
-        const number = match[2]
+        let number = match[2]
         const text = match[3]
+        
+        // Remove trailing delimiter if present
+        if (number.endsWith(oldDelimiter)) {
+            number = number.slice(0, -oldDelimiter.length)
+        }
+        
         return {
             number,
             textWithoutNumber: `${hashTags} ${text}`
@@ -210,6 +223,17 @@ const extractOldNumber = (content: string, oldDelimiter: string): { number: stri
         number: null,
         textWithoutNumber: content
     }
+}
+
+/**
+ * Check if content already has a heading number (any delimiter pattern)
+ * This helps prevent double-numbering
+ */
+const hasExistingNumber = (content: string): boolean => {
+    // Match patterns like "# 1.2.3" or "## 1-2" or "### 1.1.1.1"
+    // This is a more general check that doesn't require knowing the specific delimiter
+    const generalPattern = /^#+\s+\d+[\d\.\-_\s→]+\s+/
+    return generalPattern.test(content)
 }
 
 /**
@@ -275,17 +299,36 @@ const updateHierarchicalBlocks = async (
         // Extract old number if present
         const { number: oldNumber, textWithoutNumber } = extractOldNumber(header.content, oldDelimiter)
         
-        // Extract the actual heading text (without hash tags and number)
-        const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
+        // Check if update is needed
+        // Only update if:
+        // 1. No existing number, OR
+        // 2. Existing number doesn't match expected number
+        const needsUpdate = !oldNumber || oldNumber !== expectedNumber
         
-        // Generate new content
-        const level = header.level
-        const hashTags = '#'.repeat(level)
-        const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
-        
-        // Only update if content changed
-        if (newContent !== header.content) {
-            await logseq.Editor.updateBlock(header.uuid, newContent)
+        if (needsUpdate) {
+            // Extract the actual heading text (without hash tags)
+            const textOnly = textWithoutNumber.replace(/^#+\s+/, '')
+            
+            // Skip if text is empty (avoid creating invalid headings)
+            if (!textOnly.trim()) {
+                continue
+            }
+            
+            // Generate new content
+            const level = header.level
+            const hashTags = '#'.repeat(level)
+            const newContent = `${hashTags} ${expectedNumber}${newDelimiter} ${textOnly}`
+            
+            // Only update if content actually changed
+            if (newContent !== header.content) {
+                try {
+                    await logseq.Editor.updateBlock(header.uuid, newContent)
+                    // Update the header content in memory to prevent re-processing
+                    header.content = newContent
+                } catch (error) {
+                    console.error(`Failed to update block ${header.uuid}:`, error)
+                }
+            }
         }
         
         // Recursively process children
