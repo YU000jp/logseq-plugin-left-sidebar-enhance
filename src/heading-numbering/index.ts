@@ -380,56 +380,55 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
  */
 const executeCleanup = async (): Promise<void> => {
     try {
-        // Show user message
-        const confirmed = await logseq.UI.showMsg(
-            '⚠️ Starting cleanup: Removing all heading numbers from files. This may take a moment...',
-            'warning',
-            { timeout: 5000 }
-        )
-        
-        console.log('Starting heading number cleanup...')
-        
-        // Get delimiter settings to detect existing numbers
-        const oldDelimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterFileOld] as string) || '.'
-        
-        // Get all pages in the graph
-        const allPages = await logseq.Editor.getAllPages()
-        if (!allPages || allPages.length === 0) {
-            await logseq.UI.showMsg('No pages found to clean up', 'info')
+        // Get the currently open page
+        const currentPage = await logseq.Editor.getCurrentPage()
+        if (!currentPage) {
+            await logseq.UI.showMsg('⚠️ Please open a page to clean up heading numbers', 'warning')
             await resetCleanupFlag()
             return
         }
         
-        let totalCleaned = 0
-        let pagesProcessed = 0
-        
-        // Process each page
-        for (const page of allPages) {
-            try {
-                const pageName = page.originalName || page.name
-                if (!pageName) continue
-                
-                const cleaned = await cleanupPageHeadingNumbers(pageName, oldDelimiter)
-                totalCleaned += cleaned
-                pagesProcessed++
-                
-                // Show progress every 10 pages
-                if (pagesProcessed % 10 === 0) {
-                    console.log(`Cleanup progress: ${pagesProcessed}/${allPages.length} pages`)
-                }
-            } catch (error) {
-                console.error(`Error cleaning page ${page.name}:`, error)
-            }
+        const currentPageName = currentPage.originalName || currentPage.name
+        if (typeof currentPageName !== 'string' || !currentPageName) {
+            await logseq.UI.showMsg('⚠️ Could not determine current page name', 'warning')
+            await resetCleanupFlag()
+            return
         }
         
-        // Show completion message
+        const pageName = currentPageName
+        
+        // Show user message
         await logseq.UI.showMsg(
-            `✓ Cleanup complete! Removed ${totalCleaned} heading numbers from ${pagesProcessed} pages.`,
-            'success',
-            { timeout: 5000 }
+            `⚠️ Starting cleanup: Removing heading numbers from "${pageName}"...`,
+            'warning',
+            { timeout: 3000 }
         )
         
-        console.log(`Cleanup complete: ${totalCleaned} numbers removed from ${pagesProcessed} pages`)
+        console.log(`Starting heading number cleanup for page: ${pageName}`)
+        
+        // Get delimiter settings to detect existing numbers
+        const delimiterSetting = logseq.settings?.[settingKeys.toc.headingNumberDelimiterFileOld]
+        const oldDelimiter: string = typeof delimiterSetting === 'string' ? delimiterSetting : '.'
+        
+        // Clean the current page
+        const totalCleaned = await cleanupPageHeadingNumbers(pageName, oldDelimiter)
+        
+        // Show completion message
+        if (totalCleaned > 0) {
+            await logseq.UI.showMsg(
+                `✓ Cleanup complete! Removed ${totalCleaned} heading number(s) from "${pageName}".`,
+                'success',
+                { timeout: 5000 }
+            )
+            console.log(`Cleanup complete: ${totalCleaned} numbers removed from "${pageName}"`)
+        } else {
+            await logseq.UI.showMsg(
+                `No heading numbers found to clean on "${pageName}".`,
+                'info',
+                { timeout: 3000 }
+            )
+            console.log(`No heading numbers found on "${pageName}"`)
+        }
         
     } catch (error) {
         console.error('Error during cleanup:', error)
