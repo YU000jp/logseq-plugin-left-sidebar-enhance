@@ -43,7 +43,8 @@
    - **クリーンアップ機能**: 現在のページから見出し番号を削除
    - **安全な動作**: ファイルベース版のみで動作（DBモデルは非対応）
    
-   ![image](https://github.com/user-attachments/assets/aa69d2b6-7670-42ef-9090-6a0e98184aff)
+    <img width="773" height="592" alt="image" src="https://github.com/user-attachments/assets/a6574af6-3fba-420a-b3a9-9f257c0a3774" />
+
 
 1. マウスオーバーで、左メニューを自動で隠す (デフォルト: **無効**)
    > 左上の隅にある ![画像](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) ボタンを使ってください.
