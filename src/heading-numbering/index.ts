@@ -474,7 +474,16 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
                 
                 // Also handle cases with multiple/duplicate numbers or corrupted numbering
                 // This regex matches heading patterns with any number-like prefix
-                // Handles cases like: "# 1.1 1.1 Text", "## 1.2.3.4.5 Text", "### 1 2 3 Text"
+                // Handles cases like:
+                // - "# 1.1 1.1 Text" (duplicate numbers)
+                // - "## 1.2.3.4.5 Text" (excessive nesting)
+                // - "### 1 2 3 Text" (space-separated)
+                // - "### 3.3. 3.3. 3.3. M3" (repeated sequences)
+                // Pattern explanation:
+                // - (#{1,6}) captures heading markers
+                // - \s+ matches whitespace
+                // - (?:\d+[\d\.\-_\s→]*)+\s+ matches one or more number sequences with delimiters/spaces
+                // - (.+) captures the actual text content
                 const multiNumberPattern = /^(#{1,6})\s+(?:\d+[\d\.\-_\s→]*)+\s+(.+)$/
                 const multiMatch = header.content.match(multiNumberPattern)
                 
