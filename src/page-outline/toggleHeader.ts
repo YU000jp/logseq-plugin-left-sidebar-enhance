@@ -37,6 +37,23 @@ export const additionalButtons = (thisPageName: string) => {
     class: "flex items-center",
   })
 
+  // Settings button (like Visual Timer)
+  const elementSettings = createElementWithAttributes("span", { 
+    class: "cursor", 
+    title: "Settings",
+    style: "font-size: 1.1em; margin-right: 0.3em;"
+  }, "⚙")
+  elementSettings.addEventListener("click", () => {
+    try {
+      if (typeof (logseq as any)?.showSettingsUI === "function") {
+        (logseq as any).showSettingsUI()
+      }
+    } catch (e) {
+      console.error("Failed to open settings:", e)
+    }
+  })
+  elementButtons.append(elementSettings)
+
   const elementUpdate = createElementWithAttributes("span", { class: "cursor", title: t("Update the header list") }, "🔄")
   elementUpdate.addEventListener("click", () => {
     elementUpdate.style.visibility = "hidden"

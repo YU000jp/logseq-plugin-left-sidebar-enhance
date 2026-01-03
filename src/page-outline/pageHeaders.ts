@@ -1,5 +1,7 @@
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user"
 import { booleanLogseqVersionMd, onBlockChanged, onBlockChangedOnce } from ".."
+import { applyHeadingNumbersToPage } from "../heading-numbering"
+import { settingKeys } from '../settings/keys'
 import { isHeadersCacheEqual, setCachedHeaders } from "./cache"
 import { clearTOC } from "./DOM"
 import { getTocBlocks, getTocBlocksForDb } from "./findHeaders"
@@ -7,7 +9,6 @@ import { createHeaderElement } from "./headerItem"
 import { getHeaderLevel, isHeader } from "./regex"
 import { additionalButtons, generatePageButton } from "./toggleHeader"
 import { clearZoomMarks, updateZoomMark } from "./zoom"
-import { settingKeys } from '../settings/keys'
 
 
 export const keyToolbarHeaderSpace = "lse-toc-header-space"
@@ -65,6 +66,16 @@ export const refreshPageHeaders = async (pageName: string, zoom?: { zoomIn: bool
 
     //フィルター後
     if (headers.length > 0) {
+      // Perform heading-number check/update when page outline detects headers.
+      // Run asynchronously so UI rendering is not blocked.
+      setTimeout(() => {
+        try {
+          void applyHeadingNumbersToPage(pageName)
+        } catch (e) {
+          console.error('Error applying heading numbers on page load:', e)
+        }
+      }, 50)
+
       await updateHeadingElements(element, headers as TocBlock[], pageName, versionMd, zoom ? zoom : undefined)
       //toc更新用のイベントを登録する
       if (onBlockChangedOnce === false)
