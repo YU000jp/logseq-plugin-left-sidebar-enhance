@@ -40,9 +40,9 @@ This plugin provides four main features:
    - **Per-Page Activation**: Toggle numbering for individual pages using toolbar icon
    - **Customizable Delimiters**: Configure number separators (e.g., ".", "-", "→")
    - **Cleanup Function**: Remove all heading numbers from current page
-   - **Safe Operation**: Only works on file-based graphs (not DB model)
    
-   ![image](https://github.com/user-attachments/assets/aa69d2b6-7670-42ef-9090-6a0e98184aff)
+   <img width="698" height="550" alt="image" src="https://github.com/user-attachments/assets/fcce4695-03f7-4e3f-9543-a14539031ee0" />
+
 
 1. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
    > Use the ![image](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/assets/111847207/8e3efccf-27e9-4332-b431-9765a69463a9) button in the top-left corner.
