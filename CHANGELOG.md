@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.17.0...v2.0.0) (2026-01-04)
+
+
+### Features
+
+* **Add:** heading numbering ([03a897f](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/03a897f043996a1dea376d8cd77c8217f952e190))
+* **Add:** heading numbering ([3772f7b](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/3772f7be6fb654ea59cf7feea40f1f714e08b8eb))
+
+
+### BREAKING CHANGES
+
+* **Add:** enable automatic heading numbering; existing documents may render differently
+
 # [1.17.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.16.0...v1.17.0) (2025-12-31)
 
 
