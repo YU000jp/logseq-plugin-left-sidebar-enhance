@@ -5,6 +5,7 @@
  * based on the actual outline depth in the document structure.
  */
 
+import { LSPluginBaseInfo } from '@logseq/libs/dist/LSPlugin.user'
 import { booleanLogseqVersionMd } from '..'
 import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
 import { settingKeys } from '../settings/keys'
@@ -310,7 +311,10 @@ export const initAutoHeadingLevel = () => {
  * Handle settings changed for auto heading level
  * Returns true if settings UI should be refreshed
  */
-export const handleAutoHeadingLevelSettingsChanged = async (newSet: any, oldSet: any): Promise<boolean> => {
+export const handleAutoHeadingLevelSettingsChanged = async (
+  newSet: LSPluginBaseInfo['settings'], 
+  oldSet: LSPluginBaseInfo['settings']
+): Promise<boolean> => {
   // Check if autoHeadingLevelEnabled changed
   if (oldSet[settingKeys.toc.autoHeadingLevelEnabled] !== newSet[settingKeys.toc.autoHeadingLevelEnabled]) {
     // Return true to trigger settings UI refresh
