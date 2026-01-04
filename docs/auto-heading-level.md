@@ -156,11 +156,3 @@ Only Markdown headings (lines starting with `#` to `######`) are processed.
 ### Command Not Found
 
 Make sure the plugin is fully loaded before accessing commands via the command palette.
-
-## Future Enhancements
-
-Potential future improvements may include:
-- Tag/prefix-based per-block control
-- Batch processing across multiple pages
-- Preview mode before applying changes
-- Undo/history integration

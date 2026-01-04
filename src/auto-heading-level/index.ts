@@ -5,7 +5,6 @@
  * based on the actual outline depth in the document structure.
  */
 
-import { BlockEntity } from '@logseq/libs/dist/LSPlugin'
 import { booleanLogseqVersionMd } from '..'
 import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
 import { settingKeys } from '../settings/keys'
