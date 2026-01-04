@@ -12,6 +12,7 @@ import { loadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
 import { initHeadingNumbering, applyHeadingNumbersToPage } from './heading-numbering'
 import { removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
+import { initAutoHeadingLevel } from './auto-heading-level'
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
 // let currentPageUuid: PageEntity["uuid"] = ""
@@ -71,6 +72,9 @@ const main = async () => {
 
   //階層的な見出し番号付け
   await initHeadingNumbering()
+
+  //見出しレベルの自動調整
+  initAutoHeadingLevel()
 
 
   //プラグイン終了時

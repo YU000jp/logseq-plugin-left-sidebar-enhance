@@ -27,6 +27,10 @@ export const settingKeys = {
                           // Per-page activation
                           pageStateStorageMode: 'pageStateStorageMode',
                           pageStates: 'pageStates',
+                          // Auto heading level adjustment
+                          autoHeadingLevelEnabled: 'autoHeadingLevelEnabled',
+                          autoHeadingLevelPreset: 'autoHeadingLevelPreset',
+                          autoHeadingLevelReserveH1: 'autoHeadingLevelReserveH1',
              },
              common: {
                           booleanFavAndRecent: 'booleanFavAndRecent',
