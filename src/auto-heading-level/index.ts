@@ -8,7 +8,57 @@
 import { LSPluginBaseInfo } from '@logseq/libs/dist/LSPlugin.user'
 import { booleanLogseqVersionMd } from '..'
 import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
+import { isHeader } from '../page-outline/regex'
+import { Child, TocBlock } from '../page-outline/pageHeaders'
 import { settingKeys } from '../settings/keys'
+
+/**
+ * Header with outline depth information (based on block tree structure)
+ */
+interface OutlineDepthHeader extends TocBlock {
+  depth: number  // Outline depth in block tree (1-based)
+  children?: OutlineDepthHeader[]
+}
+
+/**
+ * Get headers with their outline depth based on block tree structure
+ * This traverses the actual block hierarchy, not heading level hierarchy
+ */
+const getHeadersWithOutlineDepth = (
+  childrenArr: Child[],
+  currentDepth: number = 1,
+  versionMd: boolean
+): OutlineDepthHeader[] => {
+  const headers: OutlineDepthHeader[] = []
+
+  if (!childrenArr) return headers
+
+  for (const child of childrenArr) {
+    // Check if this block is a header
+    if (isHeader(child.content, child as TocBlock, versionMd)) {
+      const header: OutlineDepthHeader = {
+        content: child.content,
+        uuid: child.uuid,
+        properties: child.properties,
+        [":logseq.property/heading"]: child[":logseq.property/heading"],
+        depth: currentDepth,
+        children: []
+      }
+
+      // Recursively get child headers at deeper depth
+      if (child.children) {
+        header.children = getHeadersWithOutlineDepth(child.children, currentDepth + 1, versionMd)
+      }
+
+      headers.push(header)
+    } else if (child.children) {
+      // If not a header but has children, continue traversing at same depth
+      headers.push(...getHeadersWithOutlineDepth(child.children, currentDepth, versionMd))
+    }
+  }
+
+  return headers
+}
 
 /**
  * Preset configurations for heading level ranges
@@ -57,7 +107,77 @@ const extractHeading = (content: string): { hashes: string; text: string } | nul
 }
 
 /**
- * Normalize heading level for a single block
+ * Normalize heading level for a single block using outline depth
+ */
+const normalizeBlockHeadingWithDepth = async (
+  block: OutlineDepthHeader,
+  range: HeadingLevelRange,
+  reserveH1: boolean
+): Promise<boolean> => {
+  const fullContent = block.content || ''
+  const lines = fullContent.split(/\r?\n/)
+  const firstLine = lines[0] || ''
+
+  const heading = extractHeading(firstLine)
+  if (!heading) return false
+
+  const currentLevel = heading.hashes.length
+
+  // If H1 is reserved for page title, don't modify existing H1 headings
+  if (reserveH1 && currentLevel === 1) {
+    return false
+  }
+
+  // Calculate target level based on outline depth
+  let targetLevel = calculateHeadingLevel(block.depth, range)
+
+  // If H1 is reserved and target would be H1, promote to H2
+  if (reserveH1 && targetLevel === 1) {
+    targetLevel = 2
+  }
+
+  // Only update if level changed
+  if (currentLevel === targetLevel) return false
+
+  const newHashes = '#'.repeat(targetLevel)
+  const newFirstLine = `${newHashes} ${heading.text}`
+  const newContent = [newFirstLine, ...lines.slice(1)].join('\n')
+
+  try {
+    await logseq.Editor.updateBlock(block.uuid, newContent)
+    return true
+  } catch (error) {
+    console.error(`Failed to normalize block ${block.uuid}:`, error)
+    return false
+  }
+}
+
+/**
+ * Recursively normalize headings based on outline depth
+ */
+const normalizeOutlineDepthHeadings = async (
+  headers: OutlineDepthHeader[],
+  range: HeadingLevelRange,
+  reserveH1: boolean
+): Promise<number> => {
+  let count = 0
+
+  for (const header of headers) {
+    // Normalize current header
+    const updated = await normalizeBlockHeadingWithDepth(header, range, reserveH1)
+    if (updated) count++
+
+    // Recursively normalize children
+    if (header.children && header.children.length > 0) {
+      count += await normalizeOutlineDepthHeadings(header.children, range, reserveH1)
+    }
+  }
+
+  return count
+}
+
+/**
+ * Normalize heading level for a single block (legacy - using heading hierarchy)
  */
 const normalizeBlockHeading = async (
   block: HierarchicalTocBlock,
@@ -159,21 +279,19 @@ export const normalizePageHeadingsInternal = async (pageName: string, silent: bo
       return 0
     }
 
-    // Get hierarchical headers
+    // Get headers with outline depth based on block tree structure
     const versionMd = booleanLogseqVersionMd()
-    const hierarchicalHeaders = versionMd
-      ? getHierarchicalTocBlocks(pageBlocks as any)
-      : getHierarchicalTocBlocksForDb(pageBlocks as any)
+    const outlineHeaders = getHeadersWithOutlineDepth(pageBlocks as Child[], 1, versionMd)
 
-    if (hierarchicalHeaders.length === 0) {
+    if (outlineHeaders.length === 0) {
       if (!silent) {
         await logseq.UI.showMsg('No headings found on page', 'info')
       }
       return 0
     }
 
-    // Normalize all headings
-    const count = await normalizeHierarchicalHeadings(hierarchicalHeaders, 1, range, reserveH1)
+    // Normalize all headings based on outline depth
+    const count = await normalizeOutlineDepthHeadings(outlineHeaders, range, reserveH1)
 
     if (!silent) {
       if (count > 0) {
@@ -241,19 +359,17 @@ export const normalizeSelectionHeadings = async (): Promise<number> => {
     // Convert to array for processing
     const blocks = [blockTree] as any[]
 
-    // Get hierarchical headers from selection
+    // Get headers with outline depth from selection
     const versionMd = booleanLogseqVersionMd()
-    const hierarchicalHeaders = versionMd
-      ? getHierarchicalTocBlocks(blocks)
-      : getHierarchicalTocBlocksForDb(blocks)
+    const outlineHeaders = getHeadersWithOutlineDepth(blocks as Child[], 1, versionMd)
 
-    if (hierarchicalHeaders.length === 0) {
+    if (outlineHeaders.length === 0) {
       await logseq.UI.showMsg('No headings found in selection', 'info')
       return 0
     }
 
-    // Normalize selected headings
-    const count = await normalizeHierarchicalHeadings(hierarchicalHeaders, 1, range, reserveH1)
+    // Normalize selected headings based on outline depth
+    const count = await normalizeOutlineDepthHeadings(outlineHeaders, range, reserveH1)
 
     if (count > 0) {
       await logseq.UI.showMsg(
