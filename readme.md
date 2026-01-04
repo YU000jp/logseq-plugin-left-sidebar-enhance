@@ -13,12 +13,13 @@
 
 ### Main Features
 
-This plugin provides four main features:
+This plugin provides five main features:
 
 1. Page Outline (=Table of contents :Auto-generated)
 2. Hierarchical Heading Numbering (File-Based Graphs Only)
-3. Auto-hide/show Left Sidebar
-4. Visual Timer
+3. Auto-adjust Markdown Heading Levels (File-Based Graphs Only) 🆕
+4. Auto-hide/show Left Sidebar
+5. Visual Timer
 
 ---
 
@@ -42,6 +43,13 @@ This plugin provides four main features:
    - **Cleanup Function**: Remove all heading numbers from current page
    
    <img width="698" height="550" alt="image" src="https://github.com/user-attachments/assets/fcce4695-03f7-4e3f-9543-a14539031ee0" />
+
+1. **Auto-adjust Markdown Heading Levels** 🆕 (File-Based Graphs Only)
+   - Automatically normalizes Markdown heading levels based on outline depth
+   - **Three Presets**: Choose from H2-H6 (default), H1-H3, or H2-H4 ranges
+   - **H1 Reservation**: Option to reserve H1 for page titles
+   - **Commands**: Normalize entire page or selected blocks
+   - **Detailed Documentation**: [Auto-adjust Markdown Heading Levels Guide](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/blob/main/docs/auto-heading-level.md)
 
 
 1. Auto-hide Left Menu on Mouse Over (Default: **Disabled**)
@@ -103,6 +111,15 @@ Install from Logseq Marketplace
      - Store False Only: Enable all pages by default, save only disabled
    - Cleanup function: Remove heading numbers from current page
      > Note: Only works on local file-based graphs for safety
+
+1. Auto-adjust Markdown Heading Levels Feature 🆕 (File-Based Graphs Only)
+   - Enable/disable automatic heading level normalization
+   - Choose heading level range preset (H2-H6, H1-H3, or H2-H4)
+   - Reserve H1 for page titles option
+   - Commands available via command palette
+     - Normalize headings on current page
+     - Normalize headings in selection
+   - See [detailed documentation](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/blob/main/docs/auto-heading-level.md) for more information
 
 ---
 

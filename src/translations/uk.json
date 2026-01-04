@@ -64,4 +64,12 @@
   "Internal storage for per-page activation states. Managed by toolbar icon.": "Internal storage for per-page activation states. Managed by toolbar icon.",
   "Remove heading numbers from current page": "Remove heading numbers from current page",
   "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.": "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete."
+,  "Enable auto-adjust heading levels": "Enable auto-adjust heading levels",
+  "Automatically adjust Markdown heading levels based on outline depth": "Automatically adjust Markdown heading levels based on outline depth",
+  "Heading level range preset": "Heading level range preset",
+  "Select the range of heading levels to use when normalizing": "Select the range of heading levels to use when normalizing",
+  "Reserve H1 for page title": "Reserve H1 for page title",
+  "When enabled, H1 is reserved for page titles and content headings start from H2": "When enabled, H1 is reserved for page titles and content headings start from H2",
+  "Normalize headings on current page": "Normalize headings on current page",
+  "Normalize headings in selection": "Normalize headings in selection"
 }

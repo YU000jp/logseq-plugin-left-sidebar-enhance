@@ -113,7 +113,35 @@ export const tocSettings = (logseqVersionMd: boolean, currentSettings?: Record<s
                     type: 'object',
                     default: {},
                     description: t('Internal storage for per-page activation states. Managed by toolbar icon.'),
+                },
+                // Auto heading level adjustment
+                {
+                    key: settingKeys.toc.autoHeadingLevelEnabled,
+                    title: t('Enable auto-adjust heading levels'),
+                    type: 'boolean',
+                    default: false,
+                    description: t('Automatically adjust Markdown heading levels based on outline depth'),
                 })
+
+            if (cfg[settingKeys.toc.autoHeadingLevelEnabled] === true) {
+                list.push(
+                    {
+                        key: settingKeys.toc.autoHeadingLevelPreset,
+                        title: t('Heading level range preset'),
+                        type: 'enum',
+                        enumChoices: ['h2-h6', 'h1-h3', 'h2-h4'],
+                        enumPicker: 'select',
+                        default: 'h2-h6',
+                        description: t('Select the range of heading levels to use when normalizing'),
+                    },
+                    {
+                        key: settingKeys.toc.autoHeadingLevelReserveH1,
+                        title: t('Reserve H1 for page title'),
+                        type: 'boolean',
+                        default: false,
+                        description: t('When enabled, H1 is reserved for page titles and content headings start from H2'),
+                    })
+            }
         }
     }
 
