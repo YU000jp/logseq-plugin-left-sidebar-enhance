@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.0.0...v2.1.0) (2026-01-04)
+
+
+### Features
+
+* **Add:** Add auto-adjust Markdown heading levels based on outline depth ([929e8d8](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/929e8d89418704319185741bb308ecb7d9056310)), closes [#33](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/issues/33)
+
 # [2.0.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v1.17.0...v2.0.0) (2026-01-04)
 
 
