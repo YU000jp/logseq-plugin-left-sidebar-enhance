@@ -4,7 +4,7 @@ This guide helps you verify the auto-heading-level feature works correctly.
 
 ## Prerequisites
 
-1. Using a **file-based** Logseq graph (not cloud-based)
+1. Using a **file-based** Logseq model (not cloud-based)
 2. Plugin installed and enabled
 3. Plugin loaded successfully (check in Plugins menu)
 
@@ -311,7 +311,7 @@ After running all tests, verify:
 If tests fail:
 
 1. **Commands not found**: Restart Logseq to reload plugin
-2. **No changes made**: Check if using file-based graph (not cloud)
+2. **No changes made**: Check if using file-based model (not cloud)
 3. **Unexpected levels**: Verify selected preset in settings
 4. **Numbers corrupted**: Try running cleanup command first
 5. **Build errors**: Run `npm run build` and check for TypeScript errors

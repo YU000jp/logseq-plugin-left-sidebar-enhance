@@ -133,9 +133,9 @@ After normalizing heading levels, the table of contents and anchor links are aut
 
 The feature is **disabled by default** to preserve existing user behavior. You must explicitly enable it in settings.
 
-### File-Based Graphs Only
+### File-Based Model Only
 
-This feature only works on file-based (local) Logseq graphs. It is not available for cloud-based graphs.
+This feature only works with the file-based (local) Logseq model. It is not available for cloud-based graphs.
 
 ### Backup Recommendation
 
@@ -161,7 +161,7 @@ Only Markdown headings (lines starting with `#` to `######`) are processed.
 ### Headings Not Changing
 
 1. Verify the feature is enabled in settings
-2. Check that you're using a file-based graph
+2. Check that you're using a file-based model
 3. Ensure the blocks contain valid Markdown headings
 4. Check that the headings aren't already at the correct level
 

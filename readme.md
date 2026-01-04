@@ -16,8 +16,8 @@
 This plugin provides five main features:
 
 1. Page Outline (=Table of contents :Auto-generated)
-2. Hierarchical Heading Numbering (File-Based Graphs Only)
-3. Auto-adjust Markdown Heading Levels (File-Based Graphs Only) 🆕
+2. Hierarchical Heading Numbering (File-Based Model Only)
+3. Auto-adjust Markdown Heading Levels (File-Based Model Only) 🆕
 4. Auto-hide/show Left Sidebar
 5. Visual Timer
 
@@ -35,7 +35,7 @@ This plugin provides five main features:
 
    ![image](https://github.com/user-attachments/assets/f25fff05-1ae4-4be7-aff6-8cb8ca277155)
 
-1. **Hierarchical Heading Numbering** (File-Based Graphs Only)
+1. **Hierarchical Heading Numbering** (File-Based Model Only)
    - Automatically adds hierarchical numbers (1, 1.1, 1.1.1, etc.) to markdown headings
    - **File-Update Mode**: Directly modifies markdown files to add numbers
    - **Per-Page Activation**: Toggle numbering for individual pages using toolbar icon
@@ -44,7 +44,7 @@ This plugin provides five main features:
    
    <img width="698" height="550" alt="image" src="https://github.com/user-attachments/assets/fcce4695-03f7-4e3f-9543-a14539031ee0" />
 
-1. **Auto-adjust Markdown Heading Levels** 🆕 (File-Based Graphs Only)
+1. **Auto-adjust Markdown Heading Levels** 🆕 (File-Based Model Only)
    - Automatically normalizes Markdown heading levels based on outline depth
    - **Three Presets**: Choose from H2-H6 (default), H1-H3, or H2-H4 ranges
    - **H1 Reservation**: Option to reserve H1 for page titles
@@ -103,16 +103,16 @@ Install from Logseq Marketplace
    - Show date list in journal pages
    - List of words to exclude from the header list (line-separated)
 
-1. Hierarchical Heading Numbering Feature (File-Based Graphs Only)
+1. Hierarchical Heading Numbering Feature (File-Based Model Only)
    - Enable/disable file-update mode for automatic heading numbering
    - Configure number delimiter (new and old for detection/replacement)
    - Per-page activation storage mode
      - Store True Only: Save only enabled pages (default)
      - Store False Only: Enable all pages by default, save only disabled
    - Cleanup function: Remove heading numbers from current page
-     > Note: Only works on local file-based graphs for safety
+   > Note: Only works with the local file-based model for safety
 
-1. Auto-adjust Markdown Heading Levels Feature 🆕 (File-Based Graphs Only)
+1. Auto-adjust Markdown Heading Levels Feature 🆕 (File-Based Model Only)
    - Enable/disable automatic heading level normalization
    - Choose heading level range preset (H2-H6, H1-H3, or H2-H4)
    - Reserve H1 for page titles option
