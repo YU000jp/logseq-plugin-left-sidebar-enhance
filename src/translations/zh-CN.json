@@ -63,8 +63,8 @@
   "The target date has passed.": "The target date has passed.",
   "Target date cleared.": "Target date cleared.",
   "Remove heading numbers from current page": "从当前页面删除标题编号",
-  "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.": "⚠️ 启用后，将从当前打开的页面删除所有标题编号。完成后自动重置为false。"
-,  "Enable auto-adjust heading levels": "Enable auto-adjust heading levels",
+  "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.": "⚠️ 启用后，将从当前打开的页面删除所有标题编号。完成后自动重置为false。",
+  "Enable auto-adjust heading levels": "Enable auto-adjust heading levels",
   "Automatically adjust Markdown heading levels based on outline depth": "Automatically adjust Markdown heading levels based on outline depth",
   "Heading level range preset": "Heading level range preset",
   "Select the range of heading levels to use when normalizing": "Select the range of heading levels to use when normalizing",

@@ -63,8 +63,8 @@
   "The target date has passed.": "The target date has passed.",
   "Target date cleared.": "Target date cleared.",
   "Remove heading numbers from current page": "현재 페이지에서 제목 번호 제거",
-  "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.": "⚠️ 활성화하면 현재 열린 페이지에서 모든 제목 번호를 제거합니다. 완료되면 자동으로 false로 재설정됩니다."
-,  "Enable auto-adjust heading levels": "Enable auto-adjust heading levels",
+  "⚠️ When enabled, removes all heading numbers from the currently open page. Setting will automatically reset to false when complete.": "⚠️ 활성화하면 현재 열린 페이지에서 모든 제목 번호를 제거합니다. 완료되면 자동으로 false로 재설정됩니다.",
+  "Enable auto-adjust heading levels": "Enable auto-adjust heading levels",
   "Automatically adjust Markdown heading levels based on outline depth": "Automatically adjust Markdown heading levels based on outline depth",
   "Heading level range preset": "Heading level range preset",
   "Select the range of heading levels to use when normalizing": "Select the range of heading levels to use when normalizing",

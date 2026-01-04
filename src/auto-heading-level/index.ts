@@ -7,7 +7,7 @@
 
 import { LSPluginBaseInfo } from '@logseq/libs/dist/LSPlugin.user'
 import { booleanLogseqVersionMd } from '..'
-import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
+import { HierarchicalTocBlock } from '../page-outline/findHeaders'
 import { isHeader } from '../page-outline/regex'
 import { Child, TocBlock } from '../page-outline/pageHeaders'
 import { settingKeys } from '../settings/keys'
@@ -170,78 +170,6 @@ const normalizeOutlineDepthHeadings = async (
     // Recursively normalize children
     if (header.children && header.children.length > 0) {
       count += await normalizeOutlineDepthHeadings(header.children, range, reserveH1)
-    }
-  }
-
-  return count
-}
-
-/**
- * Normalize heading level for a single block (legacy - using heading hierarchy)
- */
-const normalizeBlockHeading = async (
-  block: HierarchicalTocBlock,
-  depth: number,
-  range: HeadingLevelRange,
-  reserveH1: boolean
-): Promise<boolean> => {
-  const fullContent = block.content || ''
-  const lines = fullContent.split(/\r?\n/)
-  const firstLine = lines[0] || ''
-
-  const heading = extractHeading(firstLine)
-  if (!heading) return false
-
-  const currentLevel = heading.hashes.length
-
-  // If H1 is reserved for page title, don't modify existing H1 headings
-  if (reserveH1 && currentLevel === 1) {
-    return false
-  }
-
-  // Calculate target level
-  let targetLevel = calculateHeadingLevel(depth, range)
-
-  // If H1 is reserved and target would be H1, promote to H2
-  if (reserveH1 && targetLevel === 1) {
-    targetLevel = 2
-  }
-
-  // Only update if level changed
-  if (currentLevel === targetLevel) return false
-
-  const newHashes = '#'.repeat(targetLevel)
-  const newFirstLine = `${newHashes} ${heading.text}`
-  const newContent = [newFirstLine, ...lines.slice(1)].join('\n')
-
-  try {
-    await logseq.Editor.updateBlock(block.uuid, newContent)
-    return true
-  } catch (error) {
-    console.error(`Failed to normalize block ${block.uuid}:`, error)
-    return false
-  }
-}
-
-/**
- * Recursively normalize headings in hierarchical structure
- */
-const normalizeHierarchicalHeadings = async (
-  headers: HierarchicalTocBlock[],
-  depth: number,
-  range: HeadingLevelRange,
-  reserveH1: boolean
-): Promise<number> => {
-  let count = 0
-
-  for (const header of headers) {
-    // Normalize current header
-    const updated = await normalizeBlockHeading(header, depth, range, reserveH1)
-    if (updated) count++
-
-    // Recursively normalize children
-    if (header.children && header.children.length > 0) {
-      count += await normalizeHierarchicalHeadings(header.children, depth + 1, range, reserveH1)
     }
   }
 

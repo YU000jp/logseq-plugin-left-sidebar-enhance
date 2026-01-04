@@ -57,7 +57,7 @@ export const initSettingsDispatcher = () => {
                                        }
 
                           if (shouldShowSettings === false)
-                                                    // Handle auto heading level settings
+                                        // Handle auto heading level settings
                                        try {
                                                     const r = await handleAutoHeadingLevelSettingsChanged(newSet, oldSet)
                                                     if (r === true) shouldShowSettings = true
