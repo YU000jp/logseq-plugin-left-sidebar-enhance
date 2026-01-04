@@ -73,6 +73,8 @@ export const isPageActive = (pageName: string): boolean => {
     const storageMode = logseq.settings?.[settingKeys.toc.pageStateStorageMode] as string || 'storeTrueOnly'
     const pageStates = logseq.settings?.[settingKeys.toc.pageStates] as Record<string, boolean> || {}
 
+    console.log('Checking if page is active:', pageName, 'Storage mode:', storageMode, 'Page states:', pageStates)
+
     if (storageMode === 'storeTrueOnly') {
         // Only pages explicitly set to true are active
         return pageStates[pageName] === true
@@ -85,18 +87,20 @@ export const isPageActive = (pageName: string): boolean => {
 /**
  * Toggle page activation state
  */
-export const togglePageState = async (pageName: string): Promise<boolean> => {
-    const storageMode = logseq.settings?.[settingKeys.toc.pageStateStorageMode] as string || 'storeTrueOnly'
+export const togglePageState = async (pageName: string): Promise<{ newState: boolean; hadEntry: boolean }> => {
+
     const pageStates = logseq.settings?.[settingKeys.toc.pageStates] as Record<string, boolean> || {}
 
     const currentState = isPageActive(pageName)
     const newState = !currentState
 
+    const storageMode = logseq.settings?.[settingKeys.toc.pageStateStorageMode] as string || 'storeTrueOnly'
     if (storageMode === 'storeTrueOnly') {
         if (newState) {
             pageStates[pageName] = true
         } else {
             delete pageStates[pageName]
+            await executeCleanup()
         }
     } else {
         // storeFalseOnly
@@ -104,14 +108,20 @@ export const togglePageState = async (pageName: string): Promise<boolean> => {
             delete pageStates[pageName]
         } else {
             pageStates[pageName] = false
+            await executeCleanup()
         }
     }
-
-    await logseq.updateSettings({
-        [settingKeys.toc.pageStates]: pageStates
+    logseq.updateSettings({
+        [settingKeys.toc.pageStates]: null
     })
-
-    return newState
+    // Debugging logs
+    setTimeout(() => {
+        logseq.updateSettings({
+            [settingKeys.toc.pageStates]: pageStates
+        })
+    }, 100)
+    const hadEntry = Object.prototype.hasOwnProperty.call(pageStates, pageName)
+    return { newState, hadEntry }
 }
 
 /**
@@ -326,7 +336,7 @@ export const handleHeadingNumberingSettingsChanged = async (newSet: any, oldSet:
 }
 
 /**
- * Execute cleanup - remove all heading numbers from all files
+ * Execute cleanup - remove all heading numbers from the current page
  */
 const executeCleanup = async (): Promise<void> => {
     try {
@@ -393,7 +403,7 @@ const executeCleanup = async (): Promise<void> => {
  * Reset the cleanup flag to false
  */
 const resetCleanupFlag = async (): Promise<void> => {
-    await logseq.updateSettings({
+    logseq.updateSettings({
         [settingKeys.toc.headingNumberCleanup]: false
     })
 }
@@ -418,49 +428,49 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
         let cleanedCount = 0
         const removeFromHeaders = async (headers: HierarchicalTocBlock[]) => {
             for (const header of headers) {
-                    // Work on the first line only and preserve remaining lines
-                    const fullContent = header.content || ''
-                    const lines = fullContent.split(/\r?\n/)
-                    const firstLine = lines.length > 0 ? lines[0] : ''
+                // Work on the first line only and preserve remaining lines
+                const fullContent = header.content || ''
+                const lines = fullContent.split(/\r?\n/)
+                const firstLine = lines.length > 0 ? lines[0] : ''
 
-                    // Try to extract old number using delimiter from first line
-                    const { number: oldNumber, textWithoutNumber } = extractOldNumber(firstLine, oldDelimiter)
+                // Try to extract old number using delimiter from first line
+                const { number: oldNumber, textWithoutNumber } = extractOldNumber(firstLine, oldDelimiter)
 
-                    // Also handle cases with multiple/duplicate numbers or corrupted numbering on first line
-                    const multiMatch = firstLine.match(MULTI_NUMBER_PATTERN)
+                // Also handle cases with multiple/duplicate numbers or corrupted numbering on first line
+                const multiMatch = firstLine.match(MULTI_NUMBER_PATTERN)
 
-                    let shouldClean = false
-                    let cleanedText = ''
-                    let hashTags = ''
+                let shouldClean = false
+                let cleanedText = ''
+                let hashTags = ''
 
-                    if (oldNumber) {
-                        // Has a number detected by delimiter pattern
-                        shouldClean = true
-                        const textOnly = textWithoutNumber.replace(HEADING_HASHES_PATTERN, '')
-                        hashTags = textWithoutNumber.match(HEADING_HASHES_ONLY_PATTERN)?.[0] || ''
-                        cleanedText = textOnly
-                    } else if (multiMatch) {
-                        // Has multiple/duplicate numbers or corrupted numbering
-                        shouldClean = true
-                        hashTags = multiMatch[1]
-                        cleanedText = multiMatch[2]
-                    }
+                if (oldNumber) {
+                    // Has a number detected by delimiter pattern
+                    shouldClean = true
+                    const textOnly = textWithoutNumber.replace(HEADING_HASHES_PATTERN, '')
+                    hashTags = textWithoutNumber.match(HEADING_HASHES_ONLY_PATTERN)?.[0] || ''
+                    cleanedText = textOnly
+                } else if (multiMatch) {
+                    // Has multiple/duplicate numbers or corrupted numbering
+                    shouldClean = true
+                    hashTags = multiMatch[1]
+                    cleanedText = multiMatch[2]
+                }
 
-                    if (shouldClean && cleanedText.trim()) {
-                        const level = header.level
-                        const newHashTags = hashTags || '#'.repeat(level)
-                        const newFirstLine = `${newHashTags} ${cleanedText}`
-                        const newContent = [newFirstLine, ...lines.slice(1)].join('\n')
+                if (shouldClean && cleanedText.trim()) {
+                    const level = header.level
+                    const newHashTags = hashTags || '#'.repeat(level)
+                    const newFirstLine = `${newHashTags} ${cleanedText}`
+                    const newContent = [newFirstLine, ...lines.slice(1)].join('\n')
 
-                        if (newContent !== fullContent) {
-                            try {
-                                await logseq.Editor.updateBlock(header.uuid, newContent)
-                                cleanedCount++
-                            } catch (error) {
-                                console.error(`Failed to clean block ${header.uuid}:`, error)
-                            }
+                    if (newContent !== fullContent) {
+                        try {
+                            await logseq.Editor.updateBlock(header.uuid, newContent)
+                            cleanedCount++
+                        } catch (error) {
+                            console.error(`Failed to clean block ${header.uuid}:`, error)
                         }
                     }
+                }
 
                 // Recursively process children
                 if (header.children && header.children.length > 0) {
@@ -475,11 +485,4 @@ const cleanupPageHeadingNumbers = async (pageName: string, oldDelimiter: string)
         console.error(`Error cleaning page ${pageName}:`, error)
         return 0
     }
-}
-
-/**
- * Cleanup function
- */
-export const cleanupHeadingNumbering = () => {
-    // display-only numbering removed — nothing to cleanup for DOM/CSS
 }

@@ -10,7 +10,7 @@ import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import { removeContainer } from './util/lib'
 import { loadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
-import { initHeadingNumbering, applyHeadingNumbersToPage, cleanupHeadingNumbering } from './heading-numbering'
+import { initHeadingNumbering, applyHeadingNumbersToPage } from './heading-numbering'
 import { removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
@@ -79,7 +79,6 @@ const main = async () => {
     removeContainer("lse-dataSelector-container")
     removeContainer("lse-visualTimer-container")
     removeToolbarIcon()
-    cleanupHeadingNumbering()
   })
 
   logseq.App.onCurrentGraphChanged(async () => {
