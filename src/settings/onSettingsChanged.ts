@@ -4,6 +4,7 @@ import { handleTocSettingsChanged } from '../page-outline/setup'
 import { handleMouseoverSettingsChanged } from '../mouseover'
 import { handleFavAndRecentSettingsChanged } from '../favAndRecent'
 import { handleHeadingNumberingSettingsChanged } from '../heading-numbering'
+import { handleAutoHeadingLevelSettingsChanged } from '../auto-heading-level'
 import { settingsTemplate } from '../settings'
 import { booleanLogseqVersionMd } from '..'
 
@@ -53,6 +54,15 @@ export const initSettingsDispatcher = () => {
                                                     if (r === true) shouldShowSettings = true
                                        } catch (e) {
                                                     console.error('heading numbering settings handler failed', e)
+                                       }
+
+                          if (shouldShowSettings === false)
+                                       // Handle auto heading level settings
+                                       try {
+                                                    const r = await handleAutoHeadingLevelSettingsChanged(newSet, oldSet)
+                                                    if (r === true) shouldShowSettings = true
+                                       } catch (e) {
+                                                    console.error('auto heading level settings handler failed', e)
                                        }
 
                           // 各ハンドラが変更を報告した場合にのみ設定UIを再表示する

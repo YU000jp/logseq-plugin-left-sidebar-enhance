@@ -305,3 +305,18 @@ export const initAutoHeadingLevel = () => {
   // Register commands
   registerAutoHeadingLevelCommands()
 }
+
+/**
+ * Handle settings changed for auto heading level
+ * Returns true if settings UI should be refreshed
+ */
+export const handleAutoHeadingLevelSettingsChanged = async (newSet: any, oldSet: any): Promise<boolean> => {
+  // Check if autoHeadingLevelEnabled changed
+  if (oldSet[settingKeys.toc.autoHeadingLevelEnabled] !== newSet[settingKeys.toc.autoHeadingLevelEnabled]) {
+    // Return true to trigger settings UI refresh
+    // This will show/hide the preset and H1 reservation settings based on the new state
+    return true
+  }
+  
+  return false
+}
