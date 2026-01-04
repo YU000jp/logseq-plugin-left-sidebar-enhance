@@ -123,8 +123,11 @@ const normalizeHierarchicalHeadings = async (
 }
 
 /**
- * Internal function to normalize headings without UI messages
+ * Internal function to normalize headings with optional UI feedback
  * Used by both command and automatic integration with heading numbering
+ * @param pageName - The name of the page to normalize headings on
+ * @param silent - If true, suppresses all UI messages (for automatic integration)
+ * @returns The number of headings that were normalized
  */
 export const normalizePageHeadingsInternal = async (pageName: string, silent: boolean = false): Promise<number> => {
   // Check if feature is enabled
