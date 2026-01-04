@@ -123,12 +123,15 @@ const normalizeHierarchicalHeadings = async (
 }
 
 /**
- * Normalize headings for entire page
+ * Internal function to normalize headings without UI messages
+ * Used by both command and automatic integration with heading numbering
  */
-export const normalizePageHeadings = async (pageName: string): Promise<number> => {
+export const normalizePageHeadingsInternal = async (pageName: string, silent: boolean = false): Promise<number> => {
   // Check if feature is enabled
   if (logseq.settings?.[settingKeys.toc.autoHeadingLevelEnabled] !== true) {
-    await logseq.UI.showMsg('⚠️ Auto heading level adjustment is not enabled', 'warning')
+    if (!silent) {
+      await logseq.UI.showMsg('⚠️ Auto heading level adjustment is not enabled', 'warning')
+    }
     return 0
   }
 
@@ -141,7 +144,9 @@ export const normalizePageHeadings = async (pageName: string): Promise<number> =
     // Get page blocks
     const pageBlocks = await logseq.Editor.getPageBlocksTree(pageName)
     if (!pageBlocks || pageBlocks.length === 0) {
-      await logseq.UI.showMsg('No blocks found on page', 'info')
+      if (!silent) {
+        await logseq.UI.showMsg('No blocks found on page', 'info')
+      }
       return 0
     }
 
@@ -152,33 +157,46 @@ export const normalizePageHeadings = async (pageName: string): Promise<number> =
       : getHierarchicalTocBlocksForDb(pageBlocks as any)
 
     if (hierarchicalHeaders.length === 0) {
-      await logseq.UI.showMsg('No headings found on page', 'info')
+      if (!silent) {
+        await logseq.UI.showMsg('No headings found on page', 'info')
+      }
       return 0
     }
 
     // Normalize all headings
     const count = await normalizeHierarchicalHeadings(hierarchicalHeaders, 1, range, reserveH1)
 
-    if (count > 0) {
-      await logseq.UI.showMsg(
-        `✓ Normalized ${count} heading(s) on "${pageName}"`,
-        'success',
-        { timeout: 3000 }
-      )
-    } else {
-      await logseq.UI.showMsg(
-        `All headings on "${pageName}" are already normalized`,
-        'info',
-        { timeout: 3000 }
-      )
+    if (!silent) {
+      if (count > 0) {
+        await logseq.UI.showMsg(
+          `✓ Normalized ${count} heading(s) on "${pageName}"`,
+          'success',
+          { timeout: 3000 }
+        )
+      } else {
+        await logseq.UI.showMsg(
+          `All headings on "${pageName}" are already normalized`,
+          'info',
+          { timeout: 3000 }
+        )
+      }
     }
 
     return count
   } catch (error) {
     console.error('Error normalizing page headings:', error)
-    await logseq.UI.showMsg(`Error normalizing headings: ${error}`, 'error')
+    if (!silent) {
+      await logseq.UI.showMsg(`Error normalizing headings: ${error}`, 'error')
+    }
     return 0
   }
+}
+
+/**
+ * Normalize headings for entire page (with UI feedback)
+ */
+export const normalizePageHeadings = async (pageName: string): Promise<number> => {
+  return normalizePageHeadingsInternal(pageName, false)
 }
 
 /**

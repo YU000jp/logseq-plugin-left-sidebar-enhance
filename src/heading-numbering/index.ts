@@ -6,6 +6,7 @@
 import { booleanLogseqVersionMd } from '..'
 import { getHierarchicalTocBlocks, getHierarchicalTocBlocksForDb, HierarchicalTocBlock } from '../page-outline/findHeaders'
 import { settingKeys } from '../settings/keys'
+import { normalizePageHeadingsInternal } from '../auto-heading-level'
 
 let isFileBasedGraph = false
 
@@ -175,6 +176,12 @@ export const applyHeadingNumbersToPage = async (pageName: string): Promise<void>
     // Check if page is active
     if (!isPageActive(pageName)) {
         return
+    }
+
+    // First, normalize heading levels if auto-heading-level is enabled
+    // This ensures heading levels are correct before applying numbers
+    if (logseq.settings?.[settingKeys.toc.autoHeadingLevelEnabled] === true) {
+        await normalizePageHeadingsInternal(pageName, true) // silent mode
     }
 
     const newDelimiter = (logseq.settings?.[settingKeys.toc.headingNumberDelimiterFile] as string) || '.'

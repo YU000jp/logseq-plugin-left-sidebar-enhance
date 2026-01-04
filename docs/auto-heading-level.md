@@ -103,6 +103,17 @@ The auto-heading-level feature is designed to work alongside the existing hierar
 1. **Processing Order**: Heading level normalization → Heading numbering → TOC generation
 2. **Independent Operations**: Both features can be enabled simultaneously
 3. **No Conflicts**: Numbering is applied after level normalization
+4. **Automatic Integration**: When both features are enabled, heading levels are automatically normalized before applying numbers on page load
+
+#### Automatic Integration
+
+When both "Auto-adjust heading levels" and "Enable heading numbering (file-update mode)" are enabled:
+
+- **On Page Load**: Heading levels are automatically normalized first, then hierarchical numbers are applied
+- **No Manual Action Required**: The normalization happens silently in the background
+- **Consistent Hierarchy**: Ensures both heading levels and numbering reflect the correct document structure
+
+This integration ensures that your heading numbers are always applied to properly leveled headings, maintaining semantic correctness.
 
 ### With TOC and Anchors
 
