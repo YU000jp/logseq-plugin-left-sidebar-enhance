@@ -51,6 +51,8 @@ Choose one of three preset ranges for heading normalization:
 
 When enabled, this option prevents H1 from being used in content. Even if a heading would normally be assigned H1 based on depth, it will be promoted to H2 instead.
 
+**Note**: This option only has an effect when using a preset that includes H1, such as **H1-H3**. When using presets like H2-H6 or H2-H4, H1 is already excluded by the preset range, so this option has no additional effect.
+
 This is useful for maintaining semantic HTML structure where each page should have only one H1 (the title).
 
 ## Usage

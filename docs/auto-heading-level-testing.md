@@ -102,7 +102,7 @@ Levels beyond H4 should be clamped to H4.
 ## Test 5: H1 Reservation
 
 ### Setup
-1. Use H2-H6 preset
+1. Use **H1-H3** preset (important: H1 reservation only works with presets that include H1)
 2. Enable "Reserve H1 for page title"
 3. Create test content:
 
@@ -121,6 +121,8 @@ Levels beyond H4 should be clamped to H4.
 ```
 
 Even depth-1 headings should become H2 when H1 is reserved.
+
+**Note**: This test will fail if using H2-H6 or H2-H4 presets, as those presets already exclude H1. The reservation option only has an effect when using presets that include H1 (like H1-H3).
 
 ## Test 6: Selection-Based Normalization
 
