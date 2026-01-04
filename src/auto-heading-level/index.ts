@@ -74,7 +74,7 @@ const normalizeBlockHeading = async (
 
   // Calculate target level
   let targetLevel = calculateHeadingLevel(depth, range)
-  
+
   // If H1 is reserved for page title, don't use it in content
   if (reserveH1 && targetLevel === 1) {
     targetLevel = 2
@@ -312,7 +312,7 @@ export const initAutoHeadingLevel = () => {
  * Returns true if settings UI should be refreshed
  */
 export const handleAutoHeadingLevelSettingsChanged = async (
-  newSet: LSPluginBaseInfo['settings'], 
+  newSet: LSPluginBaseInfo['settings'],
   oldSet: LSPluginBaseInfo['settings']
 ): Promise<boolean> => {
   // Check if autoHeadingLevelEnabled changed
@@ -321,6 +321,16 @@ export const handleAutoHeadingLevelSettingsChanged = async (
     // This will show/hide the preset and H1 reservation settings based on the new state
     return true
   }
-  
+  //settingKeys.toc.autoHeadingLevelPresetとsettingKeys.toc.autoHeadingLevelReserveH1の変更があったらAuto Heading Levelの再適用を実施
+  if (
+    oldSet[settingKeys.toc.autoHeadingLevelPreset] !== newSet[settingKeys.toc.autoHeadingLevelPreset] ||
+    oldSet[settingKeys.toc.autoHeadingLevelReserveH1] !== newSet[settingKeys.toc.autoHeadingLevelReserveH1]
+  ) {
+    const currentPage = await logseq.Editor.getCurrentPage()
+    if (currentPage) {
+      const pageName = (currentPage.originalName || currentPage.name) as string
+      await normalizePageHeadingsInternal(pageName, true)
+    }
+  }
   return false
 }
