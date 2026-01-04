@@ -442,7 +442,7 @@ export const handleAutoHeadingLevelSettingsChanged = async (
     // This will show/hide the preset and H1 reservation settings based on the new state
     return true
   }
-  //settingKeys.toc.autoHeadingLevelPresetとsettingKeys.toc.autoHeadingLevelReserveH1の変更があったらAuto Heading Levelの再適用を実施
+  // If autoHeadingLevelPreset or autoHeadingLevelReserveH1 changes, reapply Auto Heading Level to the current page
   if (
     oldSet[settingKeys.toc.autoHeadingLevelPreset] !== newSet[settingKeys.toc.autoHeadingLevelPreset] ||
     oldSet[settingKeys.toc.autoHeadingLevelReserveH1] !== newSet[settingKeys.toc.autoHeadingLevelReserveH1]
