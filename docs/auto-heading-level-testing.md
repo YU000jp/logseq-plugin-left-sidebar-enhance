@@ -102,13 +102,15 @@ Levels beyond H4 should be clamped to H4.
 ## Test 5: H1 Reservation
 
 ### Setup
-1. Use **H1-H3** preset (important: H1 reservation only works with presets that include H1)
+1. Use **H2-H6** preset
 2. Enable "Reserve H1 for page title"
 3. Create test content:
 
 ```
-# Top level heading
-## Second level
+# Page Title (existing H1 - should be preserved)
+## First section
+### Subsection
+## Second section
 ```
 
 ### Execute
@@ -116,13 +118,36 @@ Levels beyond H4 should be clamped to H4.
 
 ### Expected Result
 ```
-## Top level heading (H1 avoided, promoted to H2)
-### Second level
+# Page Title (preserved - not changed because reserveH1 is true)
+## First section
+### Subsection
+## Second section
 ```
 
-Even depth-1 headings should become H2 when H1 is reserved.
+The existing H1 heading should be preserved and not modified when reservation is enabled.
 
-**Note**: This test will fail if using H2-H6 or H2-H4 presets, as those presets already exclude H1. The reservation option only has an effect when using presets that include H1 (like H1-H3).
+### Test 5b: H1 Reservation with H1-H3 Preset
+
+### Setup
+1. Use **H1-H3** preset
+2. Enable "Reserve H1 for page title"
+3. Create test content (no existing H1):
+
+```
+## First section
+### Subsection
+```
+
+### Execute
+1. Run "Normalize headings on current page" command
+
+### Expected Result
+```
+## First section (depth 1, but promoted from H1 to H2 due to reservation)
+### Subsection (depth 2 → H2, but child so becomes H3)
+```
+
+With H1-H3 preset and reservation enabled, depth-1 headings are promoted to H2 to avoid creating new H1 headings.
 
 ## Test 6: Selection-Based Normalization
 

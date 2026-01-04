@@ -49,11 +49,17 @@ Choose one of three preset ranges for heading normalization:
 
 ### Reserve H1 for Page Titles
 
-When enabled, this option prevents H1 from being used in content. Even if a heading would normally be assigned H1 based on depth, it will be promoted to H2 instead.
+When enabled, this option preserves existing H1 headings and prevents new H1 headings from being created during normalization.
 
-**Note**: This option only has an effect when using a preset that includes H1, such as **H1-H3**. When using presets like H2-H6 or H2-H4, H1 is already excluded by the preset range, so this option has no additional effect.
+**Behavior:**
+- **Existing H1 headings**: Kept as-is, not modified
+- **New headings that would become H1**: Promoted to H2 instead
 
-This is useful for maintaining semantic HTML structure where each page should have only one H1 (the title).
+This option works with all presets:
+- **H2-H6 or H2-H4 presets**: Preserves any existing H1 headings that may exist in the document
+- **H1-H3 preset**: Additionally prevents depth-1 headings from becoming H1, promoting them to H2
+
+This is useful for maintaining semantic HTML structure where each page should have only one H1 (the title), and that H1 is manually placed and should not be modified by automatic normalization.
 
 ## Usage
 

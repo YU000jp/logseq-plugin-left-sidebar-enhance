@@ -69,7 +69,7 @@
   "Heading level range preset": "Heading level range preset",
   "Select the range of heading levels to use when normalizing": "Select the range of heading levels to use when normalizing",
   "Reserve H1 for page title": "Reserve H1 for page title",
-  "When enabled, H1 is reserved for page titles and content headings start from H2": "When enabled, H1 is reserved for page titles and content headings start from H2 (only effective with presets that include H1)",
+  "When enabled, H1 is reserved for page titles and content headings start from H2": "When enabled, existing H1 headings are preserved and new H1 headings are prevented",
   "Normalize headings on current page": "Normalize headings on current page",
   "Normalize headings in selection": "Normalize headings in selection"
 }

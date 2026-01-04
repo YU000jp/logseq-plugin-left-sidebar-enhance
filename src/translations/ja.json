@@ -88,7 +88,7 @@
   "Heading level range preset": "見出しレベル範囲プリセット",
   "Select the range of heading levels to use when normalizing": "正規化時に使用する見出しレベルの範囲を選択します",
   "Reserve H1 for page title": "H1をページタイトル用に予約",
-  "When enabled, H1 is reserved for page titles and content headings start from H2": "有効にすると、H1はページタイトル用に予約され、コンテンツの見出しはH2から始まります（H1を含むプリセット使用時のみ有効）",
+  "When enabled, H1 is reserved for page titles and content headings start from H2": "有効にすると、既存のH1見出しが保持され、新しいH1見出しの作成が防止されます",
   "Normalize headings on current page": "現在のページの見出しを正規化",
   "Normalize headings in selection": "選択範囲の見出しを正規化"
 }

@@ -72,15 +72,20 @@ const normalizeBlockHeading = async (
   const heading = extractHeading(firstLine)
   if (!heading) return false
 
+  const currentLevel = heading.hashes.length
+
+  // If H1 is reserved for page title, don't modify existing H1 headings
+  if (reserveH1 && currentLevel === 1) {
+    return false
+  }
+
   // Calculate target level
   let targetLevel = calculateHeadingLevel(depth, range)
 
-  // If H1 is reserved for page title, don't use it in content
+  // If H1 is reserved and target would be H1, promote to H2
   if (reserveH1 && targetLevel === 1) {
     targetLevel = 2
   }
-
-  const currentLevel = heading.hashes.length
 
   // Only update if level changed
   if (currentLevel === targetLevel) return false
