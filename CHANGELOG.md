@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.1.0...v2.1.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* detect Logseq OG (1.x) as MD model in checkLogseqVersion ([df87c5a](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/df87c5a10d4e9d9070b9d1fad66f64b74265a602))
+
 # [2.1.0](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.0.0...v2.1.0) (2026-01-04)
 
 
