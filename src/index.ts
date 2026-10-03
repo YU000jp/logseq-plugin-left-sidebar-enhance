@@ -10,7 +10,7 @@ import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import { removeContainer } from './util/lib'
 import { loadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
-import { initHeadingNumbering, applyHeadingNumbersToPage, refreshFileBasedGraphFlag } from './heading-numbering'
+import { initHeadingNumbering, applyHeadingNumbersToPage, setFileBasedGraphFlag } from './heading-numbering'
 import { removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
 import { initAutoHeadingLevel } from './auto-heading-level'
 
@@ -103,12 +103,12 @@ const main = async () => {
     const isDbGraph = await checkLogseqDbGraph()
     if (seq !== graphDetectionSeq || isDbGraph === null) return
     const newVersionMd = !isDbGraph
+    // heading-numbering 側のファイルグラフ判定も同期(非同期の再検出は行わず検出値を使う)
+    setFileBasedGraphFlag(newVersionMd)
     if (newVersionMd !== logseqVersionMd) {
       logseqVersionMd = newVersionMd
       // ファイルグラフ向け設定項目の表示/非表示を更新するためスキーマを再適用
       logseq.useSettingsSchema(settingsTemplate(logseqVersionMd, logseq.settings ?? undefined))
-      // heading-numbering 側のファイルグラフ判定も更新
-      await refreshFileBasedGraphFlag()
     }
 
   })
@@ -201,14 +201,27 @@ const fetchAppInfo = async (): Promise<{ version: string; isDbEra: boolean }> =>
   return { version: m ? m[0] : version, isDbEra }
 }
 
-// グラフ種別判定(公式API。失敗時は null = 判定不可。起動時は null を旧アプリ(ファイルグラフ)として扱う)
+// グラフ種別判定。checkCurrentIsDbGraph() が使えない/失敗した場合は getCurrentGraph() のURLプレフィックスで代替判定し、それでも不明なら null = 判定不可
+// (起動時は null を旧アプリ(ファイルグラフ)として扱い、グラフ切替時は前回のフラグを維持する)
 const checkLogseqDbGraph = async (): Promise<boolean | null> => {
   try {
     const value = await (logseq.App as any).checkCurrentIsDbGraph()
-    return typeof value === "boolean" ? value : null
+    if (typeof value === "boolean") return value
   } catch {
-    return null // API非搭載ホスト(0.10.x等)や検出失敗
+    // API非搭載ホスト(0.10.x等)や一時的な検出失敗 → 代替判定へ
   }
+  try {
+    // 代替判定: グラフURLプレフィックス。2.xではDBグラフにもpathがあるためpathでは判別不可(実機確認済み)
+    const graph: any = await logseq.App.getCurrentGraph()
+    const url = graph?.url
+    if (typeof url === "string") {
+      if (url.startsWith("logseq_db_")) return true
+      if (url.startsWith("logseq_local_")) return false
+    }
+  } catch {
+    // 判定不可
+  }
+  return null
 }
 
 

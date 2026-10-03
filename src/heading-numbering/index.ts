@@ -44,32 +44,19 @@ const extractGeneralNumber = (content: string): string | null => {
  * Initialize heading numbering features
  */
 export const initHeadingNumbering = async () => {
-    // Detect if current graph is file-based
-    isFileBasedGraph = await detectFileBasedGraph()
+    // index.ts 側で検出済みのグラフ種別フラグを共有する
+    isFileBasedGraph = booleanLogseqVersionMd()
 
     // Apply initial settings
     // display-only numbering and level marks removed
 }
 
 /**
- * Detect if current graph is file-based (not cloud-based)
+ * Set the file-based graph flag (called when the current graph changes).
+ * 非同期の再検出は行わず、index.ts 側で検出した値をそのまま反映する(グラフ連続切替時の古い結果の上書きを防ぐため)
  */
-const detectFileBasedGraph = async (): Promise<boolean> => {
-    try {
-        const currentGraph = await logseq.App.getCurrentGraph()
-        // File-based graphs have a 'path' property
-        return !!(currentGraph && 'path' in currentGraph && currentGraph.path !== null)
-    } catch (error) {
-        console.warn('Could not detect graph type:', error)
-        return false
-    }
-}
-
-/**
- * Re-detect the file-based graph flag (called when the current graph changes)
- */
-export const refreshFileBasedGraphFlag = async (): Promise<void> => {
-    isFileBasedGraph = await detectFileBasedGraph()
+export const setFileBasedGraphFlag = (fileBased: boolean): void => {
+    isFileBasedGraph = fileBased
 }
 
 // display-only numbering and related CSS removed
