@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.1.1...v2.1.2) (2026-10-03)
+
+
+### Bug Fixes
+
+* グラフ種別とアプリ世代の検出を分離しDB版+ファイルグラフの誤検出を修正 ([ad0ad29](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/ad0ad2946a2d5bf80f81f7dd6f2c24386b97167a))
+
 ## [2.1.1](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.1.0...v2.1.1) (2026-07-20)
 
 
