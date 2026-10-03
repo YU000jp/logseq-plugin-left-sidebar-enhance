@@ -1,5 +1,5 @@
 import '@logseq/libs' //https://plugins-doc.logseq.com/
-import { AppInfo, BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
+import { BlockEntity, PageEntity } from '@logseq/libs/dist/LSPlugin'
 import { loadFavAndRecent } from './favAndRecent'
 import { loadShowByMouseOver } from './mouseover'
 import { refreshPageHeaders } from './page-outline/pageHeaders'
@@ -185,8 +185,9 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
 
 // アプリ情報取得(バージョン解析・アプリ世代判定用。グラフ種別には使わない)
 const fetchAppInfo = async (): Promise<{ version: string; isDbEra: boolean }> => {
-  const info = await logseq.App.getInfo() as AppInfo | null
-  const version = typeof info?.version === "string" ? info.version : "0.0.0"
+  // 引数なしの getInfo() は実ホストで undefined を返すため、キー指定が必須(0.10.x/2.x で実機確認済み)
+  const info = await logseq.App.getInfo("version") as any
+  const version = typeof info === "string" ? info : "0.0.0"
   // 0.11.0もしくは0.11.0-alpha+nightly.20250427のような形式なので、先頭の3つの数値(1桁、2桁、2桁)を正規表現で取得する
   const m = version.match(/(\d+)\.(\d+)\.(\d+)/)
   // DB系世代(新UI): 2.x もしくは移行期の0.11.x。OG 1.xは旧UI系統(MD側)として扱う
