@@ -201,7 +201,7 @@ const fetchAppInfo = async (): Promise<{ version: string; isDbEra: boolean }> =>
   return { version: m ? m[0] : version, isDbEra }
 }
 
-// グラフ種別判定。checkCurrentIsDbGraph() が使えない/失敗した場合は getCurrentGraph() の path 有無で代替判定し、それでも不明なら null = 判定不可
+// グラフ種別判定。checkCurrentIsDbGraph() が使えない/失敗した場合は getCurrentGraph() のURLプレフィックスで代替判定し、それでも不明なら null = 判定不可
 // (起動時は null を旧アプリ(ファイルグラフ)として扱い、グラフ切替時は前回のフラグを維持する)
 const checkLogseqDbGraph = async (): Promise<boolean | null> => {
   try {
@@ -211,9 +211,13 @@ const checkLogseqDbGraph = async (): Promise<boolean | null> => {
     // API非搭載ホスト(0.10.x等)や一時的な検出失敗 → 代替判定へ
   }
   try {
-    // 代替判定: ファイルグラフは path プロパティを持つ
+    // 代替判定: グラフURLプレフィックス。2.xではDBグラフにもpathがあるためpathでは判別不可(実機確認済み)
     const graph: any = await logseq.App.getCurrentGraph()
-    if (graph && typeof graph === "object") return !graph.path
+    const url = graph?.url
+    if (typeof url === "string") {
+      if (url.startsWith("logseq_db_")) return true
+      if (url.startsWith("logseq_local_")) return false
+    }
   } catch {
     // 判定不可
   }
