@@ -10,17 +10,19 @@ import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import { removeContainer } from './util/lib'
 import { loadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
-import { initHeadingNumbering, applyHeadingNumbersToPage } from './heading-numbering'
+import { initHeadingNumbering, applyHeadingNumbersToPage, refreshFileBasedGraphFlag } from './heading-numbering'
 import { removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
 import { initAutoHeadingLevel } from './auto-heading-level'
 
 let currentPageOriginalName: PageEntity["originalName"] = ""
 // let currentPageUuid: PageEntity["uuid"] = ""
 let logseqVersion: string = ""//バージョンチェック用
-let logseqVersionMd: boolean = false//バージョンチェック用
+let logseqVersionMd: boolean = false//現在のグラフがファイルベースか(= !isDbGraph)
+let logseqDbEraApp: boolean = false//アプリ世代判定用(新UI = 0.11+/2.x)。DOM/CSS分岐に使用
 
 // export const getLogseqVersion = () => logseqVersion //バージョンチェック用
-export const booleanLogseqVersionMd = () => logseqVersionMd //バージョンチェック用
+export const booleanLogseqVersionMd = () => logseqVersionMd //現在のグラフがファイルベースか
+export const booleanDbEraApp = () => logseqDbEraApp //アプリが新UI世代(DB版系統)か。DOM/CSS分岐用
 
 export const updateCurrentPage = async (pageName: string, pageUuid: PageEntity["uuid"]) => {
   currentPageOriginalName = pageName
@@ -44,7 +46,11 @@ const main = async () => {
     setTimeout(() =>
       logseq.showSettingsUI(), 300)
 
-  logseqVersionMd = await checkLogseqVersion()
+  // アプリ情報(世代判定用)とグラフ種別を検出
+  const appInfo = await fetchAppInfo()
+  logseqVersion = appInfo.version
+  logseqDbEraApp = appInfo.isDbEra
+  logseqVersionMd = !(await checkLogseqDbGraph()) //現在のグラフがファイルベース = !isDbGraph
 
   /* user settings */
   // register settings schema based on current settings so dependent fields can be hidden
@@ -58,7 +64,7 @@ const main = async () => {
 
   //TOC
   setTimeout(() =>
-    setupTOCHandlers(logseqVersionMd)
+    setupTOCHandlers()
     , 300)
 
   //残り時間可視化ビジュアル
@@ -89,7 +95,15 @@ const main = async () => {
     //グラフが変更されたときに実行されるコールバック
     currentPageOriginalName = ""
     // currentPageUuid = ""
-    logseqVersionMd = await checkLogseqVersion()
+    // グラフ種別を再検出し、ファイルグラフフラグを更新する
+    const newVersionMd = !(await checkLogseqDbGraph())
+    if (newVersionMd !== logseqVersionMd) {
+      logseqVersionMd = newVersionMd
+      // ファイルグラフ向け設定項目の表示/非表示を更新するためスキーマを再適用
+      logseq.useSettingsSchema(settingsTemplate(logseqVersionMd, logseq.settings ?? undefined))
+      // heading-numbering 側のファイルグラフ判定も更新
+      await refreshFileBasedGraphFlag()
+    }
 
   })
 
@@ -169,28 +183,25 @@ export const onPageChangedCallback = async (pageName: string, flag?: { zoomIn: b
 }
 
 
-// バージョンチェック
-const checkLogseqVersion = async (): Promise<boolean> => {
-  const logseqInfo = await logseq.App.getInfo("version") as AppInfo | any
-  //  0.11.0もしくは0.11.0-alpha+nightly.20250427のような形式なので、先頭の3つの数値(1桁、2桁、2桁)を正規表現で取得する
-  const version = logseqInfo.match(/(\d+)\.(\d+)\.(\d+)/)
-  if (version) {
-    logseqVersion = version[0] //バージョンを取得
-    // console.log("logseq version: ", logseqVersion)
+// アプリ情報取得(バージョン解析・アプリ世代判定用。グラフ種別には使わない)
+const fetchAppInfo = async (): Promise<{ version: string; isDbEra: boolean }> => {
+  const info = await logseq.App.getInfo() as AppInfo | null
+  const version = typeof info?.version === "string" ? info.version : "0.0.0"
+  // 0.11.0もしくは0.11.0-alpha+nightly.20250427のような形式なので、先頭の3つの数値(1桁、2桁、2桁)を正規表現で取得する
+  const m = version.match(/(\d+)\.(\d+)\.(\d+)/)
+  // DB系世代(新UI): 2.x もしくは移行期の0.11.x。OG 1.xは旧UI系統(MD側)として扱う
+  const isDbEra = m ? (Number(m[1]) >= 2 || (Number(m[1]) === 0 && Number(m[2]) >= 11)) : false
+  return { version: m ? m[0] : version, isDbEra }
+}
 
-    // MD model: legacy file-based app (0.0.x - 0.10.x) or Logseq OG (1.x).
-    // DB-era apps report 0.11+ or 2.x.
-    const major = Number(version[1])
-    const minor = Number(version[2])
-    if ((major === 0 && minor <= 10) || major === 1) {
-      logseqVersionMd = true
-      // console.log("logseq version is 0.10.* or lower")
-      return true
-    } else
-      logseqVersionMd = false
-  } else
-    logseqVersion = "0.0.0"
-  return false
+// グラフ種別判定(公式API。0.10.xホストでは未実装 → false = 旧アプリはDBグラフを開けない)
+const checkLogseqDbGraph = async (): Promise<boolean> => {
+  try {
+    const value = await (logseq.App as any).checkCurrentIsDbGraph()
+    return typeof value === "boolean" ? value : false
+  } catch {
+    return false
+  }
 }
 
 

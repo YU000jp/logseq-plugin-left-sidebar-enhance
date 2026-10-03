@@ -1,6 +1,6 @@
 import { LSPluginBaseInfo } from "@logseq/libs/dist/LSPlugin.user"
 import { t } from "logseq-l10n"
-import { booleanLogseqVersionMd, getCurrentPageOriginalName } from ".."
+import { booleanDbEraApp, getCurrentPageOriginalName } from ".."
 import { headerCommand } from "../headerCommand"
 import { createElementWithAttributes } from "../util/domUtils"
 import { removeContainer } from "../util/lib"
@@ -12,13 +12,13 @@ import { settingKeys } from '../settings/keys'
 
 // プラグイン起動後、5秒間はロックをかける
 let processing = true
-export const setupTOCHandlers = (versionMd: boolean) => {
+export const setupTOCHandlers = () => {
 
     setTimeout(() => {
         // 設定変更は中央ディスパッチャで処理するため、ここでは登録しない。
         // Graph 変更は従来どおり登録する。
         logseq.App.onCurrentGraphChanged(async () => {
-            routeCheck(versionMd)//グラフ変更時に実行
+            routeCheck()//グラフ変更時に実行
         })
         processing = false
     }, 5000)
@@ -26,7 +26,8 @@ export const setupTOCHandlers = (versionMd: boolean) => {
     if (logseq.settings?.[settingKeys.toc.master] === true)
         renderTOCContainer()
 
-    logseq.provideStyle(tocCSS + (versionMd === false ? `
+    // 新旧UIでDOM構造が異なるため、追加CSSはアプリ世代で分岐する
+    logseq.provideStyle(tocCSS + (booleanDbEraApp() === true ? `
     #main-content-container div.ls-page-blocks { 
         overflow: visible;
     }
@@ -38,12 +39,12 @@ export const setupTOCHandlers = (versionMd: boolean) => {
 
     //プラグイン起動時
     setTimeout(() => {
-        routeCheck(versionMd)
+        routeCheck()
     }, 200)
 
     //ページ読み込み時に実行コールバック
     logseq.App.onRouteChanged(async () => {
-        await routeCheck(versionMd)
+        await routeCheck()
     })
 
     //ヘッダー挿入コマンド
@@ -74,13 +75,14 @@ export const handleTocSettingsChanged = async (newSet: LSPluginBaseInfo['setting
 
 
 const renderTOCContainer = () => {
-    const versionMd = booleanLogseqVersionMd()
+    // サイドバーのDOM構造はアプリ世代(新旧UI)で異なる
+    const dbEraApp = booleanDbEraApp()
     if (parent.document.getElementById("lse-toc-container"))
         removeContainer("lse-toc-container")//すでに存在する場合は削除する
 
     setTimeout(async () => {
         //左サイドバーのnav-contents-containerにスペースを追加する
-        const navEle = parent.document.querySelector(versionMd === true ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
+        const navEle = parent.document.querySelector(dbEraApp === false ? "#left-sidebar>div.left-sidebar-inner div.nav-contents-container" : "#left-sidebar>div.left-sidebar-inner div.sidebar-contents-container") as HTMLDivElement || null
         if (navEle === null) return //nullの場合はキャンセル
 
         const divAsItemEle = createElementWithAttributes("div", {

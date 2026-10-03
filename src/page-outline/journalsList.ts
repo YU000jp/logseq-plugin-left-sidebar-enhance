@@ -7,7 +7,7 @@ let processing = false
 
 const rtf = new Intl.RelativeTimeFormat("default", { numeric: "auto" })
 
-export const whenOpenJournals = (journalsEle: HTMLDivElement, versionMd: boolean) => {
+export const whenOpenJournals = (journalsEle: HTMLDivElement, dbEraApp: boolean) => {
     if (processing) return
     processing = true
     setTimeout(() =>
@@ -18,7 +18,7 @@ export const whenOpenJournals = (journalsEle: HTMLDivElement, versionMd: boolean
     if (element && journalsEle) {
         clearCachedHeaders()
         element.innerHTML = ""
-        getJournalTitles(journalsEle, element, versionMd)
+        getJournalTitles(journalsEle, element, dbEraApp)
         return
     }
 
@@ -26,9 +26,9 @@ export const whenOpenJournals = (journalsEle: HTMLDivElement, versionMd: boolean
 }
 
 
-const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, versionMd: boolean) => {
+const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, dbEraApp: boolean) => {
     // 表示処理
-    updateJournalList(journalsEle, tocContentEle, versionMd)
+    updateJournalList(journalsEle, tocContentEle, dbEraApp)
 
     // div#main-content-containerをスクロールしたら、journalTitlesを更新する
     const mainContentContainer = parent.document.getElementById("main-content-container") as HTMLDivElement | null
@@ -37,7 +37,7 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
         const scrollEvent = () => {
             const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null // イベント用エレメント取得
             if (journalsEle)
-                updateJournalList(journalsEle, tocContentEle, versionMd) // 表示処理
+                updateJournalList(journalsEle, tocContentEle, dbEraApp) // 表示処理
             else
                 mainContentContainer.removeEventListener("scroll", scrollEvent) // journalsがない場合はイベントを解除
         }
@@ -46,14 +46,15 @@ const getJournalTitles = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivEle
 }
 
 
-const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, versionMd: boolean) => {
+const updateJournalList = (journalsEle: HTMLDivElement, tocContentEle: HTMLDivElement, dbEraApp: boolean) => {
     tocContentEle.innerHTML = ""
     const ulEle = document.createElement("ul")
     //list-style
     ulEle.style.listStyle = "disc"
     ulEle.style.marginLeft = "3em"
 
-    const journalTitles = journalsEle.querySelectorAll(versionMd === true ? "a.journal-title" : "div.ls-page-title span.block-title-wrap,div#journals div.is-journals h1.page-title>span") as NodeListOf<HTMLAnchorElement>
+    // DOM構造はアプリ世代(新旧UI)で異なる
+    const journalTitles = journalsEle.querySelectorAll(dbEraApp === false ? "a.journal-title" : "div.ls-page-title span.block-title-wrap,div#journals div.is-journals h1.page-title>span") as NodeListOf<HTMLAnchorElement>
 
     journalTitles.forEach((journalTitle) => {
         const title = journalTitle.textContent
