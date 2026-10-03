@@ -65,6 +65,13 @@ const detectFileBasedGraph = async (): Promise<boolean> => {
     }
 }
 
+/**
+ * Re-detect the file-based graph flag (called when the current graph changes)
+ */
+export const refreshFileBasedGraphFlag = async (): Promise<void> => {
+    isFileBasedGraph = await detectFileBasedGraph()
+}
+
 // display-only numbering and related CSS removed
 
 /**

@@ -1,5 +1,5 @@
 import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin"
-import { onPageChangedCallback, updateCurrentPage } from ".."
+import { booleanDbEraApp, booleanLogseqVersionMd, onPageChangedCallback, updateCurrentPage } from ".."
 import { CurrentCheckPageOrZoom, getCurrentPageForMd, getCurrentZoomForMd, zoomBlockWhenDb } from "../util/query/advancedQuery"
 import { clearTOC } from "./DOM"
 import { whenOpenJournals } from "./journalsList"
@@ -10,17 +10,19 @@ const debugMode = false
 // ルートチェック
 
 let processingRoot = false
-export const routeCheck = async (versionMd: boolean) => {
+export const routeCheck = async () => {
     if (processingRoot) return
     processingRoot = true
     setTimeout(() => (processingRoot = false), 100)
 
+    // クエリ系の分岐はグラフ種別(ファイル/DB)で判定する
+    const versionMd = booleanLogseqVersionMd()
     if (debugMode) console.log("routeCheck started", { versionMd })
 
     if (versionMd) {
         // Logseq mdバージョン用
         if (logseq.settings!.enableJournalsList as boolean === true
-            && handleMdVersionJournals(versionMd)) {
+            && handleMdVersionJournals()) {
             if (debugMode) console.log("Handled MD version journals")
             return
         }
@@ -37,7 +39,7 @@ export const routeCheck = async (versionMd: boolean) => {
         const pageOrZoom = await CurrentCheckPageOrZoom() as { check: "page" | "zoom"; page?: { title: string; uuid: PageEntity["uuid"] } }
         if (debugMode) console.log("CurrentCheckPageOrZoom result", pageOrZoom)
 
-        if (pageOrZoom.check === "page" && await handleDbVersionPage(pageOrZoom, versionMd)) {
+        if (pageOrZoom.check === "page" && await handleDbVersionPage(pageOrZoom)) {
             if (debugMode) console.log("Handled DB version page")
             return
         }
@@ -67,9 +69,9 @@ const handleMdVersionPage = async () => {
 }
 
 // 日誌
-const handleMdVersionJournals = (versionMd: boolean) => {
+const handleMdVersionJournals = () => {
     if (debugMode) console.log("handleMdVersionJournals called")
-    return validateJournalsElement(versionMd)
+    return validateJournalsElement()
 }
 
 // ズーム
@@ -88,13 +90,13 @@ const handleMdVersionZoom = async () => {
 // ---- dbバージョン用
 
 // ページ
-const handleDbVersionPage = async (pageOrZoom: { check: "page" | "zoom"; page?: { title: string; uuid: PageEntity["uuid"] } }, versionMd: boolean) => {
+const handleDbVersionPage = async (pageOrZoom: { check: "page" | "zoom"; page?: { title: string; uuid: PageEntity["uuid"] } }) => {
     if (debugMode) console.log("handleDbVersionPage called", pageOrZoom)
 
     if (logseq.settings!.enableJournalsList as boolean === true
         && pageOrZoom.page?.uuid.startsWith("00000001-")) {
         // 日誌の場合
-        setTimeout(() => validateJournalsElement(versionMd), 150)
+        setTimeout(() => validateJournalsElement(), 150)
         return true
     } else if (pageOrZoom.page) {
         // ページの場合
@@ -142,12 +144,12 @@ const handleDbVersionZoom = async () => {
 
 
 // ジャーナルかどうか
-const validateJournalsElement = (versionMd: boolean): boolean => {
+const validateJournalsElement = (): boolean => {
     if (debugMode) console.log("validateJournalsElement")
     const journalsEle = parent.document.getElementById("journals") as HTMLDivElement | null
     if (journalsEle) {
         if (debugMode) console.log("call: Journals list")
-        whenOpenJournals(journalsEle, versionMd) // 日誌のタイトルを取得して表示する
+        whenOpenJournals(journalsEle, booleanDbEraApp()) // 日誌のタイトルを取得して表示する
         return true
     } else
         return false
