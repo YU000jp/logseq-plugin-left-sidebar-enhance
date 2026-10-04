@@ -1,3 +1,13 @@
+## [2.1.3](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.1.2...v2.1.3) (2026-10-04)
+
+
+### Bug Fixes
+
+* fetchAppInfo の getInfo() を getInfo("version") に修正(引数なしは実ホストで undefined) ([120f460](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/120f460207c908fa87f0e3a746db5127fcd8f216))
+* グラフ切替検出の堅牢化(連続切替の順序ガード・検出失敗時は前回フラグ維持) ([99813aa](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/99813aa75268e283c2f4d0193f2cf79a5ccec06d))
+* グラフ種別検出の代替判定追加とファイルグラフフラグの同期一元化 ([0b3870d](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/0b3870d0e8de27c9818c5f6a66e750a685bb9f0c))
+* 代替判定を path 有無からグラフURLプレフィックス(logseq_db_/logseq_local_)に修正 ([577f5d9](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/commit/577f5d9d022972ffa303421150863a8ee06574bb))
+
 ## [2.1.2](https://github.com/YU000jp/logseq-plugin-left-sidebar-enhance/compare/v2.1.1...v2.1.2) (2026-10-03)
 
 
