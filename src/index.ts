@@ -8,7 +8,7 @@ import { settingsTemplate } from './settings'
 import { settingKeys } from './settings/keys'
 import { initSettingsDispatcher } from './settings/onSettingsChanged'
 import { removeContainer } from './util/lib'
-import { loadVisualTimer } from './visualTimer'
+import { loadVisualTimer, unloadVisualTimer } from './visualTimer'
 import { loadLogseqL10n } from "./translations/l10nSetup" //https://github.com/sethyuan/logseq-l10n
 import { initHeadingNumbering, applyHeadingNumbersToPage, setFileBasedGraphFlag } from './heading-numbering'
 import { removeToolbarIcon, updateToolbarIcon } from './heading-numbering/toolbarIcon'
@@ -90,6 +90,7 @@ const main = async () => {
     removeContainer("lse-toc-container")
     removeContainer("lse-dataSelector-container")
     removeContainer("lse-visualTimer-container")
+    unloadVisualTimer()
     removeToolbarIcon()
   })
 

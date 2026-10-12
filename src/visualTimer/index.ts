@@ -7,6 +7,13 @@ import { CONTAINER_ID, INNER_ID } from "./constants"
 import { getVisualTimerCss } from "./styles"
 import { mountVisualTimer, unmountVisualTimer } from "./ui"
 import { createVisualTimerContainer } from "./shared"
+import {
+             mountStatusbarTimer,
+             refreshStatusbarTimer,
+             startStatusbarPopup,
+             stopStatusbarPopup,
+             unmountStatusbarTimer,
+} from "./statusbar"
 
 const hasVisualTimerSettingsChanged = (
              oldSet: LSPluginBaseInfo["settings"],
@@ -43,7 +50,11 @@ const refreshIfMounted = (): void => {
 
 export const loadVisualTimer = () => {
              // 初期起動時のマウント処理（設定が有効なら表示）
-             if (logseq.settings?.[settingKeys.visualTimer.master] === true) main()
+             if (logseq.settings?.[settingKeys.visualTimer.master] === true) {
+                          main()
+                          if (logseq.settings?.[settingKeys.visualTimer.statusBar] === true) mountStatusbarTimer()
+                          if (logseq.settings?.[settingKeys.visualTimer.popup] === true) startStatusbarPopup()
+             }
 
              // スタイル提供は常に行う
              logseq.provideStyle(getVisualTimerCss(INNER_ID))
@@ -59,19 +70,53 @@ export const handleVisualTimerSettingsChanged = async (
              oldSet: LSPluginBaseInfo["settings"]
 ): Promise<boolean> => {
              if (oldSet[settingKeys.visualTimer.master] !== newSet[settingKeys.visualTimer.master]) {
-                          if (newSet[settingKeys.visualTimer.master] === true) main()
-                          else {
+                          if (newSet[settingKeys.visualTimer.master] === true) {
+                                       main()
+                                       if (newSet[settingKeys.visualTimer.statusBar] === true) mountStatusbarTimer()
+                                       if (newSet[settingKeys.visualTimer.popup] === true) startStatusbarPopup()
+                          } else {
                                        unmountVisualTimer()
                                        removeContainer(CONTAINER_ID)
+                                       unmountStatusbarTimer()
+                                       stopStatusbarPopup()
                           }
                           return true
              }
 
-             const changed = hasVisualTimerSettingsChanged(oldSet, newSet)
-             if (changed && newSet[settingKeys.visualTimer.master] === true)
+             // master が有効なときだけ付随機能のトグルを処理する
+             if (newSet[settingKeys.visualTimer.master] === true) {
+                          if (oldSet[settingKeys.visualTimer.statusBar] !== newSet[settingKeys.visualTimer.statusBar]) {
+                                       if (newSet[settingKeys.visualTimer.statusBar] === true) mountStatusbarTimer()
+                                       else unmountStatusbarTimer()
+                          }
+
+                          if (
+                                       oldSet[settingKeys.visualTimer.popup] !== newSet[settingKeys.visualTimer.popup] ||
+                                       oldSet[settingKeys.visualTimer.popupMinutes] !== newSet[settingKeys.visualTimer.popupMinutes]
+                          ) {
+                                       if (newSet[settingKeys.visualTimer.popup] === true) startStatusbarPopup()
+                                       else stopStatusbarPopup()
+                          }
+             }
+
+             const changed =
+                          hasVisualTimerSettingsChanged(oldSet, newSet) ||
+                          oldSet[settingKeys.visualTimer.statusBar] !== newSet[settingKeys.visualTimer.statusBar] ||
+                          oldSet[settingKeys.visualTimer.popup] !== newSet[settingKeys.visualTimer.popup] ||
+                          oldSet[settingKeys.visualTimer.popupMinutes] !== newSet[settingKeys.visualTimer.popupMinutes]
+
+             if (changed && newSet[settingKeys.visualTimer.master] === true) {
                           refreshIfMounted()
+                          refreshStatusbarTimer()
+             }
 
              return changed
+}
+
+export const unloadVisualTimer = () => {
+             unmountVisualTimer()
+             unmountStatusbarTimer()
+             stopStatusbarPopup()
 }
 
 const main = () => {

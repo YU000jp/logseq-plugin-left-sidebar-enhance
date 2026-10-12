@@ -8,6 +8,11 @@ export const settingKeys = {
                           
                           enableTargetDate: 'visualTimerEnableTargetDate',
                           targetDate: 'visualTimerTargetDate',
+                          // Status bar (toolbar) compact display
+                          statusBar: 'visualTimerStatusBar',
+                          // Periodic popup
+                          popup: 'visualTimerPopup',
+                          popupMinutes: 'visualTimerPopupMinutes',
              },
              toc: {
                           heading: 'heading00Toc',

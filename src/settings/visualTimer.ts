@@ -73,5 +73,33 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                           })
              }
 
+             // Status bar (toolbar) compact display
+             list.push({
+                          key: settingKeys.visualTimer.statusBar,
+                          title: t('Show timer in the toolbar'),
+                          type: 'boolean',
+                          default: false,
+                          description: t('Show a compact remaining-time text in the top toolbar. Click it to pop up the details.'),
+             })
+
+             // Periodic popup
+             list.push({
+                          key: settingKeys.visualTimer.popup,
+                          title: t('Pop up the remaining time periodically'),
+                          type: 'boolean',
+                          default: false,
+                          description: t('Show a notification with the remaining time at a fixed interval.'),
+             })
+
+             if (cfg[settingKeys.visualTimer.popup] === true) {
+                          list.push({
+                                       key: settingKeys.visualTimer.popupMinutes,
+                                       title: t('Popup interval (minutes)'),
+                                       type: 'number',
+                                       default: 60,
+                                       description: t('How often to show the popup, in minutes (1 or more).'),
+                          })
+             }
+
              return list
 }
