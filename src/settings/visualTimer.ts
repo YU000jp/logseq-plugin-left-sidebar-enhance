@@ -97,7 +97,7 @@ export const visualTimerSettings = (currentSettings?: Record<string, unknown>): 
                                        title: t('Popup interval (minutes)'),
                                        type: 'number',
                                        default: 60,
-                                       description: t('How often to show the popup, in minutes (1 or more).'),
+                                       description: t('How often to show the popup, in minutes (1-10080).'),
                           })
              }
 

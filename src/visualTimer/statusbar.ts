@@ -6,12 +6,10 @@ export const STATUSBAR_ID = "lse-visualTimer-statusbar"
 const STATUSBAR_TEXT_ID = "lse-visualTimer-statusbar-text"
 
 const UPDATE_INTERVAL_MS = 30_000
+const POPUP_MINUTES_MAX = 10_080 // 1週間。32bitタイマー上限(約35,791分)を十分下回る
 
 let updateIntervalId: number | null = null
 let popupIntervalId: number | null = null
-let mountRetryId: number | null = null
-let mountRetryCount = 0
-const MOUNT_RETRY_MAX = 10
 
 const findToolbar = (): HTMLElement | null => {
              const doc = parent.document
@@ -27,7 +25,10 @@ const buildStatusbarText = (timers: TimerData[]): string =>
 
 const buildPopupText = (timers: TimerData[]): string =>
              timers
-                          .map((timer) => `${timer.title.split("\n")[0].replace(/:+$/, "")}: ${timer.centerText}`)
+                          .map(
+                                       (timer) =>
+                                                    `${timer.title.split("\n").join(" ").replace(/:+$/, "")}: ${timer.centerText}`
+                          )
                           .join(" / ")
 
 export const showStatusbarPopup = () => {
@@ -52,41 +53,16 @@ const renderStatusbar = () => {
                           .join("\n")
 }
 
-// ホスト側がツールバーDOMを再構築した場合に備え、存在しなければ再挿入する
-const ensureStatusbarMounted = () => {
-             if (parent.document.getElementById(STATUSBAR_ID)) {
-                          renderStatusbar()
-                          return
-             }
-             mountStatusbarTimer()
-}
+const insertStatusbarAnchor = (toolbar: HTMLElement) => {
+             const doc = parent.document
 
-export const mountStatusbarTimer = () => {
-             if (updateIntervalId !== null) {
-                          window.clearInterval(updateIntervalId)
-                          updateIntervalId = null
-             }
-             const existing = parent.document.getElementById(STATUSBAR_ID)
-             if (existing) existing.remove()
-
-             const toolbar = findToolbar()
-             if (toolbar === null) {
-                          // 起動直後などでツールバーが未描画の場合は数回リトライする
-                          if (mountRetryId !== null) window.clearTimeout(mountRetryId)
-                          if (mountRetryCount >= MOUNT_RETRY_MAX) return
-                          mountRetryCount += 1
-                          mountRetryId = window.setTimeout(mountStatusbarTimer, 1500)
-                          return
-             }
-             mountRetryCount = 0
-
-             const anchor = parent.document.createElement("a")
+             const anchor = doc.createElement("a")
              anchor.className = "button"
              anchor.id = STATUSBAR_ID
              anchor.style.cssText =
                           "cursor:pointer;display:inline-flex;align-items:center;padding:0 6px;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;"
 
-             const span = parent.document.createElement("span")
+             const span = doc.createElement("span")
              span.id = STATUSBAR_TEXT_ID
              anchor.appendChild(span)
 
@@ -98,17 +74,25 @@ export const mountStatusbarTimer = () => {
 
              if (toolbar.firstChild) toolbar.insertBefore(anchor, toolbar.firstChild)
              else toolbar.appendChild(anchor)
+}
 
+// 30秒ごとに呼ばれる常駐監視。要素がなければツールバーを探して再挿入し、あれば描画更新する。
+// ツールバーが長時間(ホストの画面遷移などで)存在しなくても監視は止めない。
+const ensureStatusbarMounted = () => {
+             if (!parent.document.getElementById(STATUSBAR_ID)) {
+                          const toolbar = findToolbar()
+                          if (toolbar !== null) insertStatusbarAnchor(toolbar)
+             }
              renderStatusbar()
-             updateIntervalId = window.setInterval(ensureStatusbarMounted, UPDATE_INTERVAL_MS)
+}
+
+export const mountStatusbarTimer = () => {
+             if (updateIntervalId === null)
+                          updateIntervalId = window.setInterval(ensureStatusbarMounted, UPDATE_INTERVAL_MS)
+             ensureStatusbarMounted()
 }
 
 export const unmountStatusbarTimer = () => {
-             if (mountRetryId !== null) {
-                          window.clearTimeout(mountRetryId)
-                          mountRetryId = null
-             }
-             mountRetryCount = 0
              if (updateIntervalId !== null) {
                           window.clearInterval(updateIntervalId)
                           updateIntervalId = null
@@ -130,7 +114,7 @@ const getPopupMinutes = (settings: Record<string, unknown>): number => {
                                        : typeof raw === "string" && raw.trim() !== "" && Number.isFinite(Number(raw))
                                                     ? Number(raw)
                                                     : 60
-             return Math.max(1, Math.trunc(minutes))
+             return Math.min(POPUP_MINUTES_MAX, Math.max(1, Math.trunc(minutes)))
 }
 
 export const startStatusbarPopup = () => {
