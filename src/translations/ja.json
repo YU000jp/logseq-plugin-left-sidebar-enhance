@@ -43,7 +43,7 @@
   "Pop up the remaining time periodically": "残り時間を定期的にポップアップ",
   "Show a notification with the remaining time at a fixed interval.": "一定間隔ごとに残り時間を通知でポップアップします。",
   "Popup interval (minutes)": "ポップアップ間隔(分)",
-  "How often to show the popup, in minutes (1 or more).": "ポップアップを表示する間隔(分、1以上)。",
+  "How often to show the popup, in minutes (1-10080).": "ポップアップを表示する間隔(分、1-10080)。",
   "Page outline function": "ページアウトライン機能",
   "Enable": "有効にする",
   "Open pages as zoomed by default": "デフォルトでズームされた状態でページを開く",
