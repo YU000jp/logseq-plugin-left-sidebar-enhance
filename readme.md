@@ -57,6 +57,8 @@ This plugin provides five main features:
 
 1. Visual Timer Feature
    > <img width="235" height="383" alt="image" src="https://github.com/user-attachments/assets/fb616a6a-6e8d-4d90-9e37-8d36f0feece9" />
+   - Optional compact timer in the top toolbar (click for a detail popup)
+   - Optional periodic popup notification of the remaining time
 
 ---
 

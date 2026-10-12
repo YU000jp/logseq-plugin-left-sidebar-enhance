@@ -14,5 +14,12 @@
 
   "Visual Timer": "Visual Timer",
   "plugin": "plugin",
-  "Settings": "Settings"
+  "Settings": "Settings",
+
+  "Show timer in the toolbar": "Show timer in the toolbar",
+  "Show a compact remaining-time text in the top toolbar. Click it to pop up the details.": "Show a compact remaining-time text in the top toolbar. Click it to pop up the details.",
+  "Pop up the remaining time periodically": "Pop up the remaining time periodically",
+  "Show a notification with the remaining time at a fixed interval.": "Show a notification with the remaining time at a fixed interval.",
+  "Popup interval (minutes)": "Popup interval (minutes)",
+  "How often to show the popup, in minutes (1 or more).": "How often to show the popup, in minutes (1 or more)."
 }
